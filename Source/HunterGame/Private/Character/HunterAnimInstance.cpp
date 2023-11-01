@@ -2,7 +2,6 @@
 
 
 #include "Character/HunterAnimInstance.h"
-
 #include "Character/BaseCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
