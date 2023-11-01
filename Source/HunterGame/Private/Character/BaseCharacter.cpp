@@ -25,6 +25,8 @@ ABaseCharacter::ABaseCharacter()
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	
+	bReplicates = true;
 }
 
 void ABaseCharacter::BeginPlay()
@@ -59,6 +61,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this, &ABaseCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ABaseCharacter::Jump);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABaseCharacter::Crouch);
 	}
 }
 
@@ -93,4 +96,9 @@ void ABaseCharacter::Jump()
 {
 	if (!Controller) return;
 	ACharacter::Jump();
+}
+
+void ABaseCharacter::Crouch()
+{
+	ACharacter::Crouch();
 }
