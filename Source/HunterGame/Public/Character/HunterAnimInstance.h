@@ -27,7 +27,10 @@ protected:
 	float Speed;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	bool IsFalling;
+	bool bIsFalling;	
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	bool bIsCrouched;
 
 	/** Leaning **/
 	FRotator CharacterRotationLastFrame;

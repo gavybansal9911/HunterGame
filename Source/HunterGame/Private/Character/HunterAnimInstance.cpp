@@ -21,7 +21,8 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (HunterCharacter && HunterCharacter->GetCharacterMovement())
 	{
 		Speed = HunterCharacter->GetCharacterMovement()->Velocity.Size();
-		IsFalling = HunterCharacter->GetCharacterMovement()->IsFalling();
+		bIsFalling = HunterCharacter->GetCharacterMovement()->IsFalling();
+		bIsCrouched = HunterCharacter->bIsCrouched;
 
 		/** Leaning **/
 		CharacterRotationLastFrame = CharacterRotationThisFrame;

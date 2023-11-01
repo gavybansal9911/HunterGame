@@ -13,7 +13,8 @@
 ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	bReplicates = true;
+	
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetMesh());
 	CameraBoom->TargetArmLength = 400.f;
@@ -26,7 +27,7 @@ ABaseCharacter::ABaseCharacter()
 	bUseControllerRotationRoll = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	
-	bReplicates = true;
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 }
 
 void ABaseCharacter::BeginPlay()
@@ -100,5 +101,8 @@ void ABaseCharacter::Jump()
 
 void ABaseCharacter::Crouch()
 {
-	ACharacter::Crouch();
+	if (!Controller) return;
+	
+	if (!bIsCrouched) {ACharacter::Crouch();}
+	if (bIsCrouched) {ACharacter::UnCrouch();}
 }
