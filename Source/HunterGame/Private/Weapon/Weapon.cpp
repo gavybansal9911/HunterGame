@@ -45,3 +45,13 @@ void AWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 void AWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 }
+
+void AWeapon::Equip()
+{
+	// TODO: Implementation
+}
+
+void AWeapon::AttachToActor()
+{
+	// TODO: Implementation
+}
