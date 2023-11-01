@@ -7,6 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputAction.h"
 #include "Camera/CameraComponent.h"
+#include "Component/InteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -28,6 +29,8 @@ ABaseCharacter::ABaseCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+
+	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
 }
 
 void ABaseCharacter::BeginPlay()

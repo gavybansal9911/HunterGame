@@ -3,6 +3,8 @@
 
 #include "Component/InteractionComponent.h"
 
+#include "Weapon/Weapon.h"
+
 UInteractionComponent::UInteractionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -18,3 +20,6 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
+void UInteractionComponent::Interact()
+{
+}

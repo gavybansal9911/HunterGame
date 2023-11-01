@@ -51,7 +51,7 @@ void AWeapon::Equip()
 	// TODO: Implementation
 }
 
-void AWeapon::AttachToActor()
+void AWeapon::AttachToActor(FName SocketName)
 {
 	// TODO: Implementation
 }

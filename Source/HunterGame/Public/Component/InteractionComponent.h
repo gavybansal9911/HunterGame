@@ -6,16 +6,26 @@
 #include "Components/ActorComponent.h"
 #include "InteractionComponent.generated.h"
 
+class ABaseCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HUNTERGAME_API UInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
+	friend ABaseCharacter;
 	UInteractionComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
 	virtual void BeginPlay() override;
+	void Interact();
+
+private:
+	UPROPERTY(VisibleAnywhere, Category = "Overlapping")
+	TObjectPtr<AActor> OverlappingActor;
+	
+public:
+	FORCEINLINE AActor* GetOverlappingActor() const {return OverlappingActor;}
 };

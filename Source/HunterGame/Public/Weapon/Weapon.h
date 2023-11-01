@@ -24,7 +24,7 @@ protected:
 
 	/** Interaction **/
 	void Equip();
-	void AttachToActor();
+	void AttachToActor(FName SocketName);
 	/** Interaction **/
 	
 	/** Components **/

@@ -8,6 +8,7 @@
 #include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
+class UInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -60,6 +61,11 @@ private:
 	TObjectPtr<UCameraComponent> ViewCamera;
 	/** Camera **/
 
+	/** Components **/
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UInteractionComponent> InteractionComponent;
+	/** Components **/
+	
 	/** Character States **/
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 	EActionState ActionState = EActionState::EAS_Idle;
