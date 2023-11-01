@@ -29,6 +29,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool IsFalling;
 
+	/** Leaning **/
+	FRotator CharacterRotationLastFrame;
+	FRotator CharacterRotationThisFrame;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	float YawRotation;
+	float Lean;
+	/** Leaning **/
 };
