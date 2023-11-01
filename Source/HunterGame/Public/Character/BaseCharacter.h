@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
 class USpringArmComponent;
@@ -58,4 +59,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<UCameraComponent> ViewCamera;
 	/** Camera **/
+
+	/** Character States **/
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	EActionState ActionState = EActionState::EAS_Idle;
+	/** Character States **/
 };
