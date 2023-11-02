@@ -3,4 +3,8 @@
 
 #include "Interface/InteractInterface.h"
 
-// Add default functionality here for any IInteractInterface functions that are not pure virtual.
+FString IInteractInterface::LookAt()
+{
+	FString Message = FString("Message");
+	return Message;
+}

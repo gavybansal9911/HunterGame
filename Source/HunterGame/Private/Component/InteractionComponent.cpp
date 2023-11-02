@@ -25,7 +25,7 @@ void UInteractionComponent::Interact()
 	{
 		if (AWeapon* Weapon = Cast<AWeapon>(OverlappingActor))
 		{
-			Weapon->Equip();
+			Weapon->InteractWith(HunterCharacter);
 			OverlappingActor = nullptr;
 		}
 	}

@@ -18,6 +18,11 @@ public:
 	UInteractionComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	/** Player Reference **/
+	UPROPERTY()
+	ABaseCharacter* HunterCharacter;
+	/** Player Reference **/
+
 protected:
 	virtual void BeginPlay() override;
 	void Interact();

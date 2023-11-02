@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "WeaponTypes.h"
 #include "GameFramework/Actor.h"
+#include "Interface/InteractInterface.h"
 #include "Weapon.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class HUNTERGAME_API AWeapon : public AActor
+class HUNTERGAME_API AWeapon : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
 	
@@ -18,9 +19,14 @@ public:
 	AWeapon();
 	virtual void Tick(float DeltaTime) override;
 
+	/** Interface **/
+	virtual FString LookAt() override;;
+	virtual void InteractWith(ABaseCharacter* HunterCharacter) override;
+	/** Interface **/
+
 	/** Interaction **/
-	void Equip();
-	void AttachToActor(FName SocketName);
+	void Equip(const ABaseCharacter* HunterCharacter);
+	void AttachToActor(const ACharacter* InParent, FName SocketName);
 	/** Interaction **/
 
 protected:
@@ -43,11 +49,14 @@ protected:
 
 private:
 	/** Attachment Properties **/
+	UPROPERTY(EditAnywhere, Category = "Attachment")
 	FName OutHandAttachSocketName;
+	UPROPERTY(EditAnywhere, Category = "Attachment")
 	FName InHandAttachSocketName;
 	/** Attachment Properties **/
 
 	/** Weapon Status **/
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
+	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Status **/
 };

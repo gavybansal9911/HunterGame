@@ -54,6 +54,8 @@ void ABaseCharacter::Tick(float DeltaTime)
 void ABaseCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	InteractionComponent->HunterCharacter = this;
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
