@@ -55,7 +55,9 @@ private:
 	FName InHandAttachSocketName;
 	/** Attachment Properties **/
 
-	/** Weapon Status **/
+	/** Weapon Properties && Status **/
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	EWeaponClass WeaponClass = EWeaponClass::EWC_Max;
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Status **/

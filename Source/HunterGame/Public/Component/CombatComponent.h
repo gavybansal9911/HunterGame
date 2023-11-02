@@ -7,6 +7,7 @@
 #include "CombatComponent.generated.h"
 
 
+class AWeapon;
 class ABaseCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -27,6 +28,18 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+private:
+	/** Character Owned Weapon Reference **/
+	UPROPERTY()
+	AWeapon* WeaponInHand;
+
+	UPROPERTY()
+	AWeapon* PrimaryWeapon;
+
+	UPROPERTY()
+	AWeapon* SecondaryWeapon;
+	/** Character Owned Weapon Reference **/
+	
 public:
 	FORCEINLINE bool IsCombatEnabled() const {return true;}
 };

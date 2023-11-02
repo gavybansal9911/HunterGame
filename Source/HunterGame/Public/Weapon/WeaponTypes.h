@@ -1,5 +1,13 @@
 ﻿#pragma once
 
+enum class EWeaponClass : uint8
+{
+	EWC_Primary UMETA(DisplayName = "Primary"),
+	EWC_Secondary UMETA(DisplayName = "Secondary"),
+	
+	EWC_Max UMETA(DisplayName = "Max")
+};
+
 enum class EWeaponState : uint8
 {
 	EWS_Attached UMETA(DisplayName = "Attached"),
