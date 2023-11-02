@@ -24,6 +24,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	/** Components **/
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UInteractionComponent> InteractionComponent;
+	/** Components **/
 	
 protected:
 	virtual void BeginPlay() override;
@@ -33,6 +38,7 @@ protected:
 	void Look(const FInputActionValue& Value);
 	virtual void Jump() override;
 	void Crouch();
+	void InteractButtonPressed();
 	/** Input CallBacks **/
 	
 	/** Input **/
@@ -50,6 +56,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> CrouchAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> InteractAction;
 	/** Input **/
 
 private:
@@ -60,11 +69,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<UCameraComponent> ViewCamera;
 	/** Camera **/
-
-	/** Components **/
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	TObjectPtr<UInteractionComponent> InteractionComponent;
-	/** Components **/
 	
 	/** Character States **/
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;

@@ -28,4 +28,5 @@ private:
 	
 public:
 	FORCEINLINE AActor* GetOverlappingActor() const {return OverlappingActor;}
+	FORCEINLINE void SetOverlappingActor(AActor* InActor) {OverlappingActor = InActor;}
 };

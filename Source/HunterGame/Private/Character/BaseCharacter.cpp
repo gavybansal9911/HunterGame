@@ -66,6 +66,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ABaseCharacter::Jump);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABaseCharacter::Crouch);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,&ABaseCharacter::InteractButtonPressed);
 	}
 }
 
@@ -108,4 +109,10 @@ void ABaseCharacter::Crouch()
 	
 	if (!bIsCrouched) {ACharacter::Crouch();}
 	if (bIsCrouched) {ACharacter::UnCrouch();}
+}
+
+void ABaseCharacter::InteractButtonPressed()
+{
+	if (!InteractionComponent) return;
+	InteractionComponent->Interact();
 }

@@ -3,6 +3,7 @@
 
 #include "Weapon/Weapon.h"
 #include "Character/BaseCharacter.h"
+#include "Component/InteractionComponent.h"
 #include "Components/SphereComponent.h"
 
 AWeapon::AWeapon()
@@ -12,13 +13,15 @@ AWeapon::AWeapon()
 	bReplicates = true;
 	
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weaponmesh"));
-	WeaponMesh->SetupAttachment(GetRootComponent());
-	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	WeaponMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	SetRootComponent(WeaponMesh);
+	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	WeaponMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	WeaponMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECR_Overlap);
+	WeaponMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECR_Ignore);
 
 	AreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Area Sphere"));
 	AreaSphere->SetupAttachment(WeaponMesh);
+	AreaSphere->SetGenerateOverlapEvents(true);
 }
 
 void AWeapon::BeginPlay()
@@ -36,22 +39,28 @@ void AWeapon::Tick(float DeltaTime)
 
 void AWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (ABaseCharacter* HunterCharacter = Cast<ABaseCharacter>(OtherActor))
+	if (const ABaseCharacter* HunterCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
-		
+		if (HunterCharacter->InteractionComponent) {HunterCharacter->InteractionComponent->SetOverlappingActor(this);}
 	}
 }
 
 void AWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (const ABaseCharacter* HunterCharacter = Cast<ABaseCharacter>(OtherActor))
+	{
+		if (HunterCharacter->InteractionComponent) {HunterCharacter->InteractionComponent->SetOverlappingActor(nullptr);}
+	}
 }
 
 void AWeapon::Equip()
 {
-	// TODO: Implementation
+	if (AreaSphere->GetGenerateOverlapEvents()) {AreaSphere->SetGenerateOverlapEvents(false);}
+	if (WeaponState == EWeaponState::EWS_Unattached) {AttachToActor(InHandAttachSocketName); return;}
+	if (WeaponState == EWeaponState::EWS_Attached) {AttachToActor(OutHandAttachSocketName); return;}
 }
 
 void AWeapon::AttachToActor(FName SocketName)
 {
-	// TODO: Implementation
+	GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Green, FString("Worked!"));
 }

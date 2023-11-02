@@ -2,7 +2,6 @@
 
 
 #include "Component/InteractionComponent.h"
-
 #include "Weapon/Weapon.h"
 
 UInteractionComponent::UInteractionComponent()
@@ -22,4 +21,12 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 void UInteractionComponent::Interact()
 {
+	if (OverlappingActor)
+	{
+		if (AWeapon* Weapon = Cast<AWeapon>(OverlappingActor))
+		{
+			Weapon->Equip();
+			OverlappingActor = nullptr;
+		}
+	}
 }
