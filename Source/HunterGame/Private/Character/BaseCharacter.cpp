@@ -69,6 +69,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ABaseCharacter::Jump);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABaseCharacter::Crouch);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,&ABaseCharacter::InteractButtonPressed);
+		EnhancedInputComponent->BindAction(ToggleCombatAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleCombatButtonPressed);
 	}
 }
 
@@ -114,6 +115,27 @@ void ABaseCharacter::Crouch()
 }
 
 void ABaseCharacter::InteractButtonPressed()
+{
+	if (!InteractionComponent) return;
+
+	if (HasAuthority())
+	{
+		InteractionComponent->Interact();
+	}
+	else
+	{
+		ServerInteractButtonPressed();
+	}
+}
+
+void ABaseCharacter::ToggleCombatButtonPressed()
+{
+	// TODO: Shift this functionality to a UI Option like in PUBG
+
+	// Temporary Implementation:
+}
+
+void ABaseCharacter::ServerInteractButtonPressed_Implementation()
 {
 	if (!InteractionComponent) return;
 	InteractionComponent->Interact();
