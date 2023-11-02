@@ -11,6 +11,7 @@
 #include "Component/InteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapon/Weapon.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -131,15 +132,17 @@ void ABaseCharacter::InteractButtonPressed()
 	}
 }
 
+void ABaseCharacter::ServerInteractButtonPressed_Implementation()
+{
+	if (!InteractionComponent) return;
+	InteractionComponent->Interact();
+}
+
 void ABaseCharacter::ToggleCombatButtonPressed()
 {
 	// TODO: Shift this functionality to a UI Option like in PUBG
 
 	// Temporary Implementation:
-}
-
-void ABaseCharacter::ServerInteractButtonPressed_Implementation()
-{
-	if (!InteractionComponent) return;
-	InteractionComponent->Interact();
+	if (!CombatComponent) return;
+	CombatComponent->ToggleCombat();
 }
