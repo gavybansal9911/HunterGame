@@ -8,6 +8,7 @@
 #include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
+class UCombatComponent;
 class UInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -28,6 +29,9 @@ public:
 	/** Components **/
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UInteractionComponent> InteractionComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UCombatComponent> CombatComponent;
 	/** Components **/
 	
 protected:

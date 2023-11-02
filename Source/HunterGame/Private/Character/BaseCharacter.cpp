@@ -7,6 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputAction.h"
 #include "Camera/CameraComponent.h"
+#include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -31,6 +32,7 @@ ABaseCharacter::ABaseCharacter()
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -55,7 +57,8 @@ void ABaseCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	InteractionComponent->HunterCharacter = this;
+	if (InteractionComponent) {InteractionComponent->HunterCharacter = this;}
+	if(CombatComponent) {CombatComponent->HunterCharacter = this;}
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
