@@ -66,18 +66,12 @@ void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
 
 void AWeapon::Equip(const ABaseCharacter* HunterCharacter)
 {
-	if (WeaponState == EWeaponState::EWS_Attached) return;
-	
-	if (WeaponState == EWeaponState::EWS_Unattached)
-	{
-		if (AreaSphere->GetGenerateOverlapEvents()) {AreaSphere->SetGenerateOverlapEvents(false);}
-		if (AttachmentStatus == EAttachmentStatus::EAS_Max)
-		{
-			AttachToActor(HunterCharacter, InHandAttachSocketName);
-			WeaponState = EWeaponState::EWS_Attached;
-			AttachmentStatus = EAttachmentStatus::EAS_InHand;
-		}
-	}
+	if (WeaponState != EWeaponState::EWS_Unattached) return;
+
+	if (AreaSphere->GetGenerateOverlapEvents()) {AreaSphere->SetGenerateOverlapEvents(false);}
+	AttachToActor(HunterCharacter, InHandAttachSocketName);
+	WeaponState = EWeaponState::EWS_Attached;
+	AttachmentStatus = EAttachmentStatus::EAS_InHand;
 }
 
 void AWeapon::AttachToActor(const ACharacter* InParent, FName SocketName)

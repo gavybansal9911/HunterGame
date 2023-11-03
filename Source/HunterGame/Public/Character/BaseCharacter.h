@@ -43,7 +43,8 @@ protected:
 	virtual void Jump() override;
 	void Crouch();
 	void InteractButtonPressed();
-	void ToggleCombatButtonPressed();
+	void AimButtonPressed();
+	void AimButtonReleased();
 	/** Input CallBacks **/
 
 	/** Input CallBacks RPCs **/
@@ -71,7 +72,7 @@ protected:
 	TObjectPtr<UInputAction> InteractAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	TObjectPtr<UInputAction> ToggleCombatAction;
+	TObjectPtr<UInputAction> AimAction;
 	/** Input **/
 
 private:
