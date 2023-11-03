@@ -3,6 +3,7 @@
 
 #include "Weapon/Weapon.h"
 #include "Character/BaseCharacter.h"
+#include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Components/SphereComponent.h"
 
@@ -72,6 +73,7 @@ void AWeapon::Equip(const ABaseCharacter* HunterCharacter)
 	AttachToActor(HunterCharacter, InHandAttachSocketName);
 	WeaponState = EWeaponState::EWS_Attached;
 	AttachmentStatus = EAttachmentStatus::EAS_InHand;
+	if (HunterCharacter->CombatComponent) {HunterCharacter->CombatComponent->SetWeaponInHand(this);}
 }
 
 void AWeapon::AttachToActor(const ACharacter* InParent, FName SocketName)

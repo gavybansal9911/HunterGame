@@ -88,4 +88,7 @@ private:
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 	EActionState ActionState = EActionState::EAS_Idle;
 	/** Character States **/
+
+public:
+	FORCEINLINE bool IsAiming() const;
 };

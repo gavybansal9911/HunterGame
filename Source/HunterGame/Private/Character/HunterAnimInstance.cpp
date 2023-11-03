@@ -3,8 +3,10 @@
 
 #include "Character/HunterAnimInstance.h"
 #include "Character/BaseCharacter.h"
+#include "Component/CombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Weapon/Weapon.h"
 
 void UHunterAnimInstance::NativeInitializeAnimation()
 {
@@ -22,7 +24,7 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Speed = HunterCharacter->GetCharacterMovement()->Velocity.Size();
 		bIsFalling = HunterCharacter->GetCharacterMovement()->IsFalling();
 		bIsCrouched = HunterCharacter->bIsCrouched;
-
+		
 		/** Leaning **/
 		CharacterRotationLastFrame = CharacterRotationThisFrame;
 		CharacterRotationThisFrame = HunterCharacter->GetActorRotation();
@@ -31,5 +33,10 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		const float Interp = FMath::FInterpTo(Lean, Target, DeltaSeconds, 6.f);
 		Lean = FMath::Clamp(Interp, -90.f, 90.f);
 		/** Leaning **/
+
+		if (HunterCharacter->CombatComponent) {EquippedWeapon = HunterCharacter->CombatComponent->GetWeaponInHand();}
+		if (EquippedWeapon) {bIsEquippedWeapon = true;} else {bIsEquippedWeapon = false;}
+		if (EquippedWeapon) {EquippedWeaponName = EquippedWeapon->GetWeaponName();} else {EquippedWeaponName = EWeaponName::EWN_Max;}
+		bIsAiming = HunterCharacter->IsAiming();
 	}
 }

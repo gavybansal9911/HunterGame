@@ -56,8 +56,12 @@ private:
 	/** Attachment Properties **/
 
 	/** Weapon Properties && Status **/
+	EWeaponName WeaponName = EWeaponName::EWN_Rifle;
 	EWeaponClass WeaponClass = EWeaponClass::EWC_Max;
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
-	/** Weapon Status **/
+	/** Weapon Properties && Status **/
+
+public:
+	FORCEINLINE EWeaponName GetWeaponName() const {return WeaponName;}
 };

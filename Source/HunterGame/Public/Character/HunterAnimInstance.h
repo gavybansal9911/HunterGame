@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Weapon/WeaponTypes.h"
 #include "HunterAnimInstance.generated.h"
+
+class AWeapon;
 
 class ABaseCharacter;
 /**
@@ -31,11 +34,23 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsCrouched;
-
+	
 	/** Leaning **/
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotationThisFrame;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Lean;
 	/** Leaning **/
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<AWeapon> EquippedWeapon;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool bIsEquippedWeapon;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	EWeaponName EquippedWeaponName;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool bIsAiming;
 };

@@ -39,7 +39,12 @@ private:
 	UPROPERTY()
 	AWeapon* SecondaryWeapon;
 	/** Character Owned Weapon Reference **/
-	
+
+	/** State Reference **/
+	bool bIsAiming;
+	/** State Reference **/
+
 public:
-	FORCEINLINE bool IsCombatEnabled() const {return true;}
+	FORCEINLINE AWeapon* GetWeaponInHand() const {return WeaponInHand;}
+	FORCEINLINE void SetWeaponInHand(AWeapon* InWeapon) {WeaponInHand = InWeapon;}
 };

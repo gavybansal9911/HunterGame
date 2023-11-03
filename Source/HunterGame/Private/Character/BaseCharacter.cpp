@@ -72,6 +72,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ABaseCharacter::Jump);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABaseCharacter::Crouch);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,&ABaseCharacter::InteractButtonPressed);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &ABaseCharacter::AimButtonPressed);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &ABaseCharacter::AimButtonReleased);
 	}
 }
 
@@ -135,3 +137,22 @@ void ABaseCharacter::ServerInteractButtonPressed_Implementation()
 	if (!InteractionComponent) return;
 	InteractionComponent->Interact();
 }
+
+void ABaseCharacter::AimButtonPressed()
+{
+	if (!CombatComponent) return;
+	CombatComponent->bIsAiming = true;
+}
+
+void ABaseCharacter::AimButtonReleased()
+{
+	if (!CombatComponent) return;
+	CombatComponent->bIsAiming = false;
+}
+
+/** Getter / Setter **/
+bool ABaseCharacter::IsAiming() const
+{
+	return (CombatComponent && CombatComponent->bIsAiming);
+}
+/** Getter / Setter **/
