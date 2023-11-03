@@ -34,8 +34,8 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Lean = FMath::Clamp(Interp, -90.f, 90.f);
 		/** Leaning **/
 
-		if (HunterCharacter->CombatComponent) {EquippedWeapon = HunterCharacter->CombatComponent->GetWeaponInHand();}
-		if (EquippedWeapon) {bIsEquippedWeapon = true;} else {bIsEquippedWeapon = false;}
+		if (HunterCharacter->Combat) {EquippedWeapon = HunterCharacter->Combat->GetWeaponInHand();}
+		bIsCombatEnabled = HunterCharacter->IsCombatEnabled();
 		if (EquippedWeapon) {EquippedWeaponName = EquippedWeapon->GetWeaponName();} else {EquippedWeaponName = EWeaponName::EWN_Max;}
 		bIsAiming = HunterCharacter->IsAiming();
 	}

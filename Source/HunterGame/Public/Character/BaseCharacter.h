@@ -31,7 +31,7 @@ public:
 	TObjectPtr<UInteractionComponent> InteractionComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	TObjectPtr<UCombatComponent> CombatComponent;
+	TObjectPtr<UCombatComponent> Combat;
 	/** Components **/
 	
 protected:
@@ -91,4 +91,5 @@ private:
 
 public:
 	FORCEINLINE bool IsAiming() const;
+	FORCEINLINE bool IsCombatEnabled() const;
 };

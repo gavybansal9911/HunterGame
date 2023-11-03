@@ -2,6 +2,7 @@
 
 
 #include "Component/CombatComponent.h"
+#include "Net/UnrealNetwork.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -9,6 +10,13 @@ UCombatComponent::UCombatComponent()
 	SetIsReplicated(true);
 }
 
+void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UCombatComponent, bIsAiming);
+	DOREPLIFETIME(UCombatComponent, WeaponInHand);
+}
 
 void UCombatComponent::BeginPlay()
 {

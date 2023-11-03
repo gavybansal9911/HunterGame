@@ -46,7 +46,7 @@ protected:
 	TObjectPtr<AWeapon> EquippedWeapon;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	bool bIsEquippedWeapon;
+	bool bIsCombatEnabled;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	EWeaponName EquippedWeaponName;

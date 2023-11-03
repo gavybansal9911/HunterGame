@@ -73,7 +73,7 @@ void AWeapon::Equip(const ABaseCharacter* HunterCharacter)
 	AttachToActor(HunterCharacter, InHandAttachSocketName);
 	WeaponState = EWeaponState::EWS_Attached;
 	AttachmentStatus = EAttachmentStatus::EAS_InHand;
-	if (HunterCharacter->CombatComponent) {HunterCharacter->CombatComponent->SetWeaponInHand(this);}
+	if (HunterCharacter->Combat) {HunterCharacter->Combat->SetWeaponInHand(this);}
 }
 
 void AWeapon::AttachToActor(const ACharacter* InParent, FName SocketName)

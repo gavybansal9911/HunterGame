@@ -18,6 +18,7 @@ class HUNTERGAME_API UCombatComponent : public UActorComponent
 public:
 	friend ABaseCharacter;
 	UCombatComponent();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	/** Player Reference **/
@@ -30,7 +31,7 @@ protected:
 
 private:
 	/** Character Owned Weapon Reference **/
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	AWeapon* WeaponInHand;
 
 	UPROPERTY()
@@ -41,10 +42,12 @@ private:
 	/** Character Owned Weapon Reference **/
 
 	/** State Reference **/
+	UPROPERTY(Replicated)
 	bool bIsAiming;
 	/** State Reference **/
 
 public:
+	FORCEINLINE bool IsCombatEnabled() const {if(WeaponInHand) {return true;} {return false;}}
 	FORCEINLINE AWeapon* GetWeaponInHand() const {return WeaponInHand;}
 	FORCEINLINE void SetWeaponInHand(AWeapon* InWeapon) {WeaponInHand = InWeapon;}
 };
