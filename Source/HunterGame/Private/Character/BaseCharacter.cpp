@@ -32,7 +32,7 @@ ABaseCharacter::ABaseCharacter()
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
-	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
+	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -51,6 +51,15 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (Combat)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Green, FString("Valid"));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Red, FString("Not Valid"));
+	}
 }
 
 void ABaseCharacter::PostInitializeComponents()
@@ -58,7 +67,7 @@ void ABaseCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	if (InteractionComponent) {InteractionComponent->HunterCharacter = this;}
-	if(CombatComponent) {CombatComponent->HunterCharacter = this;}
+	if(Combat) {Combat->HunterCharacter = this;}
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -140,19 +149,29 @@ void ABaseCharacter::ServerInteractButtonPressed_Implementation()
 
 void ABaseCharacter::AimButtonPressed()
 {
-	if (!CombatComponent) return;
-	CombatComponent->bIsAiming = true;
+	if (!Combat) return;
+	Combat->bIsAiming = true;
 }
 
 void ABaseCharacter::AimButtonReleased()
 {
-	if (!CombatComponent) return;
-	CombatComponent->bIsAiming = false;
+	if (!Combat) return;
+	Combat->bIsAiming = false;
 }
 
 /** Getter / Setter **/
 bool ABaseCharacter::IsAiming() const
 {
-	return (CombatComponent && CombatComponent->bIsAiming);
+	return (Combat && Combat->bIsAiming);
+}
+
+bool ABaseCharacter::IsCombatEnabled() const
+{
+	return Combat && Combat->GetWeaponInHand();
+}
+
+AWeapon* ABaseCharacter::GetInHandWeapon() const
+{
+	return Combat->GetWeaponInHand();
 }
 /** Getter / Setter **/

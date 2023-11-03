@@ -18,6 +18,7 @@ class HUNTERGAME_API UCombatComponent : public UActorComponent
 public:
 	friend ABaseCharacter;
 	UCombatComponent();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	/** Player Reference **/
@@ -41,6 +42,7 @@ private:
 	/** Character Owned Weapon Reference **/
 
 	/** State Reference **/
+	UPROPERTY(Replicated)
 	bool bIsAiming;
 	/** State Reference **/
 
