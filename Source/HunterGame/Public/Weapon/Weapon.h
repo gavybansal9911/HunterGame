@@ -54,14 +54,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Attachment")
 	FName InHandAttachSocketName;
 	/** Attachment Properties **/
-	
+
 	/** Weapon Properties && Status **/
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	EWeaponClass WeaponClass = EWeaponClass::EWC_Max;
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Status **/
-
-public:
-	FORCEINLINE FName GetInHandAttachSocketName() const {return InHandAttachSocketName;}
-	FORCEINLINE FName GetOutHandAttachSocketName() const {return OutHandAttachSocketName;}
 };

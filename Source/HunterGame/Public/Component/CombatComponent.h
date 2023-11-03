@@ -25,10 +25,6 @@ public:
 	ABaseCharacter* HunterCharacter;
 	/** Player Reference **/
 
-	/** Combat **/
-	void ToggleCombat() const;
-	/** Combat **/
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -45,7 +41,5 @@ private:
 	/** Character Owned Weapon Reference **/
 	
 public:
-	FORCEINLINE AWeapon* GetWeaponInHand() const {return WeaponInHand;}
-	FORCEINLINE void SetWeaponInHand(AWeapon* InWeapon) {WeaponInHand = InWeapon;}
-	FORCEINLINE bool IsCombatEnabled() const {if (WeaponInHand) {return true;} {return false;}}
+	FORCEINLINE bool IsCombatEnabled() const {return true;}
 };

@@ -3,7 +3,6 @@
 
 #include "Weapon/Weapon.h"
 #include "Character/BaseCharacter.h"
-#include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Components/SphereComponent.h"
 
@@ -15,7 +14,6 @@ AWeapon::AWeapon()
 	
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weaponmesh"));
 	SetRootComponent(WeaponMesh);
-	WeaponMesh->SetSimulatePhysics(true);
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	WeaponMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	WeaponMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECR_Overlap);
@@ -72,14 +70,12 @@ void AWeapon::Equip(const ABaseCharacter* HunterCharacter)
 	
 	if (WeaponState == EWeaponState::EWS_Unattached)
 	{
-		WeaponMesh->SetSimulatePhysics(false);
 		if (AreaSphere->GetGenerateOverlapEvents()) {AreaSphere->SetGenerateOverlapEvents(false);}
 		if (AttachmentStatus == EAttachmentStatus::EAS_Max)
 		{
 			AttachToActor(HunterCharacter, InHandAttachSocketName);
 			WeaponState = EWeaponState::EWS_Attached;
 			AttachmentStatus = EAttachmentStatus::EAS_InHand;
-			if (HunterCharacter->CombatComponent) {HunterCharacter->CombatComponent->SetWeaponInHand(this);}
 		}
 	}
 }
