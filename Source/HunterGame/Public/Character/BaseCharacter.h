@@ -14,7 +14,6 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
-class AWeapon;
 
 UCLASS()
 class HUNTERGAME_API ABaseCharacter : public ACharacter
@@ -32,7 +31,7 @@ public:
 	TObjectPtr<UInteractionComponent> InteractionComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	TObjectPtr<UCombatComponent> Combat;
+	TObjectPtr<UCombatComponent> CombatComponent;
 	/** Components **/
 	
 protected:
@@ -92,6 +91,4 @@ private:
 
 public:
 	FORCEINLINE bool IsAiming() const;
-	FORCEINLINE bool IsCombatEnabled() const;
-	FORCEINLINE AWeapon* GetInHandWeapon() const;
 };
