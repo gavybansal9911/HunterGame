@@ -24,10 +24,13 @@ public:
 	virtual void InteractWith(ABaseCharacter* HunterCharacter) override;
 	/** Interface **/
 
-	/** Interaction **/
-	void Equip(const ABaseCharacter* HunterCharacter);
-	void AttachToActor(const ACharacter* InParent, FName SocketName);
-	/** Interaction **/
+	/** Components **/
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<USphereComponent> AreaSphere;
+	/** Components **/
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,14 +41,6 @@ protected:
 	UFUNCTION()
 	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	/** Overlap Triggers **/
-	
-	/** Components **/
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	TObjectPtr<USphereComponent> AreaSphere;
-	/** Components **/
 
 private:
 	/** Attachment Properties **/
@@ -63,5 +58,12 @@ private:
 	/** Weapon Properties && Status **/
 
 public:
+	FORCEINLINE FName GetInHandAttachSocketName() const {return InHandAttachSocketName;}
+	FORCEINLINE FName GetOutHandAttachSocketName() const {return OutHandAttachSocketName;}
+	FORCEINLINE EWeaponState GetWeaponState() const {return WeaponState;}
+	FORCEINLINE EAttachmentStatus GetWeaponAttachmentStatus() const {return AttachmentStatus;}
 	FORCEINLINE EWeaponName GetWeaponName() const {return WeaponName;}
+
+	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}
+	FORCEINLINE void SetWeaponAttachmentStatus(const EAttachmentStatus NewWeaponAttachmentStatus) {AttachmentStatus = NewWeaponAttachmentStatus;}
 };

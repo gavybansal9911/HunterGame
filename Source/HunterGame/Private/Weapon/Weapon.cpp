@@ -6,7 +6,6 @@
 #include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Components/SphereComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
 
 AWeapon::AWeapon()
 {
@@ -63,25 +62,6 @@ FString AWeapon::LookAt()
 
 void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
 {
-	Equip(HunterCharacter);
-}
-
-// TODO: Move Equip and Attach to Actor Functions to CombatComponent or InteractionComponent
-void AWeapon::Equip(const ABaseCharacter* HunterCharacter)
-{
-	if (WeaponState != EWeaponState::EWS_Unattached) return;
-
-	if (AreaSphere->GetGenerateOverlapEvents()) {AreaSphere->SetGenerateOverlapEvents(false);}
-	AttachToActor(HunterCharacter, InHandAttachSocketName);
-	WeaponState = EWeaponState::EWS_Attached;
-	AttachmentStatus = EAttachmentStatus::EAS_InHand;
-	if (HunterCharacter->Combat) {HunterCharacter->Combat->SetWeaponInHand(this); HunterCharacter->Combat->SetIsCombatEnabled(true);}
-	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
-	//HunterCharacter->bUseControllerRotationYaw = true;
-}
-
-void AWeapon::AttachToActor(const ACharacter* InParent, FName SocketName)
-{
-	const FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
-	AttachToComponent(InParent->GetMesh(), AttachmentTransformRules, SocketName);
+	if (!HunterCharacter->Combat) return;;
+	HunterCharacter->Combat->EquipWeapon(this);
 }

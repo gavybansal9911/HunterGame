@@ -26,6 +26,11 @@ public:
 	ABaseCharacter* HunterCharacter;
 	/** Player Reference **/
 
+	/** Combat **/
+	void EquipWeapon(AWeapon* Weapon);
+	void AttachToActor(const ACharacter* InParent, AActor* ActorToAttach, const FName SocketName);
+	/** Combat **/
+
 protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bAiming);
