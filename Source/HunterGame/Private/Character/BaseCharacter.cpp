@@ -167,6 +167,6 @@ bool ABaseCharacter::IsAiming() const
 
 bool ABaseCharacter::IsCombatEnabled() const
 {
-	return Combat && Combat->IsCombatEnabled();
+	return Combat && Combat->bIsCombatEnabled;
 }
 /** Getter / Setter **/

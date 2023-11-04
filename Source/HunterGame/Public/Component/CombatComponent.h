@@ -47,11 +47,14 @@ private:
 
 	/** State Reference **/
 	UPROPERTY(Replicated)
+	bool bIsCombatEnabled;
+	
+	UPROPERTY(Replicated)
 	bool bIsAiming;
 	/** State Reference **/
 
 public:
-	FORCEINLINE bool IsCombatEnabled() const {if(WeaponInHand) {return true;} {return false;}}
+	FORCEINLINE void SetIsCombatEnabled(bool bCombatEnabled) {bIsCombatEnabled = bCombatEnabled;}
 	FORCEINLINE AWeapon* GetWeaponInHand() const {return WeaponInHand;}
 	FORCEINLINE void SetWeaponInHand(AWeapon* InWeapon) {WeaponInHand = InWeapon;}
 };
