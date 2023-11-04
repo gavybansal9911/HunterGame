@@ -79,7 +79,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void ABaseCharacter::Move(const FInputActionValue& Value)
 {
-	if (!Controller) return;
+	if (!Controller || GetCharacterMovement()->IsFalling()) return;
 
 	const FVector2d InputValue = Value.Get<FVector2d>();
 	const FRotator YawRotation = FRotator(0.f, GetControlRotation().Yaw, 0.f);
