@@ -28,10 +28,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void SetAiming(bool bAiming);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSetAiming(bool bAiming);
 
 private:
 	/** Character Owned Weapon Reference **/
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	AWeapon* WeaponInHand;
 
 	UPROPERTY()

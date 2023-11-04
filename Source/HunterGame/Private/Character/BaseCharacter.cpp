@@ -150,13 +150,13 @@ void ABaseCharacter::ServerInteractButtonPressed_Implementation()
 void ABaseCharacter::AimButtonPressed()
 {
 	if (!Combat) return;
-	Combat->bIsAiming = true;
+	Combat->SetAiming(true);
 }
 
 void ABaseCharacter::AimButtonReleased()
 {
 	if (!Combat) return;
-	Combat->bIsAiming = false;
+	Combat->SetAiming(false);
 }
 
 /** Getter / Setter **/

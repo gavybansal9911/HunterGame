@@ -2,6 +2,8 @@
 
 
 #include "Component/CombatComponent.h"
+
+#include "Character/BaseCharacter.h"
 #include "Net/UnrealNetwork.h"
 
 UCombatComponent::UCombatComponent()
@@ -15,7 +17,6 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(UCombatComponent, bIsAiming);
-	DOREPLIFETIME(UCombatComponent, WeaponInHand);
 }
 
 void UCombatComponent::BeginPlay()
@@ -26,4 +27,19 @@ void UCombatComponent::BeginPlay()
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UCombatComponent::SetAiming(bool bAiming)
+{
+	bIsAiming = bAiming;
+	if (!HunterCharacter->HasAuthority())
+	{
+		ServerSetAiming(bIsAiming);
+		bIsAiming = bAiming;
+	}
+}
+
+void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
+{
+	bIsAiming = bAiming;
 }
