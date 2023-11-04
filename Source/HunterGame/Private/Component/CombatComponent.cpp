@@ -2,8 +2,6 @@
 
 
 #include "Component/CombatComponent.h"
-
-#include "Character/BaseCharacter.h"
 #include "Net/UnrealNetwork.h"
 
 UCombatComponent::UCombatComponent()
@@ -32,11 +30,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UCombatComponent::SetAiming(bool bAiming)
 {
 	bIsAiming = bAiming;
-	if (!HunterCharacter->HasAuthority())
-	{
-		ServerSetAiming(bIsAiming);
-		bIsAiming = bAiming;
-	}
+	ServerSetAiming(bIsAiming);
 }
 
 void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
