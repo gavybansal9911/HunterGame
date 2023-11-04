@@ -47,6 +47,7 @@ protected:
 	/** Leaning **/
 
 	/** Strafing **/
+	FRotator DeltaRotation; // To Smooth strafing
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float YawOffset;
 	/** Strafing **/
