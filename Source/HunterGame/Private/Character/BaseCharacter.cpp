@@ -51,15 +51,6 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (Combat)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("CombatComponent is Valid"));
-	}
-	if (!Combat)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString("CombatComponent is Not Valid"));
-	}
 }
 
 void ABaseCharacter::PostInitializeComponents()
