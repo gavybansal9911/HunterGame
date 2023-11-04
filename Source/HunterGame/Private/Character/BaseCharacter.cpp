@@ -112,7 +112,7 @@ void ABaseCharacter::Jump()
 
 void ABaseCharacter::Crouch()
 {
-	if (!Controller) return;
+	if (!Controller || GetCharacterMovement()->IsFalling()) return;
 	
 	if (!bIsCrouched) {ACharacter::Crouch();}
 	if (bIsCrouched) {ACharacter::UnCrouch();}
