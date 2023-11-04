@@ -34,6 +34,15 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Lean = FMath::Clamp(Interp, -90.f, 90.f);
 		/** Leaning **/
 
+		/** Strafing **/
+		// AimRotation is Global (Points according the world direction axis)
+		const FRotator AimRotation = HunterCharacter->GetBaseAimRotation();
+
+		// Local to the player (This function returns a FRotator in the direction of FVector passed in as a argument, In this case the HunterCharacter velocity)
+		const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(HunterCharacter->GetVelocity());
+		YawOffset = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation).Yaw;
+		/** Strafing **/
+
 		if (HunterCharacter->Combat) {EquippedWeapon = HunterCharacter->Combat->GetWeaponInHand();}
 		bIsCombatEnabled = HunterCharacter->IsCombatEnabled();
 		if (EquippedWeapon) {EquippedWeaponName = EquippedWeapon->GetWeaponName();} else {EquippedWeaponName = EWeaponName::EWN_Max;}

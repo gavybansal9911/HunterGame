@@ -23,9 +23,12 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 protected:
+	/** Reference **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character")
 	TObjectPtr<ABaseCharacter> HunterCharacter;
+	/** Reference **/
 
+	/** Basic Movement **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Speed;
 	
@@ -34,6 +37,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsCrouched;
+	/** Basic Movement **/
 	
 	/** Leaning **/
 	FRotator CharacterRotationLastFrame;
@@ -41,7 +45,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Lean;
 	/** Leaning **/
-	
+
+	/** Strafing **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	float YawOffset;
+	/** Strafing **/
+
+	/** Combat **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<AWeapon> EquippedWeapon;
 	
@@ -53,4 +63,5 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool bIsAiming;
+	/** Combat **/
 };

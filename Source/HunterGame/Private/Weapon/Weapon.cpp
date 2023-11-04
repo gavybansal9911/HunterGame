@@ -6,6 +6,7 @@
 #include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AWeapon::AWeapon()
 {
@@ -65,6 +66,7 @@ void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
 	Equip(HunterCharacter);
 }
 
+// TODO: Move Equip and Attach to Actor Functions to CombatComponent or InteractionComponent
 void AWeapon::Equip(const ABaseCharacter* HunterCharacter)
 {
 	if (WeaponState != EWeaponState::EWS_Unattached) return;
@@ -74,6 +76,8 @@ void AWeapon::Equip(const ABaseCharacter* HunterCharacter)
 	WeaponState = EWeaponState::EWS_Attached;
 	AttachmentStatus = EAttachmentStatus::EAS_InHand;
 	if (HunterCharacter->Combat) {HunterCharacter->Combat->SetWeaponInHand(this); HunterCharacter->Combat->SetIsCombatEnabled(true);}
+	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+	//HunterCharacter->bUseControllerRotationYaw = true;
 }
 
 void AWeapon::AttachToActor(const ACharacter* InParent, FName SocketName)
