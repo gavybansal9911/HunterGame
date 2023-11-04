@@ -18,6 +18,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(UCombatComponent, WeaponInHand);
 	DOREPLIFETIME(UCombatComponent, bIsCombatEnabled);
 	DOREPLIFETIME(UCombatComponent, bIsAiming);
 }
@@ -63,3 +64,14 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
 {
 	bIsAiming = bAiming;
 }
+
+/** Rep Notifies **/
+void UCombatComponent::OnRep_EquippedWeapon()
+{
+	if (HunterCharacter && WeaponInHand)
+	{
+		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+		HunterCharacter->bUseControllerRotationYaw = true;
+	}
+}
+/** Rep Notifies **/

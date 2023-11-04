@@ -38,9 +38,14 @@ protected:
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bAiming);
 
+	/** Rep Notifies **/
+	UFUNCTION()
+	void OnRep_EquippedWeapon();
+	/** Rep Notifies **/
+
 private:
 	/** Character Owned Weapon Reference **/
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* WeaponInHand;
 
 	UPROPERTY()
