@@ -37,6 +37,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsCrouched;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	bool bIsAccelerating;
 	/** Basic Movement **/
 	
 	/** Leaning **/
