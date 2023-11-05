@@ -63,6 +63,13 @@ private:
 	bool bIsAiming;
 	/** State Reference **/
 
+	/** Speed **/
+	UPROPERTY(EditAnywhere, Category = "Movement Properties");
+	float BaseWalkSpeed{600.f};
+	UPROPERTY(EditAnywhere, Category = "Movement Properties");
+	float AimWalkSpeed{400.f};
+	/** Speed **/
+
 public:
 	FORCEINLINE void SetIsCombatEnabled(bool bCombatEnabled) {bIsCombatEnabled = bCombatEnabled;}
 	FORCEINLINE AWeapon* GetWeaponInHand() const {return WeaponInHand;}

@@ -26,6 +26,11 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (HunterCharacter)
+	{
+		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
+	}
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -57,12 +62,20 @@ void UCombatComponent::AttachToActor(const ACharacter* InParent, AActor* ActorTo
 void UCombatComponent::SetAiming(bool bAiming)
 {
 	bIsAiming = bAiming;
+	if (HunterCharacter)
+	{
+		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = bAiming ? AimWalkSpeed : BaseWalkSpeed;
+	}
 	ServerSetAiming(bIsAiming);
 }
 
 void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
 {
 	bIsAiming = bAiming;
+	if (HunterCharacter)
+	{
+		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = bAiming ? AimWalkSpeed : BaseWalkSpeed;
+	}
 }
 
 /** Rep Notifies **/
