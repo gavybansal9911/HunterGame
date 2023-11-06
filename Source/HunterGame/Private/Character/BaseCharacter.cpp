@@ -196,12 +196,19 @@ void ABaseCharacter::AimOffset(float DeltaTime)
 /** Combat **/
 
 /** Getter / Setter **/
-bool ABaseCharacter::IsAiming() const
+AWeapon* ABaseCharacter::GetEquippedWeapon() const
 {
-	return (Combat && Combat->bIsAiming);
+	if (!Combat) return nullptr;
+	return Combat->GetWeaponInHand();
 }
 
 bool ABaseCharacter::IsCombatEnabled() const
 {
 	return (Combat && Combat->bIsCombatEnabled);
 }
+
+bool ABaseCharacter::IsAiming() const
+{
+	return (Combat && Combat->bIsAiming);
+}
+/** Getter / Setter **/

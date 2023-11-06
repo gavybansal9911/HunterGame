@@ -3,7 +3,6 @@
 
 #include "Character/HunterAnimInstance.h"
 #include "Character/BaseCharacter.h"
-#include "Component/CombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Weapon/Weapon.h"
@@ -21,10 +20,12 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (HunterCharacter && HunterCharacter->GetCharacterMovement())
 	{
+		/** Basic Movement **/
 		Speed = HunterCharacter->GetCharacterMovement()->Velocity.Size();
 		bIsFalling = HunterCharacter->GetCharacterMovement()->IsFalling();
 		bIsCrouched = HunterCharacter->bIsCrouched;
 		bIsAccelerating = HunterCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
+		/** Basic Movement **/
 		
 		/** Leaning **/
 		CharacterRotationLastFrame = CharacterRotationThisFrame;
@@ -45,11 +46,31 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		YawOffset = DeltaRotation.Yaw;
 		/** Strafing **/
 
-		if (HunterCharacter->Combat) {EquippedWeapon = HunterCharacter->Combat->GetWeaponInHand();}
+		/** Combat **/
+		EquippedWeapon = HunterCharacter->GetEquippedWeapon();
 		bIsCombatEnabled = HunterCharacter->IsCombatEnabled();
-		if (EquippedWeapon) {EquippedWeaponName = EquippedWeapon->GetWeaponName();} else {EquippedWeaponName = EWeaponName::EWN_Max;}
 		bIsAiming = HunterCharacter->IsAiming();
 		AO_Yaw = HunterCharacter->GetAO_Yaw();       // Aim Yaw Offset
 		AO_Pitch = HunterCharacter->GetAO_Pitch();   // Aim Pitch Offset
+		/** Combat **/
+
+		/** Inverse Kinematics **/
+		if (bIsCombatEnabled && EquippedWeapon && EquippedWeapon->GetWeaponMesh() && HunterCharacter->GetMesh())
+		{
+			// Get the transform of the socket on the WeaponMesh named as LeftHandSocket (Socket Transform is adjusted in the Skeletal Mesh in the editor)
+			LeftHandTransform = EquippedWeapon->GetWeaponMesh()->GetSocketTransform(FName("LeftHandSocket"), ERelativeTransformSpace::RTS_World);
+
+			/** Input Parameters for converting LeftHandTransform from WorldSpace to BoneSpace **/
+			FVector OutPosition;   // Will be passed by reference.
+			FRotator OutRotation;   // Will be passed by reference.
+			/** Input Parameters for converting LeftHandTransform from WorldSpace to BoneSpace **/
+			// Transforming the LeftHandTransform from WorldSpace to BoneSpace.
+			// Here, "hand_r" is for a reference for the Transform. The LeftHandTransform will be relative to the Right Hand or "hand_r"
+			HunterCharacter->GetMesh()->TransformToBoneSpace(FName("hand_r"), LeftHandTransform.GetLocation(), FRotator::ZeroRotator, OutPosition, OutRotation);
+			// Now, after Transforming to BoneSpace, OutPosition and OutRotation have valid data because they were passed by reference.
+			LeftHandTransform.SetLocation(OutPosition);
+			LeftHandTransform.SetRotation(FQuat(OutRotation));
+		}
+		/** Inverse Kinematics **/
 	}
 }

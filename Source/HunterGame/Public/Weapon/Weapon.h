@@ -61,8 +61,7 @@ public:
 	FORCEINLINE FName GetInHandAttachSocketName() const {return InHandAttachSocketName;}
 	FORCEINLINE FName GetOutHandAttachSocketName() const {return OutHandAttachSocketName;}
 	FORCEINLINE EWeaponState GetWeaponState() const {return WeaponState;}
-	FORCEINLINE EAttachmentStatus GetWeaponAttachmentStatus() const {return AttachmentStatus;}
-	FORCEINLINE EWeaponName GetWeaponName() const {return WeaponName;}
+	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const {return WeaponMesh;}
 
 	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}
 	FORCEINLINE void SetWeaponAttachmentStatus(const EAttachmentStatus NewWeaponAttachmentStatus) {AttachmentStatus = NewWeaponAttachmentStatus;}

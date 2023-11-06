@@ -63,9 +63,6 @@ protected:
 	bool bIsCombatEnabled;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	EWeaponName EquippedWeaponName;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool bIsAiming;
 	/** Combat **/
 
@@ -76,4 +73,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Aiming")
 	float AO_Pitch;
 	/** Aim Offset **/
+
+	/** Forward and Backward Inverse Reaching Kinematics ('FABRIK') **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inverse Kinematics")
+	FTransform LeftHandTransform;
+	/** Forward and Backward Inverse Reaching Kinematics ('FABRIK') **/
 };

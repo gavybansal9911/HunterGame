@@ -8,6 +8,7 @@
 #include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
+class AWeapon;
 class UCombatComponent;
 class UInteractionComponent;
 class USpringArmComponent;
@@ -100,8 +101,9 @@ private:
 	/** Combat **/
 
 public:
-	FORCEINLINE bool IsAiming() const;
 	FORCEINLINE bool IsCombatEnabled() const;
+	FORCEINLINE AWeapon* GetEquippedWeapon() const;
+	FORCEINLINE bool IsAiming() const;
 	FORCEINLINE float GetAO_Yaw() const {return AO_Yaw;}
 	FORCEINLINE float GetAO_Pitch() const {return AO_Pitch;}
 };
