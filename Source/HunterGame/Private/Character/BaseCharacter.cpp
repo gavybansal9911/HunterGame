@@ -185,6 +185,13 @@ void ABaseCharacter::AimOffset(float DeltaTime)
 
 	// Aim Offset Pitch
 	AO_Pitch = GetBaseAimRotation().Pitch;
+	if (AO_Pitch > 90.f && !IsLocallyControlled())
+	{
+		// Map Pitch from [270, 360) to [-90, 0)
+		const FVector2d InRange(270.f, 360.f);
+		const FVector2d OutRange(-90.f, 0.f);
+		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, AO_Pitch);
+	}
 }
 /** Combat **/
 
