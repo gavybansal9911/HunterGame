@@ -47,6 +47,10 @@ protected:
 	void AimButtonReleased();
 	/** Input CallBacks **/
 
+	/** Combat **/
+	void AimOffset(float DeltaTime);
+	/** Combat **/
+
 	/** Input CallBacks RPCs **/
 	UFUNCTION(Server, Reliable)
 	void ServerInteractButtonPressed();
@@ -89,7 +93,15 @@ private:
 	EActionState ActionState = EActionState::EAS_Idle;
 	/** Character States **/
 
+	/** Combat **/
+	float AO_Yaw;
+	float AO_Pitch;
+	FRotator StartingAimRotation;
+	/** Combat **/
+
 public:
 	FORCEINLINE bool IsAiming() const;
 	FORCEINLINE bool IsCombatEnabled() const;
+	FORCEINLINE float GetAO_Yaw() const {return AO_Yaw;}
+	FORCEINLINE float GetAO_Pitch() const {return AO_Pitch;}
 };

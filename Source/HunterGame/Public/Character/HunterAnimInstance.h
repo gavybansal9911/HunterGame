@@ -68,4 +68,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool bIsAiming;
 	/** Combat **/
+
+	/** Aim Offset **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Aiming")
+	float AO_Yaw;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Aiming")
+	float AO_Pitch;
+	/** Aim Offset **/
 };

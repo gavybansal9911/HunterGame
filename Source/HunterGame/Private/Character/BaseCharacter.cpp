@@ -12,6 +12,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -19,6 +20,7 @@ ABaseCharacter::ABaseCharacter()
 	bReplicates = true;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetMesh());
@@ -54,6 +56,8 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	AimOffset(DeltaTime);
 }
 
 void ABaseCharacter::PostInitializeComponents()
@@ -153,6 +157,37 @@ void ABaseCharacter::AimButtonReleased()
 	Combat->SetAiming(false);
 }
 
+/** Combat **/
+void ABaseCharacter::AimOffset(float DeltaTime)
+{
+	if (Combat && Combat->GetWeaponInHand() == nullptr) return;;
+	
+	FVector Velocity = GetVelocity();
+	Velocity.Z = 0.f;
+	const float Speed = Velocity.Size();
+	const bool bIsInAir = GetCharacterMovement()->IsFalling();
+
+	// Aim Offset Yaw
+	if (Speed == 0.f && !bIsInAir)  // Standing still, not Jumping
+	{
+		const FRotator CurrentAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
+		const FRotator DeltaAimRotation = UKismetMathLibrary::NormalizedDeltaRotator(CurrentAimRotation, StartingAimRotation);
+		AO_Yaw = DeltaAimRotation.Yaw;
+		bUseControllerRotationYaw = false;
+	}
+	
+	if (Speed > 0.f || bIsInAir)   // Running or Jumping
+	{
+		StartingAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
+		AO_Yaw = 0.f;
+		bUseControllerRotationYaw = true;
+	}
+
+	// Aim Offset Pitch
+	AO_Pitch = GetBaseAimRotation().Pitch;
+}
+/** Combat **/
+
 /** Getter / Setter **/
 bool ABaseCharacter::IsAiming() const
 {
@@ -161,6 +196,5 @@ bool ABaseCharacter::IsAiming() const
 
 bool ABaseCharacter::IsCombatEnabled() const
 {
-	return Combat && Combat->bIsCombatEnabled;
+	return (Combat && Combat->bIsCombatEnabled);
 }
-/** Getter / Setter **/

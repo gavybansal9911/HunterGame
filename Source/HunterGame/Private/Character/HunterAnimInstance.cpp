@@ -49,5 +49,7 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsCombatEnabled = HunterCharacter->IsCombatEnabled();
 		if (EquippedWeapon) {EquippedWeaponName = EquippedWeapon->GetWeaponName();} else {EquippedWeaponName = EWeaponName::EWN_Max;}
 		bIsAiming = HunterCharacter->IsAiming();
+		AO_Yaw = HunterCharacter->GetAO_Yaw();       // Aim Yaw Offset
+		AO_Pitch = HunterCharacter->GetAO_Pitch();   // Aim Pitch Offset
 	}
 }
