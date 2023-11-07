@@ -47,9 +47,10 @@ protected:
 	void AimButtonPressed();
 	void AimButtonReleased();
 	/** Input CallBacks **/
-
+	
 	/** Combat **/
 	void AimOffset(float DeltaTime);
+	void TurnInPlace(float DeltaTime);
 	/** Combat **/
 
 	/** Input CallBacks RPCs **/
@@ -92,6 +93,7 @@ private:
 	/** Character States **/
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 	EActionState ActionState = EActionState::EAS_Idle;
+	ETurningInPlace TurningInPlace = ETurningInPlace::ETIP_Max;
 	/** Character States **/
 
 	/** Combat **/
@@ -106,4 +108,5 @@ public:
 	FORCEINLINE bool IsAiming() const;
 	FORCEINLINE float GetAO_Yaw() const {return AO_Yaw;}
 	FORCEINLINE float GetAO_Pitch() const {return AO_Pitch;}
+	FORCEINLINE ETurningInPlace GetTurningInPlace() const {return TurningInPlace;}
 };

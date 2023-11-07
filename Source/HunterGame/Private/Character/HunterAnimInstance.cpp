@@ -72,5 +72,9 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			LeftHandTransform.SetRotation(FQuat(OutRotation));
 		}
 		/** Inverse Kinematics **/
+
+		/** Turning in Place **/
+		TurningInPlace = HunterCharacter->GetTurningInPlace();
+		/** Turning in Place **/
 	}
 }

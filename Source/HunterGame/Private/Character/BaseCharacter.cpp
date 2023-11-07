@@ -174,6 +174,7 @@ void ABaseCharacter::AimOffset(float DeltaTime)
 		const FRotator DeltaAimRotation = UKismetMathLibrary::NormalizedDeltaRotator(CurrentAimRotation, StartingAimRotation);
 		AO_Yaw = DeltaAimRotation.Yaw;
 		bUseControllerRotationYaw = false;
+		TurnInPlace(DeltaTime);     // Checking turn in place if standing still and not jumping
 	}
 	
 	if (Speed > 0.f || bIsInAir)   // Running or Jumping
@@ -181,6 +182,7 @@ void ABaseCharacter::AimOffset(float DeltaTime)
 		StartingAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
 		AO_Yaw = 0.f;
 		bUseControllerRotationYaw = true;
+		TurningInPlace = ETurningInPlace::ETIP_NotTurning;  // Should not turn in place if running or jumping.
 	}
 
 	// Aim Offset Pitch
@@ -191,6 +193,19 @@ void ABaseCharacter::AimOffset(float DeltaTime)
 		const FVector2d InRange(270.f, 360.f);
 		const FVector2d OutRange(-90.f, 0.f);
 		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, AO_Pitch);
+	}
+}
+
+void ABaseCharacter::TurnInPlace(float DeltaTime)
+{
+	// Turn in place based on the aim offset yaw value.
+	if (AO_Yaw > 90.f)
+	{
+		TurningInPlace = ETurningInPlace::ETIP_Right;
+	}
+	else if (AO_Yaw < -90.f)
+	{
+		TurningInPlace = ETurningInPlace::ETIP_Left;
 	}
 }
 /** Combat **/

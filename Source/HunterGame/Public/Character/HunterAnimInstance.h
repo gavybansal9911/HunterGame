@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "Weapon/WeaponTypes.h"
+#include "Character/CharacterTypes.h"
 #include "HunterAnimInstance.generated.h"
 
 class AWeapon;
@@ -46,7 +46,7 @@ protected:
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotationThisFrame;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	float Lean;
+	float Lean = 0.f;
 	/** Leaning **/
 
 	/** Strafing **/
@@ -78,4 +78,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inverse Kinematics")
 	FTransform LeftHandTransform;
 	/** Forward and Backward Inverse Reaching Kinematics ('FABRIK') **/
+
+	/** Turning in Place **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	ETurningInPlace TurningInPlace;
+	/** Turning in Place **/
 };
