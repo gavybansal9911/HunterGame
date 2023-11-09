@@ -42,7 +42,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	virtual void Jump() override;
-	void Crouch();
+	void CrouchButtonPressed();
 	void InteractButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
@@ -104,9 +104,9 @@ private:
 	/** Combat **/
 
 public:
-	FORCEINLINE bool IsCombatEnabled() const;
-	FORCEINLINE AWeapon* GetEquippedWeapon() const;
-	FORCEINLINE bool IsAiming() const;
+	bool IsCombatEnabled() const;
+	AWeapon* GetEquippedWeapon() const;
+	bool IsAiming() const;
 	FORCEINLINE float GetAO_Yaw() const {return AO_Yaw;}
 	FORCEINLINE float GetAO_Pitch() const {return AO_Pitch;}
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const {return TurningInPlace;}

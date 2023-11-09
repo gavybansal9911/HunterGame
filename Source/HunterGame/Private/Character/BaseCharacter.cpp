@@ -79,7 +79,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this, &ABaseCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ABaseCharacter::Jump);
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABaseCharacter::Crouch);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABaseCharacter::CrouchButtonPressed);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,&ABaseCharacter::InteractButtonPressed);
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &ABaseCharacter::AimButtonPressed);
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &ABaseCharacter::AimButtonReleased);
@@ -119,7 +119,7 @@ void ABaseCharacter::Jump()
 	ACharacter::Jump();
 }
 
-void ABaseCharacter::Crouch()
+void ABaseCharacter::CrouchButtonPressed()
 {
 	if (!Controller || GetCharacterMovement()->IsFalling()) return;
 	
@@ -235,11 +235,11 @@ AWeapon* ABaseCharacter::GetEquippedWeapon() const
 
 bool ABaseCharacter::IsCombatEnabled() const
 {
-	return (Combat && Combat->bIsCombatEnabled);
+	return Combat && Combat->bIsCombatEnabled;
 }
 
 bool ABaseCharacter::IsAiming() const
 {
-	return (Combat && Combat->bIsAiming);
+	return Combat && Combat->bIsAiming;
 }
 /** Getter / Setter **/

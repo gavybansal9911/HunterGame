@@ -7,7 +7,7 @@
 UInteractionComponent::UInteractionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 }
 
 void UInteractionComponent::BeginPlay()
