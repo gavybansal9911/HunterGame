@@ -70,6 +70,6 @@ void AWeapon::Shoot() const
 {
 	if (FireAnimationAsset)
 	{
-		GetWeaponMesh()->PlayAnimation(FireAnimationAsset, false);
+		GetWeaponMesh()->PlayAnimation(FireAnimationAsset, false);   // Play Weapon Animation
 	}
 }

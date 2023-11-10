@@ -64,7 +64,7 @@ private:
 
 	/** Animation **/
 	UPROPERTY(EditAnywhere, Category = "Animation")
-	UAnimationAsset* FireAnimationAsset;
+	UAnimationAsset* FireAnimationAsset;    // Weapon Animation Sequence reference
 	/** Animation **/
 
 public:

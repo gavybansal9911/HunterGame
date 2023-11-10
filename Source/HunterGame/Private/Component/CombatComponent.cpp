@@ -81,12 +81,27 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
 void UCombatComponent::ShootButtonPressed(bool bPressed)
 {
 	bShootButtonPressed = bPressed;
+	
+	if (bShootButtonPressed)
+	{
+		if (HunterCharacter->HasAuthority()) {MulticastShoot_Implementation();}
+		else {ServerShoot_Implementation();}
+	}
+}
 
+void UCombatComponent::ServerShoot_Implementation()
+{
+	// Calling Multicast server RPC from a server RPC so that the Multicast RPC runs on server and all clients.
+	MulticastShoot_Implementation();   // If a Multicast RPC is called from a client then it runs only on the invoking client.
+}
+
+void UCombatComponent::MulticastShoot_Implementation()
+{
 	if (WeaponInHand == nullptr) return;;
 	if (HunterCharacter && bShootButtonPressed)
 	{
 		HunterCharacter->PlayShootMontage(bIsAiming);
-		WeaponInHand->Shoot();
+		WeaponInHand->Shoot();                        // Shoot
 	}
 }
 

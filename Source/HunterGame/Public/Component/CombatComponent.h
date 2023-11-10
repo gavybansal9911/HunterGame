@@ -33,13 +33,22 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	/** Combat **/
+	/** Aiming **/
 	void SetAiming(bool bAiming);
+
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bAiming);
+	/** Aiming **/
 
+	/** Shooting **/
 	void ShootButtonPressed(bool bPressed);
-	/** Combat **/
+	
+	UFUNCTION(Server, Reliable)
+	void ServerShoot();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastShoot();
+	/** Shooting **/
 
 	
 	/** Rep Notifies **/
