@@ -65,3 +65,11 @@ void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
 	if (!HunterCharacter->Combat) return;;
 	HunterCharacter->Combat->EquipWeapon(this);
 }
+
+void AWeapon::Shoot() const
+{
+	if (FireAnimationAsset)
+	{
+		GetWeaponMesh()->PlayAnimation(FireAnimationAsset, false);
+	}
+}

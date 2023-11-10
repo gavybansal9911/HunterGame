@@ -9,6 +9,7 @@
 #include "Weapon.generated.h"
 
 class USphereComponent;
+class UAnimationAsset;
 
 UCLASS()
 class HUNTERGAME_API AWeapon : public AActor, public IInteractInterface
@@ -31,6 +32,10 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<USphereComponent> AreaSphere;
 	/** Components **/
+
+	/** Shooting **/
+	void Shoot() const;
+	/** Shooting **/
 
 protected:
 	virtual void BeginPlay() override;
@@ -56,6 +61,11 @@ private:
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Properties && Status **/
+
+	/** Animation **/
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimationAsset* FireAnimationAsset;
+	/** Animation **/
 
 public:
 	FORCEINLINE FName GetInHandAttachSocketName() const {return InHandAttachSocketName;}

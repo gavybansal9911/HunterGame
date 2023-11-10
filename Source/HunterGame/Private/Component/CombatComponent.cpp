@@ -81,9 +81,12 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
 void UCombatComponent::ShootButtonPressed(bool bPressed)
 {
 	bShootButtonPressed = bPressed;
+
+	if (WeaponInHand == nullptr) return;;
 	if (HunterCharacter && bShootButtonPressed)
 	{
 		HunterCharacter->PlayShootMontage(bIsAiming);
+		WeaponInHand->Shoot();
 	}
 }
 
