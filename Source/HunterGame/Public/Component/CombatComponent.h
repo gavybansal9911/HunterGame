@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
-
 class AWeapon;
 class ABaseCharacter;
 

@@ -8,7 +8,6 @@
 #include "HunterAnimInstance.generated.h"
 
 class AWeapon;
-
 class ABaseCharacter;
 /**
  * 
