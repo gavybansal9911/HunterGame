@@ -78,6 +78,15 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
 	}
 }
 
+void UCombatComponent::ShootButtonPressed(bool bPressed)
+{
+	bShootButtonPressed = bPressed;
+	if (HunterCharacter && bShootButtonPressed)
+	{
+		HunterCharacter->PlayShootMontage(bIsAiming);
+	}
+}
+
 /** Rep Notifies **/
 void UCombatComponent::OnRep_EquippedWeapon()
 {

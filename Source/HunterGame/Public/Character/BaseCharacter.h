@@ -15,6 +15,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UAnimMontage;
 
 UCLASS()
 class HUNTERGAME_API ABaseCharacter : public ACharacter
@@ -34,6 +35,10 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UCombatComponent> Combat;
 	/** Components **/
+
+	/** Animation **/
+	void PlayShootMontage(bool bAiming);
+	/** Animation **/
 	
 protected:
 	virtual void BeginPlay() override;
@@ -46,6 +51,8 @@ protected:
 	void InteractButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
+	void ShootButtonPressed();
+	void ShootButtonReleased();
 	/** Input CallBacks **/
 	
 	/** Combat **/
@@ -78,7 +85,10 @@ protected:
 	TObjectPtr<UInputAction> InteractAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	TObjectPtr<UInputAction> AimAction;
+	TObjectPtr<UInputAction> AimAction;	
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ShootAction;
 	/** Input **/
 
 private:
@@ -94,7 +104,7 @@ private:
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 	EActionState ActionState = EActionState::EAS_Idle;
 	ETurningInPlace TurningInPlace = ETurningInPlace::ETIP_Max;
-	/** Character States **/
+	/** Character States **
 
 	/** Combat **/
 	float AO_Yaw;
@@ -102,6 +112,11 @@ private:
 	float AO_Pitch;
 	FRotator StartingAimRotation;
 	/** Combat **/
+
+	/** Animation **/
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* ShootWeaponMontage;
+	/** Animation **/
 
 public:
 	bool IsCombatEnabled() const;

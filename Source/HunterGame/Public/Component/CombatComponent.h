@@ -32,18 +32,23 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void SetAiming(bool bAiming);
 
+	/** Combat **/
+	void SetAiming(bool bAiming);
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bAiming);
 
+	void ShootButtonPressed(bool bPressed);
+	/** Combat **/
+
+	
 	/** Rep Notifies **/
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
 	/** Rep Notifies **/
 
 private:
-	/** Character Owned Weapon Reference **/
+	/** Combat **/
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* WeaponInHand;
 
@@ -52,7 +57,9 @@ private:
 
 	UPROPERTY()
 	AWeapon* SecondaryWeapon;
-	/** Character Owned Weapon Reference **/
+
+	bool bShootButtonPressed;
+	/** Combat **/
 
 	/** State Reference **/
 	UPROPERTY(Replicated)

@@ -83,6 +83,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this,&ABaseCharacter::InteractButtonPressed);
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &ABaseCharacter::AimButtonPressed);
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &ABaseCharacter::AimButtonReleased);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &ABaseCharacter::ShootButtonPressed);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Completed, this, &ABaseCharacter::ShootButtonReleased);
 	}
 }
 
@@ -159,6 +161,22 @@ void ABaseCharacter::AimButtonReleased()
 	Combat->SetAiming(false);
 }
 
+void ABaseCharacter::ShootButtonPressed()
+{
+	if (Combat)
+	{
+		Combat->ShootButtonPressed(true);
+	}
+}
+
+void ABaseCharacter::ShootButtonReleased()
+{
+	if (Combat)
+	{
+		Combat->ShootButtonPressed(false);
+	}
+}
+
 /** Combat **/
 void ABaseCharacter::AimOffset(float DeltaTime)
 {
@@ -225,6 +243,21 @@ void ABaseCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 /** Combat **/
+
+/** Animation **/
+void ABaseCharacter::PlayShootMontage(bool bAiming)
+{
+	if (Combat == nullptr || Combat->GetWeaponInHand() == nullptr) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && ShootWeaponMontage)
+	{
+		AnimInstance->Montage_Play(ShootWeaponMontage);
+		const FName SectionName = bAiming ? FName("RifleHip") : FName("RifleAim");  // Choose section name based on bAiming;
+		AnimInstance->Montage_JumpToSection(SectionName, ShootWeaponMontage);
+	}
+}
+/** Animation **/
 
 /** Getter / Setter **/
 AWeapon* ABaseCharacter::GetEquippedWeapon() const
