@@ -44,10 +44,10 @@ protected:
 	void ShootButtonPressed(bool bPressed);
 	
 	UFUNCTION(Server, Reliable)
-	void ServerShoot();
+	void ServerShoot(bool bShootPressed);
 
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastShoot();
+	void MulticastShoot(bool bShootPressed);
 	/** Shooting **/
 
 	
@@ -67,6 +67,7 @@ private:
 	UPROPERTY()
 	AWeapon* SecondaryWeapon;
 
+	UPROPERTY(Replicated)
 	bool bShootButtonPressed;
 	/** Combat **/
 

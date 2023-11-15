@@ -21,6 +21,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(UCombatComponent, WeaponInHand);
 	DOREPLIFETIME(UCombatComponent, bIsCombatEnabled);
 	DOREPLIFETIME(UCombatComponent, bIsAiming);
+	DOREPLIFETIME(UCombatComponent, bShootButtonPressed);
 }
 
 void UCombatComponent::BeginPlay()
@@ -84,19 +85,20 @@ void UCombatComponent::ShootButtonPressed(bool bPressed)
 	
 	if (bShootButtonPressed)
 	{
-		if (HunterCharacter->HasAuthority()) {MulticastShoot_Implementation();}
-		else {ServerShoot_Implementation();}
+		ServerShoot(bShootButtonPressed);
 	}
 }
 
-void UCombatComponent::ServerShoot_Implementation()
+void UCombatComponent::ServerShoot_Implementation(bool bShootPressed)
 {
+	bShootButtonPressed = bShootPressed;  // Set bShootButtonPressed from the Server
 	// Calling Multicast server RPC from a server RPC so that the Multicast RPC runs on server and all clients.
-	MulticastShoot_Implementation();   // If a Multicast RPC is called from a client then it runs only on the invoking client.
+	MulticastShoot(bShootButtonPressed);   // If a Multicast RPC is called from a client then it runs only on the invoking client.
 }
 
-void UCombatComponent::MulticastShoot_Implementation()
+void UCombatComponent::MulticastShoot_Implementation(bool bShootPressed)
 {
+	bShootButtonPressed = bShootPressed;   // Set bShootButtonPressed from all clients(MulticastShoot is called from the server)
 	if (WeaponInHand == nullptr) return;;
 	if (HunterCharacter && bShootButtonPressed)
 	{
