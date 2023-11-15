@@ -94,6 +94,13 @@ protected:
 	TObjectPtr<UInputAction> ShootAction;
 	/** Input **/
 
+	/** Camera Properties **/
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	FVector CameraIdleSocketOffset = FVector(0.f, 0.f, 0.f);     // Camera offset when not aiming
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	FVector CameraAimSocketOffset = FVector(0.f, 75.f, 75.f);    // Camera offset when aiming
+	/** Camera Properties **/
+
 private:
 	/** Camera **/
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
@@ -102,11 +109,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<UCameraComponent> ViewCamera;
 	/** Camera **/
-
-	/** Camera Properties **/
-	FVector CameraIdleSocketOffset = FVector(0.f, 0.f, 0.f);     // Camera offset when not aiming
-	FVector CameraAimSocketOffset = FVector(0.f, 75.f, 75.f);    // Camera offset when aiming
-	/** Camera Properties **/
 	
 	/** Character States **/
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
