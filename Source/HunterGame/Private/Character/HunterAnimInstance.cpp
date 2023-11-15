@@ -4,6 +4,7 @@
 #include "Character/HunterAnimInstance.h"
 #include "Character/BaseCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Weapon/Weapon.h"
 
@@ -52,6 +53,17 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsAiming = HunterCharacter->IsAiming();
 		AO_Yaw = HunterCharacter->GetAO_Yaw();       // Aim Yaw Offset
 		AO_Pitch = HunterCharacter->GetAO_Pitch();   // Aim Pitch Offset
+		if (bIsAiming && HunterCharacter->GetCameraBoom()->TargetArmLength != CAMERA_BOOM_AIM_TARGET_ARM_LENGTH)  // Not valid if TargetArmLength is already set correctly
+		{
+			const float NewTargetArmLength = HunterCharacter->GetCameraBoom()->TargetArmLength = FMath::FInterpTo(HunterCharacter->GetCameraBoom()->TargetArmLength, CAMERA_BOOM_AIM_TARGET_ARM_LENGTH, DeltaSeconds, 6.f);
+			HunterCharacter->GetCameraBoom()->TargetArmLength = NewTargetArmLength;
+		}
+		else
+		{
+			if (HunterCharacter->GetCameraBoom()->TargetArmLength == CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH) return;  // Return if TargetArmLength is already set correctly
+			const float NewTargetArmLength = HunterCharacter->GetCameraBoom()->TargetArmLength = FMath::FInterpTo(HunterCharacter->GetCameraBoom()->TargetArmLength, CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH, DeltaSeconds, 6.f);
+			HunterCharacter->GetCameraBoom()->TargetArmLength = NewTargetArmLength;
+		}
 		/** Combat **/
 
 		/** Inverse Kinematics **/

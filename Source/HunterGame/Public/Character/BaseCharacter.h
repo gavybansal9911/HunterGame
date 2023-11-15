@@ -8,8 +8,8 @@
 #include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
-#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 400.f;
-#define CAMERA_BOOM_AIM_TARGET_ARM_LENGTH 275.f;
+#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 400.f
+#define CAMERA_BOOM_AIM_TARGET_ARM_LENGTH 275.f
 
 class AWeapon;
 class UCombatComponent;
@@ -94,22 +94,19 @@ protected:
 	TObjectPtr<UInputAction> ShootAction;
 	/** Input **/
 
-	/** Camera Properties **/
+	/** Camera **/
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	TObjectPtr<USpringArmComponent> CameraBoom;
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	TObjectPtr<UCameraComponent> ViewCamera;
+	
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector CameraIdleSocketOffset = FVector(0.f, 0.f, 0.f);     // Camera offset when not aiming
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector CameraAimSocketOffset = FVector(0.f, 75.f, 75.f);    // Camera offset when aiming
-	/** Camera Properties **/
+	/** Camera **/
 
 private:
-	/** Camera **/
-	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	TObjectPtr<USpringArmComponent> CameraBoom;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	TObjectPtr<UCameraComponent> ViewCamera;
-	/** Camera **/
-	
 	/** Character States **/
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 	EActionState ActionState = EActionState::EAS_Idle;
@@ -135,4 +132,6 @@ public:
 	FORCEINLINE float GetAO_Yaw() const {return AO_Yaw;}
 	FORCEINLINE float GetAO_Pitch() const {return AO_Pitch;}
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const {return TurningInPlace;}
+	FORCEINLINE USpringArmComponent* GetCameraBoom() const {return CameraBoom;}
+	FORCEINLINE UCameraComponent* GetViewCamera() const {return ViewCamera;}
 };
