@@ -62,7 +62,7 @@ FString AWeapon::LookAt()
 
 void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
 {
-	if (!HunterCharacter->Combat) return;;
+	if (!HunterCharacter->Combat) return;
 	HunterCharacter->Combat->EquipWeapon(this);
 }
 

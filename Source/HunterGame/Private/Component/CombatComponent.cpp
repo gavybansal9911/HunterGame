@@ -56,6 +56,9 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	Weapon->SetWeaponState(EWeaponState::EWS_Attached);
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
 	WeaponInHand = Weapon;
+	/** TODO: Update Collision Setting in Multiplayer
+	* Set collision response to overlap for all channels so that the projectile or the trace(if performed from the muzzle position vector) doesn't collide with the weapon it's fired from. **/
+	WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	bIsCombatEnabled = true;
 	Weapon->SetOwner(HunterCharacter);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
