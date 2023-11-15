@@ -39,8 +39,11 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FHitResult HitResult;
-	TraceUnderCrosshair(HitResult);
+	if (bIsCombatEnabled)
+	{
+		FHitResult HitResult;
+		TraceUnderCrosshair(HitResult);	
+	}
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* Weapon)
@@ -54,6 +57,7 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
 	WeaponInHand = Weapon;
 	bIsCombatEnabled = true;
+	Weapon->SetOwner(HunterCharacter);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
 }
@@ -103,15 +107,15 @@ void UCombatComponent::ServerShoot_Implementation(bool bShootPressed)
 void UCombatComponent::MulticastShoot_Implementation(bool bShootPressed)
 {
 	bShootButtonPressed = bShootPressed;   // Set bShootButtonPressed from all clients(MulticastShoot is called from the server)
-	if (WeaponInHand == nullptr) return;;
+	if (WeaponInHand == nullptr) return;
 	if (HunterCharacter && bShootButtonPressed)
 	{
 		HunterCharacter->PlayShootMontage(bIsAiming);
-		WeaponInHand->Shoot();                        // Shoot
+		WeaponInHand->Shoot(HitTarget);                        // Shoot
 	}
 }
 
-void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult) const
+void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 {
 	FVector2d ViewportSize;
 	if (GEngine && GEngine->GameViewport)
@@ -136,9 +140,11 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult) const
 		{
 			// Set TraceHitResult Impact point to because we want to spawn the projectile in the player aiming direction even if the trace doesn't hit anything
 			TraceHitResult.ImpactPoint = End;
+			HitTarget = End;
 		}
 		else                                // Trace Hit
 		{
+			HitTarget = TraceHitResult.ImpactPoint;
 			DrawDebugSphere(GetWorld(), TraceHitResult.ImpactPoint, 12.f, 12, FColor::Red);
 		}
 	}

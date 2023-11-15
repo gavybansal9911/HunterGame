@@ -53,7 +53,7 @@ protected:
 	/** Shooting **/
 	
 	/** Hitting Targets **/
-	void TraceUnderCrosshair(FHitResult& TraceHitResult) const;
+	void TraceUnderCrosshair(FHitResult& TraceHitResult);
 	/** Hitting Targets **/
 	
 	/** Rep Notifies **/
@@ -75,6 +75,10 @@ private:
 	UPROPERTY(Replicated)
 	bool bShootButtonPressed;
 	/** Combat **/
+
+	/** Hitting Targets **/
+	FVector HitTarget;
+	/** Hitting Targets **/
 
 	/** State Reference **/
 	UPROPERTY(Replicated)

@@ -34,7 +34,7 @@ public:
 	/** Components **/
 
 	/** Shooting **/
-	void Shoot() const;
+	virtual void Shoot(const FVector& HitTarget) const;
 	/** Shooting **/
 
 protected:

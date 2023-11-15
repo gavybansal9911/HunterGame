@@ -66,7 +66,7 @@ void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
 	HunterCharacter->Combat->EquipWeapon(this);
 }
 
-void AWeapon::Shoot() const
+void AWeapon::Shoot(const FVector& HitTarget) const
 {
 	if (FireAnimationAsset)
 	{
