@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
+#define TRACE_LENGTH 100000.f;
+
 class AWeapon;
 class ABaseCharacter;
 
@@ -49,7 +51,10 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastShoot(bool bShootPressed);
 	/** Shooting **/
-
+	
+	/** Hitting Targets **/
+	void TraceUnderCrosshair(FHitResult& TraceHitResult) const;
+	/** Hitting Targets **/
 	
 	/** Rep Notifies **/
 	UFUNCTION()
