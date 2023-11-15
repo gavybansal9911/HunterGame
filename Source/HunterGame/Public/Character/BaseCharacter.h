@@ -8,8 +8,8 @@
 #include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
-#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 400.f
-#define CAMERA_BOOM_AIM_TARGET_ARM_LENGTH 275.f
+#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 500.f
+#define CAMERA_BOOM_AIM_TARGET_ARM_LENGTH 325.f
 
 class AWeapon;
 class UCombatComponent;
@@ -101,9 +101,9 @@ protected:
 	TObjectPtr<UCameraComponent> ViewCamera;
 	
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	FVector CameraIdleSocketOffset = FVector(0.f, 0.f, 0.f);     // Camera offset when not aiming
+	FVector CameraBoomIdleSocketOffset = FVector(0.f, 0.f, 0.f);     // Camera offset when not aiming
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	FVector CameraAimSocketOffset = FVector(0.f, 75.f, 75.f);    // Camera offset when aiming
+	FVector CameraBoomAimSocketOffset = FVector(0.f, 75.f, 75.f);    // Camera offset when aiming
 	/** Camera **/
 
 private:
@@ -133,5 +133,6 @@ public:
 	FORCEINLINE float GetAO_Pitch() const {return AO_Pitch;}
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const {return TurningInPlace;}
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const {return CameraBoom;}
-	FORCEINLINE UCameraComponent* GetViewCamera() const {return ViewCamera;}
+	FORCEINLINE FVector GetCameraBoomIdleSocketOffset() const {return  CameraBoomIdleSocketOffset;}
+	FORCEINLINE FVector GetCameraBoomAimSocketOffset() const {return  CameraBoomAimSocketOffset;}
 };

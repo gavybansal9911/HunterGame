@@ -53,16 +53,21 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsAiming = HunterCharacter->IsAiming();
 		AO_Yaw = HunterCharacter->GetAO_Yaw();       // Aim Yaw Offset
 		AO_Pitch = HunterCharacter->GetAO_Pitch();   // Aim Pitch Offset
-		if (bIsAiming && HunterCharacter->GetCameraBoom()->TargetArmLength != CAMERA_BOOM_AIM_TARGET_ARM_LENGTH)  // Not valid if TargetArmLength is already set correctly
+		if (bIsAiming && HunterCharacter->IsCombatEnabled() && HunterCharacter->GetCameraBoom()->TargetArmLength != CAMERA_BOOM_AIM_TARGET_ARM_LENGTH && HunterCharacter->GetCameraBoom()->SocketOffset != HunterCharacter->GetCameraBoomAimSocketOffset())  // Not valid if TargetArmLength is already set correctly
 		{
 			const float NewTargetArmLength = HunterCharacter->GetCameraBoom()->TargetArmLength = FMath::FInterpTo(HunterCharacter->GetCameraBoom()->TargetArmLength, CAMERA_BOOM_AIM_TARGET_ARM_LENGTH, DeltaSeconds, 6.f);
 			HunterCharacter->GetCameraBoom()->TargetArmLength = NewTargetArmLength;
+			const FVector NewSocketOffset = FMath::VInterpTo(HunterCharacter->GetCameraBoom()->SocketOffset, HunterCharacter->GetCameraBoomAimSocketOffset(), DeltaSeconds, 6.f);
+			HunterCharacter->GetCameraBoom()->SocketOffset = NewSocketOffset;
 		}
 		else
 		{
-			if (HunterCharacter->GetCameraBoom()->TargetArmLength == CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH) return;  // Return if TargetArmLength is already set correctly
+			if (HunterCharacter->GetCameraBoom()->TargetArmLength == CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH && HunterCharacter->GetCameraBoom()->SocketOffset == HunterCharacter->GetCameraBoomIdleSocketOffset()) return;  // Return if TargetArmLength is already set correctly
+
 			const float NewTargetArmLength = HunterCharacter->GetCameraBoom()->TargetArmLength = FMath::FInterpTo(HunterCharacter->GetCameraBoom()->TargetArmLength, CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH, DeltaSeconds, 6.f);
 			HunterCharacter->GetCameraBoom()->TargetArmLength = NewTargetArmLength;
+			const FVector NewSocketOffset = FMath::VInterpTo(HunterCharacter->GetCameraBoom()->SocketOffset, HunterCharacter->GetCameraBoomIdleSocketOffset(), DeltaSeconds, 6.f);
+			HunterCharacter->GetCameraBoom()->SocketOffset = NewSocketOffset;
 		}
 		/** Combat **/
 

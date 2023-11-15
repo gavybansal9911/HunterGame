@@ -26,7 +26,7 @@ ABaseCharacter::ABaseCharacter()
 	
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetMesh());
-	CameraBoom->TargetArmLength = 400.f;
+	CameraBoom->TargetArmLength = CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH;
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("View Camera"));
 	ViewCamera->SetupAttachment(CameraBoom);
