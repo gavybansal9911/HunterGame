@@ -50,10 +50,9 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	Weapon->SetWeaponState(EWeaponState::EWS_Attached);
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
 	WeaponInHand = Weapon;
-	/** TODO: Update Collision Setting in Multiplayer
-	* We are not spawning the projectile on the client so for now there is no need to disable weapon collision for clients, but this may cause issues while performing hit and damage so later, we may have to disable weapon collision for clients as well.
+	/** We are not spawning the projectile on the client so for now there is no need to disable weapon collision for clients, but this may cause issues while performing hit and damage so later, we may have to disable weapon collision for clients as well.
 	* Set collision response to overlap for all channels so that the projectile or the trace(if performed from the muzzle position vector) doesn't collide with the weapon it's fired from. **/
-	Weapon->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	bIsCombatEnabled = true;
 	Weapon->SetOwner(HunterCharacter);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
