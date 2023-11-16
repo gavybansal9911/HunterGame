@@ -8,6 +8,8 @@
 
 class UBoxComponent;
 class UProjectileMovementComponent;
+class UParticleSystem;
+class UParticleSystemComponent;
 
 UCLASS()
 class HUNTERGAME_API AProjectile : public AActor
@@ -27,4 +29,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
+
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	UParticleSystem* Tracer;
+
+	UPROPERTY()
+	UParticleSystemComponent* TracerComponent;
 };
