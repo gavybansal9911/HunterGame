@@ -38,12 +38,6 @@ void UCombatComponent::BeginPlay()
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (bIsCombatEnabled)
-	{
-		FHitResult HitResult;
-		TraceUnderCrosshair(HitResult);	
-	}
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* Weapon)
@@ -97,25 +91,27 @@ void UCombatComponent::ShootButtonPressed(bool bPressed)
 	
 	if (bShootButtonPressed)
 	{
-		ServerShoot(bShootButtonPressed);
+		FHitResult HitResult;
+		TraceUnderCrosshair(HitResult);	
+		ServerShoot(bShootButtonPressed, HitResult.ImpactPoint);
 	}
 }
 
-void UCombatComponent::ServerShoot_Implementation(bool bShootPressed)
+void UCombatComponent::ServerShoot_Implementation(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget)
 {
 	bShootButtonPressed = bShootPressed;  // Set bShootButtonPressed from the Server
 	// Calling Multicast server RPC from a server RPC so that the Multicast RPC runs on server and all clients.
-	MulticastShoot(bShootButtonPressed);   // If a Multicast RPC is called from a client then it runs only on the invoking client.
+	MulticastShoot(bShootButtonPressed, TraceHitTarget);   // If a Multicast RPC is called from a client then it runs only on the invoking client.
 }
 
-void UCombatComponent::MulticastShoot_Implementation(bool bShootPressed)
+void UCombatComponent::MulticastShoot_Implementation(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget)
 {
 	bShootButtonPressed = bShootPressed;   // Set bShootButtonPressed from all clients(MulticastShoot is called from the server)
 	if (WeaponInHand == nullptr) return;
 	if (HunterCharacter && bShootButtonPressed)
 	{
 		HunterCharacter->PlayShootMontage(bIsAiming);
-		WeaponInHand->Shoot(HitTarget);                        // Shoot
+		WeaponInHand->Shoot(TraceHitTarget);                        // Shoot
 	}
 }
 
@@ -144,13 +140,8 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 		{
 			// Set TraceHitResult Impact point to because we want to spawn the projectile in the player aiming direction even if the trace doesn't hit anything
 			TraceHitResult.ImpactPoint = End;
-			HitTarget = End;
 		}
-		else                                // Trace Hit
-		{
-			HitTarget = TraceHitResult.ImpactPoint;
-			DrawDebugSphere(GetWorld(), TraceHitResult.ImpactPoint, 12.f, 12, FColor::Red);
-		}
+		else {}                             // Trace Hit
 	}
 }
 

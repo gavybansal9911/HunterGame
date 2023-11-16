@@ -46,10 +46,10 @@ protected:
 	void ShootButtonPressed(bool bPressed);
 	
 	UFUNCTION(Server, Reliable)
-	void ServerShoot(bool bShootPressed);
+	void ServerShoot(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget);
 
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastShoot(bool bShootPressed);
+	void MulticastShoot(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget);
 	/** Shooting **/
 	
 	/** Hitting Targets **/
@@ -75,10 +75,6 @@ private:
 	UPROPERTY(Replicated)
 	bool bShootButtonPressed;
 	/** Combat **/
-
-	/** Hitting Targets **/
-	FVector HitTarget;
-	/** Hitting Targets **/
 
 	/** State Reference **/
 	UPROPERTY(Replicated)
