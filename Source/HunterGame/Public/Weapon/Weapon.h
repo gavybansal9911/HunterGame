@@ -8,6 +8,7 @@
 #include "Interface/InteractInterface.h"
 #include "Weapon.generated.h"
 
+class ABulletShell;
 class USphereComponent;
 class UAnimationAsset;
 
@@ -61,6 +62,11 @@ private:
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Properties && Status **/
+
+	/** Weapon Properties **/
+	UPROPERTY(EditAnywhere, Category = "Property")
+	TSubclassOf<ABulletShell> BulletShellClass;
+	/** Weapon Properties **/
 
 	/** Animation **/
 	UPROPERTY(EditAnywhere, Category = "Animation")

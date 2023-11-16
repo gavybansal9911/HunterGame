@@ -6,6 +6,8 @@
 #include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Components/SphereComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "Weapon/BulletShell.h"
 
 AWeapon::AWeapon()
 {
@@ -70,5 +72,17 @@ void AWeapon::Shoot(const FVector& HitTarget) const
 	if (FireAnimationAsset)
 	{
 		GetWeaponMesh()->PlayAnimation(FireAnimationAsset, false);   // Play Weapon Animation
+	}
+	if (BulletShellClass)
+	{
+		const USkeletalMeshSocket* AmmoEjectSocket = WeaponMesh->GetSocketByName(FName("AmmoEject"));
+		if (AmmoEjectSocket)
+		{
+			FTransform SocketTransform = AmmoEjectSocket->GetSocketTransform(WeaponMesh);
+			if (GetWorld())
+			{
+				GetWorld()->SpawnActor<ABulletShell>(BulletShellClass, SocketTransform.GetLocation(), SocketTransform.GetRotation().Rotator());
+			}
+		}
 	}
 }
