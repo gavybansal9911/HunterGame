@@ -20,4 +20,7 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> BulletShellMesh;
+
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	float ShellEjectionImpulse = 10.f;
 };

@@ -64,7 +64,7 @@ private:
 	/** Weapon Properties && Status **/
 
 	/** Weapon Properties **/
-	UPROPERTY(EditAnywhere, Category = "Property")
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	TSubclassOf<ABulletShell> BulletShellClass;
 	/** Weapon Properties **/
 
