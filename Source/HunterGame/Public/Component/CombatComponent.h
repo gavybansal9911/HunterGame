@@ -6,7 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
-#define TRACE_LENGTH 100000.f;
+#define TRACE_LENGTH 100000.f
+#define IN_AIR_CROSSHAIR_SPREAD 1.f
 
 class AWeapon;
 class ABaseCharacter;
@@ -64,8 +65,10 @@ protected:
 	void TraceUnderCrosshair(FHitResult& TraceHitResult);
 	/** Hitting Targets **/
 
-	/** UI **/
+	/** HUD and Crosshair **/
 	void SetHUDCrosshair(float DeltaTime);
+	float CrosshairVelocityFactor;
+	float CrosshairInAirFactor;
 	/** UI **/
 	
 	/** Rep Notifies **/
