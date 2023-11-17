@@ -54,13 +54,13 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 
 	if (Weapon->AreaSphere->GetGenerateOverlapEvents()) {Weapon->AreaSphere->SetGenerateOverlapEvents(false);}
 	AttachToActor(HunterCharacter, Weapon, Weapon->GetInHandAttachSocketName());
+	WeaponInHand = Weapon;
+	bIsCombatEnabled = true;
 	Weapon->SetWeaponState(EWeaponState::EWS_Attached);
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
-	WeaponInHand = Weapon;
 	/** We are not spawning the projectile on the client so for now there is no need to disable weapon collision for clients, but this may cause issues while performing hit and damage so later, we may have to disable weapon collision for clients as well.
 	* Set collision response to overlap for all channels so that the projectile or the trace(if performed from the muzzle position vector) doesn't collide with the weapon it's fired from. **/
 	WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	bIsCombatEnabled = true;
 	Weapon->SetOwner(HunterCharacter);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
@@ -153,7 +153,7 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 
 void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 {
-	if (!HunterCharacter || HunterController == nullptr) return;
+	if (!HunterCharacter) return;
 
 	// Avoiding cast if HunterController is already set (cast is a heavy operation)
 	HunterController = HunterController == nullptr ? Cast<AHunterPlayerController>(HunterCharacter->Controller) : HunterController;
@@ -164,7 +164,7 @@ void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 		if (HunterHUD)
 		{
 			FHUDPackage HUDPackage;
-			if (WeaponInHand)
+			if (WeaponInHand && bIsAiming)
 			{
 				HUDPackage.CrosshairCenter = WeaponInHand->CrosshairCenter;
 				HUDPackage.CrosshairLeft = WeaponInHand->CrosshairLeft;

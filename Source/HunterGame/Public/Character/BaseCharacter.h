@@ -8,7 +8,7 @@
 #include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
-#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 375.f
+#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 350.f
 #define CAMERA_BOOM_AIM_TARGET_ARM_LENGTH 250.f
 
 class AWeapon;

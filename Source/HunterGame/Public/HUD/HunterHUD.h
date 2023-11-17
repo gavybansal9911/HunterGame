@@ -33,6 +33,10 @@ public:
 	virtual void DrawHUD() override;   // This function is called every frame
 
 private:
+	// Function to draw crosshair
+	void DrawCrosshair(UTexture2D* Texture, FVector2d ViewportCenter);
+
+	// HUD Package struct variable
 	FHUDPackage HUDPackage;
 
 public:
