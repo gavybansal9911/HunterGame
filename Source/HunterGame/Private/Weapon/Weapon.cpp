@@ -81,7 +81,9 @@ void AWeapon::Shoot(const FVector& HitTarget) const
 			FTransform SocketTransform = AmmoEjectSocket->GetSocketTransform(WeaponMesh);
 			if (GetWorld())
 			{
-				GetWorld()->SpawnActor<ABulletShell>(BulletShellClass, SocketTransform.GetLocation(), SocketTransform.GetRotation().Rotator());
+				FRotator RandomOffsetRotator = FRotator(FMath::RandRange(0, 45), FMath::RandRange(0, 45), FMath::RandRange(0, 45));
+				FRotator BulletShellSpawnRotation = SocketTransform.GetRotation().Rotator() + RandomOffsetRotator;
+				GetWorld()->SpawnActor<ABulletShell>(BulletShellClass, SocketTransform.GetLocation(), BulletShellSpawnRotation);
 			}
 		}
 	}

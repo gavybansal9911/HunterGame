@@ -32,7 +32,7 @@ private:
 	TObjectPtr<UStaticMeshComponent> BulletShellMesh;
 
 	UPROPERTY(EditAnywhere, Category = "Properties")
-	float ShellEjectionImpulse = 10.f;
+	float ShellEjectionImpulse = 5.f;
 
 	// After how much time bullet should destroy after hitting ground
 	UPROPERTY(EditAnywhere, Category = "Properties")
