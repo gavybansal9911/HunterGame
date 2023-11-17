@@ -33,7 +33,16 @@ void ABulletShell::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrim
 {
 	if (ShellSound)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ShellSound, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(this, ShellSound, GetActorLocation(), GetActorRotation(),
+			1.f, 1.f, 0.f, nullptr, ShellSoundConcurrency);
 	}
+	
+	// Set Destroy Timer
+	GetWorldTimerManager().SetTimer(BulletDestroyHandle, this, &ABulletShell::DestroyBulletShell, BulletDestroyDelay, false);
+}
+
+void ABulletShell::DestroyBulletShell()
+{
 	Destroy();
+	GetWorldTimerManager().ClearTimer(BulletDestroyHandle);
 }
