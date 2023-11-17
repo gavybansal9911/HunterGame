@@ -2,6 +2,8 @@
 
 
 #include "Weapon/BulletShell.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 ABulletShell::ABulletShell()
 {
@@ -12,10 +14,26 @@ ABulletShell::ABulletShell()
 	BulletShellMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	BulletShellMesh->SetSimulatePhysics(true);
 	BulletShellMesh->SetEnableGravity(true);
+	BulletShellMesh->SetNotifyRigidBodyCollision(true);
 }
 
 void ABulletShell::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	// Bind OnHit to OnComponentHit delegate
+	BulletShellMesh->OnComponentHit.AddDynamic(this, &ABulletShell::OnHit);
+
+	// Add ejection force to bullet shell
 	BulletShellMesh->AddImpulse(GetActorForwardVector() * ShellEjectionImpulse);
+}
+
+void ABulletShell::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (ShellSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ShellSound, GetActorLocation());
+	}
+	Destroy();
 }
