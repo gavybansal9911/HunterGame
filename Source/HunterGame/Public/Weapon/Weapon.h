@@ -11,6 +11,7 @@
 class ABulletShell;
 class USphereComponent;
 class UAnimationAsset;
+class UTexture2D;
 
 UCLASS()
 class HUNTERGAME_API AWeapon : public AActor, public IInteractInterface
@@ -37,6 +38,23 @@ public:
 	/** Shooting **/
 	virtual void Shoot(const FVector& HitTarget) const;
 	/** Shooting **/
+
+	/** Textures for the weapon crosshair **/
+	UPROPERTY(EditAnywhere, Category = "Crosshair")
+	UTexture2D* CrosshairCenter;
+	
+	UPROPERTY(EditAnywhere, Category = "Crosshair")
+	UTexture2D* CrosshairLeft;
+	
+	UPROPERTY(EditAnywhere, Category = "Crosshair")
+	UTexture2D* CrosshairRight;	
+
+	UPROPERTY(EditAnywhere, Category = "Crosshair")
+	UTexture2D* CrosshairTop;
+	
+	UPROPERTY(EditAnywhere, Category = "Crosshair")
+	UTexture2D* CrosshairBottom;
+	/** Textures for the weapon crosshair **/
 
 protected:
 	virtual void BeginPlay() override;

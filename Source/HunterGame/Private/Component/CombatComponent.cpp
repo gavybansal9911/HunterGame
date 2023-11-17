@@ -3,11 +3,13 @@
 
 #include "Component/CombatComponent.h"
 #include "Character/BaseCharacter.h"
+#include "PlayerController/HunterPlayerController.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Weapon/Weapon.h"
+#include "HUD/HunterHUD.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -38,6 +40,11 @@ void UCombatComponent::BeginPlay()
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (WeaponInHand && bIsCombatEnabled)
+	{
+		SetHUDCrosshair(DeltaTime);
+	}
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* Weapon)
@@ -141,6 +148,41 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 			TraceHitResult.ImpactPoint = End;
 		}
 		else {}                             // Trace Hit
+	}
+}
+
+void UCombatComponent::SetHUDCrosshair(float DeltaTime)
+{
+	if (!HunterCharacter || HunterController == nullptr) return;
+
+	// Avoiding cast if HunterController is already set (cast is a heavy operation)
+	HunterController = HunterController == nullptr ? Cast<AHunterPlayerController>(HunterCharacter->Controller) : HunterController;
+	if (HunterController)
+	{
+		// Avoiding cast if HunterHUD is already set (cast is a heavy operation)
+		HunterHUD = HunterHUD == nullptr ? Cast<AHunterHUD>(HunterController->GetHUD()) : HunterHUD;
+		if (HunterHUD)
+		{
+			FHUDPackage HUDPackage;
+			if (WeaponInHand)
+			{
+				HUDPackage.CrosshairCenter = WeaponInHand->CrosshairCenter;
+				HUDPackage.CrosshairLeft = WeaponInHand->CrosshairLeft;
+				HUDPackage.CrosshairRight = WeaponInHand->CrosshairRight;
+				HUDPackage.CrosshairTop = WeaponInHand->CrosshairTop;
+				HUDPackage.CrosshairBottom = WeaponInHand->CrosshairBottom;
+			}
+			else
+			{
+				HUDPackage.CrosshairCenter = nullptr;
+				HUDPackage.CrosshairLeft = nullptr;
+				HUDPackage.CrosshairRight = nullptr;
+				HUDPackage.CrosshairTop = nullptr;
+				HUDPackage.CrosshairBottom = nullptr;
+			}
+			// Update HUDPackage on HunterHUD
+			HunterHUD->SetHUDPackage(HUDPackage);
+		}
 	}
 }
 

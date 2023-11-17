@@ -10,6 +10,8 @@
 
 class AWeapon;
 class ABaseCharacter;
+class AHunterPlayerController;
+class AHunterHUD;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HUNTERGAME_API UCombatComponent : public UActorComponent
@@ -25,6 +27,12 @@ public:
 	/** Player Reference **/
 	UPROPERTY()
 	ABaseCharacter* HunterCharacter;
+
+	UPROPERTY()
+	AHunterPlayerController* HunterController;
+
+	UPROPERTY()
+	AHunterHUD* HunterHUD;
 	/** Player Reference **/
 
 	/** Combat **/
@@ -55,6 +63,10 @@ protected:
 	/** Hitting Targets **/
 	void TraceUnderCrosshair(FHitResult& TraceHitResult);
 	/** Hitting Targets **/
+
+	/** UI **/
+	void SetHUDCrosshair(float DeltaTime);
+	/** UI **/
 	
 	/** Rep Notifies **/
 	UFUNCTION()
