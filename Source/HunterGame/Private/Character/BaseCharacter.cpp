@@ -26,7 +26,7 @@ ABaseCharacter::ABaseCharacter()
 	
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetMesh());
-	CameraBoom->TargetArmLength = CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH;
+	CameraBoom->TargetArmLength = CAMERA_BOOM_TP_TARGET_ARM_LENGTH;
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("View Camera"));
 	ViewCamera->SetupAttachment(CameraBoom);
@@ -84,6 +84,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &ABaseCharacter::AimButtonReleased);
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &ABaseCharacter::ShootButtonPressed);
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Completed, this, &ABaseCharacter::ShootButtonReleased);
+		EnhancedInputComponent->BindAction(ChangeCameraModeAction, ETriggerEvent::Started, this, &ABaseCharacter::ChangeCameraMode);
 	}
 }
 
@@ -162,6 +163,7 @@ void ABaseCharacter::AimButtonReleased()
 
 void ABaseCharacter::ShootButtonPressed()
 {
+	if (GetCharacterMovement()->IsFalling()) return;
 	if (Combat)
 	{
 		Combat->ShootButtonPressed(true);
@@ -173,6 +175,25 @@ void ABaseCharacter::ShootButtonReleased()
 	if (Combat)
 	{
 		Combat->ShootButtonPressed(false);
+	}
+}
+
+void ABaseCharacter::ChangeCameraMode()
+{
+	if (CurrentCameraMode == ECameraMode::ECM_ThirdPerson)
+	{
+		CurrentCameraMode = ECameraMode::ECM_SemiFirstPerson;
+		CameraBoom->TargetArmLength = CAMERA_BOOM_SFP_TARGET_ARM_LENGTH;
+		CameraBoom->TargetArmLength = 0.f;
+		CameraBoom->SocketOffset = CameraBoomSocketOffset_SFP;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString("To First Person"));
+	}
+	else if (CurrentCameraMode == ECameraMode::ECM_SemiFirstPerson)
+	{
+		CurrentCameraMode = ECameraMode::ECM_ThirdPerson;
+		CameraBoom->TargetArmLength = CAMERA_BOOM_TP_TARGET_ARM_LENGTH;
+		CameraBoom->SocketOffset = CameraBoomSocketOffset_TP;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString("To Third Person"));
 	}
 }
 
