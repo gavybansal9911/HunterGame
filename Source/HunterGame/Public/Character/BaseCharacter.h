@@ -8,8 +8,8 @@
 #include "CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
-#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 350.f
-#define CAMERA_BOOM_AIM_TARGET_ARM_LENGTH 250.f
+#define CAMERA_BOOM_IDLE_TARGET_ARM_LENGTH 300.f
+#define CAMERA_BOOM_AIM_TARGET_ARM_LENGTH 175.f
 
 class AWeapon;
 class UCombatComponent;
@@ -135,4 +135,5 @@ public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const {return CameraBoom;}
 	FORCEINLINE FVector GetCameraBoomIdleSocketOffset() const {return  CameraBoomIdleSocketOffset;}
 	FORCEINLINE FVector GetCameraBoomAimSocketOffset() const {return  CameraBoomAimSocketOffset;}
+	FVector GetHitTarget() const;
 };

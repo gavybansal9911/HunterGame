@@ -230,6 +230,16 @@ void ABaseCharacter::TurnInPlace(float DeltaTime)
 	{
 		TurningInPlace = ETurningInPlace::ETIP_Left;
 	}
+	if (AO_Yaw > 45.f)
+	{
+		if (!Combat) return;
+		if (Combat->bIsAiming) {TurningInPlace = ETurningInPlace::ETIP_Right;}
+	}
+	else if (AO_Yaw < -45.f)
+	{
+		if (!Combat) return;
+		if (Combat->bIsAiming) {TurningInPlace = ETurningInPlace::ETIP_Left;}
+	}
 	if (TurningInPlace != ETurningInPlace::ETIP_NotTurning)
 	{
 		InterpAO_Yaw = FMath::FInterpTo(InterpAO_Yaw, 0.f, DeltaTime, 4.f);
@@ -273,5 +283,11 @@ bool ABaseCharacter::IsCombatEnabled() const
 bool ABaseCharacter::IsAiming() const
 {
 	return Combat && Combat->bIsAiming;
+}
+
+FVector ABaseCharacter::GetHitTarget() const
+{
+	if (!Combat) return FVector();
+	return Combat->HitTarget;
 }
 /** Getter / Setter **/

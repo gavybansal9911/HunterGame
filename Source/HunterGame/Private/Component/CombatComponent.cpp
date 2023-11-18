@@ -44,6 +44,13 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	if (WeaponInHand && bIsCombatEnabled)
 	{
 		SetHUDCrosshair(DeltaTime);
+
+		if (bIsAiming)
+		{
+			FHitResult HitResult;
+			TraceUnderCrosshair(HitResult);
+			HitTarget = HitResult.ImpactPoint;
+		}
 	}
 }
 

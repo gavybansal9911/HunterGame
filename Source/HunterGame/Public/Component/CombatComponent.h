@@ -89,6 +89,9 @@ private:
 
 	UPROPERTY(Replicated)
 	bool bShootButtonPressed;
+
+	// Hit Target Location
+	FVector HitTarget;
 	/** Combat **/
 
 	/** State Reference **/
