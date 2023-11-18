@@ -107,6 +107,11 @@ void UCombatComponent::ShootButtonPressed(bool bPressed)
 		FHitResult HitResult;
 		TraceUnderCrosshair(HitResult);	
 		ServerShoot(bShootButtonPressed, HitResult.ImpactPoint);
+
+		if (WeaponInHand)
+		{
+			CrosshairShootFactor = 1.2f;
+		}
 	}
 }
 
@@ -208,9 +213,24 @@ void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 				CrosshairInAirFactor = FMath::FInterpTo(CrosshairInAirFactor, 0, DeltaTime, 30.f);
 			}
 			/* IsFalling Factor */
+
+			/* Aim Factor */
+			if (bIsAiming)
+			{
+				CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.30f, DeltaTime, 30.f);
+			}
+			else
+			{
+				CrosshairAimFactor = FMath::FInterpTo(CrosshairAimFactor, 0.f, DeltaTime, 30.f);
+			}
+			/* Aim Factor */
+
+			/* Shoot Factor */
+			CrosshairShootFactor = FMath::FInterpTo(CrosshairShootFactor, 0.F, DeltaTime, 40.f);
+			/* Shoot Factor */
 			
 			// Set Crosshair Spread on HUDPackage
-			HUDPackage.CrosshairSpread = CrosshairVelocityFactor + CrosshairInAirFactor;
+			HUDPackage.CrosshairSpread = CrosshairVelocityFactor + CrosshairInAirFactor - CrosshairAimFactor + CrosshairShootFactor;
 			/** Calculate Crosshair Spread **/
 			
 			

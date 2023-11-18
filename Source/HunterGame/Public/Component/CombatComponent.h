@@ -69,6 +69,8 @@ protected:
 	void SetHUDCrosshair(float DeltaTime);
 	float CrosshairVelocityFactor;
 	float CrosshairInAirFactor;
+	float CrosshairAimFactor;
+	float CrosshairShootFactor;
 	/** UI **/
 	
 	/** Rep Notifies **/
