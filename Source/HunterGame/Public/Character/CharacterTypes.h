@@ -33,6 +33,7 @@ enum class ECameraMode : uint8
 {
 	ECM_ThirdPerson UMETA(DisplayName = "Third Person"),
 	ECM_SemiFirstPerson UMETA(DisplayName = "Semi-First Person"),
+	ECM_FirstPerson UMETA(DisplayName = "First Person"),
 	
 	ECM_Max UMETA(DisplayName = "Max")
 };

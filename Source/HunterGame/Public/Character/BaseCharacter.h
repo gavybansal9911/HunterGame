@@ -110,7 +110,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<USpringArmComponent> CameraBoom;
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	TObjectPtr<UCameraComponent> ViewCamera;
+	TObjectPtr<UCameraComponent> TP_ViewCamera;
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	TObjectPtr<UCameraComponent> FP_ViewCamera;
 	
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector CameraBoomSocketOffset_TP = FVector(0.f, 0.f, 0.f);     // Camera offset when not aiming

@@ -28,8 +28,13 @@ ABaseCharacter::ABaseCharacter()
 	CameraBoom->SetupAttachment(GetMesh());
 	CameraBoom->TargetArmLength = CAMERA_BOOM_TP_TARGET_ARM_LENGTH;
 
-	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("View Camera"));
-	ViewCamera->SetupAttachment(CameraBoom);
+	TP_ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Third Person View Camera"));
+	TP_ViewCamera->SetupAttachment(CameraBoom);
+
+	FP_ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Camera"));
+	FP_ViewCamera->SetupAttachment(GetMesh()), FName("head");
+	FP_ViewCamera->bUsePawnControlRotation = true;
+	FP_ViewCamera->SetAutoActivate(false);
 	
 	bUseControllerRotationPitch = true;
 	bUseControllerRotationYaw = true;
@@ -184,16 +189,23 @@ void ABaseCharacter::ChangeCameraMode()
 	{
 		CurrentCameraMode = ECameraMode::ECM_SemiFirstPerson;
 		CameraBoom->TargetArmLength = CAMERA_BOOM_SFP_TARGET_ARM_LENGTH;
-		CameraBoom->TargetArmLength = 0.f;
 		CameraBoom->SocketOffset = CameraBoomSocketOffset_SFP;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString("To First Person"));
+		TP_ViewCamera->SetActive(true);
+		FP_ViewCamera->SetActive(false);
 	}
 	else if (CurrentCameraMode == ECameraMode::ECM_SemiFirstPerson)
+	{
+		CurrentCameraMode = ECameraMode::ECM_FirstPerson;
+		FP_ViewCamera->SetActive(true);
+		TP_ViewCamera->SetActive(false);
+	}
+	else if (CurrentCameraMode == ECameraMode::ECM_FirstPerson)
 	{
 		CurrentCameraMode = ECameraMode::ECM_ThirdPerson;
 		CameraBoom->TargetArmLength = CAMERA_BOOM_TP_TARGET_ARM_LENGTH;
 		CameraBoom->SocketOffset = CameraBoomSocketOffset_TP;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, FString("To Third Person"));
+		TP_ViewCamera->SetActive(true);
+		FP_ViewCamera->SetActive(false);
 	}
 }
 
