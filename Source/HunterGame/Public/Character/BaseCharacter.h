@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "CharacterTypes.h"
+#include "Interface/HitInterface.h"
 #include "BaseCharacter.generated.h"
 
 #define CAMERA_BOOM_TP_TARGET_ARM_LENGTH 300.f
@@ -22,16 +23,21 @@ class UInputAction;
 class UAnimMontage;
 
 UCLASS()
-class HUNTERGAME_API ABaseCharacter : public ACharacter
+class HUNTERGAME_API ABaseCharacter : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
 public:
 	ABaseCharacter();
 	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	/** Interface **/
+	virtual void GetHit() override;
+	/** Interface **/
+	
 	/** Components **/
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UInteractionComponent> InteractionComponent;
@@ -122,18 +128,34 @@ protected:
 	FVector CameraBoomSocketOffset_SFP = FVector(0.f, -5.f, 65.f);    // Camera offset when aiming
 	/** Camera **/
 
+	/** Animation **/
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* ShootWeaponMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* HitReactMontage;
+	/** Animation **/
+	
 private:
+	/** Stats **/
+	UPROPERTY(EditAnywhere, Category = "Player Stats")
+	float MaxHealth = 100.f;
+	
+	UPROPERTY(ReplicatedUsing = OnRep_Health, VisibleAnywhere, Category = "Player Stats")
+	float Health = 100.f;
+	/** Stats **/
+
+	/** Rep Notifies **/
+	UFUNCTION()
+	void OnRep_Health();
+	/** Rep Notifies **/
+	
 	/** Combat **/
 	float AO_Yaw;
 	float InterpAO_Yaw;
 	float AO_Pitch;
 	FRotator StartingAimRotation;
 	/** Combat **/
-
-	/** Animation **/
-	UPROPERTY(EditAnywhere, Category = "Animation")
-	UAnimMontage* ShootWeaponMontage;
-	/** Animation **/
 
 public:
 	bool IsCombatEnabled() const;

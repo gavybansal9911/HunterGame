@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "HunterHUD.generated.h"
 
+class UCharacterOverlay;
 class UTexture2D;
 
 USTRUCT(BlueprintType)
@@ -33,6 +34,16 @@ class HUNTERGAME_API AHunterHUD : public AHUD
 public:
 	virtual void DrawHUD() override;   // This function is called every frame
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> CharacterOverlayClass;
+
+	UPROPERTY()
+	UCharacterOverlay* CharacterOverlay;
+
+protected:
+	virtual void BeginPlay() override;
+	void AddCharacterOverlay();
+	
 private:
 	// Function to draw crosshair
 	void DrawCrosshair(UTexture2D* Texture, FVector2d ViewportCenter, FVector2d Spread);

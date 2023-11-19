@@ -13,6 +13,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Net/UnrealNetwork.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -66,6 +67,13 @@ void ABaseCharacter::Tick(float DeltaTime)
 	AimOffset(DeltaTime);
 }
 
+void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ABaseCharacter, Health);
+}
+
 void ABaseCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -92,6 +100,13 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(ChangeCameraModeAction, ETriggerEvent::Started, this, &ABaseCharacter::ChangeCameraMode);
 	}
 }
+
+/** Interface **/
+void ABaseCharacter::GetHit()
+{
+	
+}
+/** Interface **/
 
 void ABaseCharacter::Move(const FInputActionValue& Value)
 {
@@ -300,6 +315,13 @@ void ABaseCharacter::PlayShootMontage(bool bAiming)
 	}
 }
 /** Animation **/
+
+/** Rep Notifies **/
+void ABaseCharacter::OnRep_Health()
+{
+	
+}
+/** Rep Notifies **/
 
 /** Getter / Setter **/
 AWeapon* ABaseCharacter::GetEquippedWeapon() const
