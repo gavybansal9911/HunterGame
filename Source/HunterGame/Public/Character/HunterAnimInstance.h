@@ -82,4 +82,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	ETurningInPlace TurningInPlace;
 	/** Turning in Place **/
+
+	/** Fixing Weapon Rotation **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	FRotator RightHandRotation;
+	/** Fixing Weapon Rotation **/
+
+	/** General **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "General")
+	bool bLocallyControlled;
+	/** General **/
 };

@@ -45,7 +45,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	{
 		SetHUDCrosshair(DeltaTime);
 
-		if (bIsAiming)
+		if (bIsAiming && HunterCharacter && HunterCharacter->IsLocallyControlled())
 		{
 			FHitResult HitResult;
 			TraceUnderCrosshair(HitResult);

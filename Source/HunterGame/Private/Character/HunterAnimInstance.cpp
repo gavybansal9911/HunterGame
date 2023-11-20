@@ -80,7 +80,7 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			}
 		}
 		/** Camera Movements **/
-
+		
 		/** Inverse Kinematics **/
 		if (bIsCombatEnabled && EquippedWeapon && EquippedWeapon->GetWeaponMesh() && HunterCharacter->GetMesh())
 		{
@@ -101,15 +101,21 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		/** Inverse Kinematics **/
 
 		/** Hitting Target **/
-		if (EquippedWeapon)
+		if (bIsCombatEnabled && EquippedWeapon && EquippedWeapon->GetWeaponMesh() && HunterCharacter->GetMesh())
 		{
-			FTransform MuzzleTipTransform = EquippedWeapon->GetWeaponMesh()->GetSocketTransform(FName("MuzzleFlash"));
-			FVector MuzzleX(FRotationMatrix(MuzzleTipTransform.GetRotation().Rotator()).GetUnitAxis(EAxis::X));
-			DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), MuzzleTipTransform.GetLocation() + MuzzleX * 1000.f, FColor::Yellow);
-			DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), HunterCharacter->GetHitTarget(), FColor::Red);
+			if (HunterCharacter->IsLocallyControlled())
+			{
+				bLocallyControlled = true;
+				FTransform RightHandTransform = HunterCharacter->GetMesh()->GetSocketTransform(FName("hand_r"), ERelativeTransformSpace::RTS_World);
+				RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(), RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - HunterCharacter->GetHitTarget()));
+			}
+			else
+			{
+				bLocallyControlled = false;
+			}
 		}
 		/** Hitting Target **/
-
+		
 		/** Turning in Place **/
 		TurningInPlace = HunterCharacter->GetTurningInPlace();
 		/** Turning in Place **/
