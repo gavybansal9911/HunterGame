@@ -2,6 +2,8 @@
 
 
 #include "Character/BaseCharacter.h"
+
+#include "CookerSettings.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
@@ -14,6 +16,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "PlayerController/HunterPlayerController.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -51,13 +54,19 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* EnhancedInputLocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			EnhancedInputLocalPlayerSubsystem->AddMappingContext(BaseInputMappingContext, 1);
 		}
+	}
+
+	HunterPlayerController = Cast<AHunterPlayerController>(GetController());
+	if (HunterPlayerController)
+	{
+		HunterPlayerController->SetHUDHealth(Health, MaxHealth);
 	}
 }
 
@@ -104,7 +113,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 /** Interface **/
 void ABaseCharacter::GetHit()
 {
-	
+	if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Hit"));}
 }
 /** Interface **/
 

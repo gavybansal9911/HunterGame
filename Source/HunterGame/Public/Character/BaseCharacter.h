@@ -13,6 +13,7 @@
 #define CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH 175.f
 #define CAMERA_BOOM_SFP_TARGET_ARM_LENGTH 0.f
 
+class AHunterPlayerController;
 class AWeapon;
 class UCombatComponent;
 class UInteractionComponent;
@@ -137,6 +138,11 @@ protected:
 	/** Animation **/
 	
 private:
+	/** Player Controller **/
+	UPROPERTY()
+	AHunterPlayerController* HunterPlayerController;
+	/** Player Controller **/
+	
 	/** Stats **/
 	UPROPERTY(EditAnywhere, Category = "Player Stats")
 	float MaxHealth = 100.f;
