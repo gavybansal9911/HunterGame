@@ -72,7 +72,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	if (IHitInterface* HitActor = Cast<IHitInterface>(OtherActor))
 	{
-		HitActor->GetHit();	
+		HitActor->GetHit();
 	}
 }
 

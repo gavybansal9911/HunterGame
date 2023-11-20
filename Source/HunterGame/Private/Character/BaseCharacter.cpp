@@ -2,7 +2,6 @@
 
 
 #include "Character/BaseCharacter.h"
-
 #include "CookerSettings.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
@@ -63,10 +62,13 @@ void ABaseCharacter::BeginPlay()
 		}
 	}
 
-	HunterPlayerController = Cast<AHunterPlayerController>(GetController());
-	if (HunterPlayerController)
+	HunterPlayerController = HunterPlayerController == nullptr ? Cast<AHunterPlayerController>(GetController()) : HunterPlayerController;
+
+	UpdateHUDHealth();
+
+	if (HasAuthority())   // Bind Receive Damage to OnTakeAnyDamage only on the server
 	{
-		HunterPlayerController->SetHUDHealth(Health, MaxHealth);
+		OnTakeAnyDamage.AddDynamic(this, &ABaseCharacter::ReceiveDamage);
 	}
 }
 
@@ -233,7 +235,24 @@ void ABaseCharacter::ChangeCameraMode()
 	}
 }
 
+/** Stats **/
+void ABaseCharacter::UpdateHUDHealth()
+{
+	if (HunterPlayerController)
+	{
+		HunterPlayerController->SetHUDHealth(Health, MaxHealth);
+	}
+}
+/** Stats **/
+
 /** Combat **/
+void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigatorController, AActor* DamageCauser)
+{
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+	UpdateHUDHealth();
+}
+
 void ABaseCharacter::AimOffset(float DeltaTime)
 {
 	if (Combat && Combat->GetWeaponInHand() == nullptr) return;;
@@ -328,7 +347,7 @@ void ABaseCharacter::PlayShootMontage(bool bAiming)
 /** Rep Notifies **/
 void ABaseCharacter::OnRep_Health()
 {
-	
+	UpdateHUDHealth();
 }
 /** Rep Notifies **/
 

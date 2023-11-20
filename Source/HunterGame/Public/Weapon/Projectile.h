@@ -31,6 +31,11 @@ protected:
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastOnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	/** Damage **/
+	UPROPERTY(EditAnywhere, Category = "Damage")
+	float Damage = 20.f;
+	/** Damage **/
 	
 private:
 	UPROPERTY(EditAnywhere)
@@ -39,6 +44,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
 
+	/** Visuals and Sounds effects **/
 	UPROPERTY(EditAnywhere, Category = "FX")
 	UParticleSystem* Tracer;
 
@@ -56,4 +62,5 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	USoundCue* ImpactSound;
+	/** Visuals and Sounds effects **/
 };

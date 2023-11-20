@@ -66,16 +66,22 @@ protected:
 	void ShootButtonReleased();
 	void ChangeCameraMode();
 	/** Input CallBacks **/
-	
-	/** Combat **/
-	void AimOffset(float DeltaTime);
-	void TurnInPlace(float DeltaTime);
-	/** Combat **/
 
 	/** Input CallBacks RPCs **/
 	UFUNCTION(Server, Reliable)
 	void ServerInteractButtonPressed();
 	/** Input CallBacks RPCs **/
+	
+	/** Combat **/
+	UFUNCTION()
+	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
+	void AimOffset(float DeltaTime);
+	void TurnInPlace(float DeltaTime);
+	/** Combat **/
+
+	/** Stats **/
+	void UpdateHUDHealth();
+	/** Stats **/
 	
 	/** Input **/
 	UPROPERTY(EditAnywhere, Category = "Input")
