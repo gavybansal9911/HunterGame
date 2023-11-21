@@ -18,3 +18,12 @@ enum class EEquippedWeaponType : uint8
 	EEWT_Ranged UMETA(DisplayName = "Ranged"),
 	EEWT_Both UMETA(DisplayName = "Both")
 };
+
+UENUM(BlueprintType)
+enum class EAISense : uint8
+{
+	EAIS_None UMETA(DisplayName = "None"),
+	EAIS_Sight UMETA(DisplayName = "Sight"),
+	EAIS_Hearing UMETA(DisplayName = "Hearing"),
+	EAIS_Damage UMETA(DisplayName = "Damage")
+};

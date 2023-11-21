@@ -22,6 +22,7 @@ ABaseCharacter::ABaseCharacter()
 	bReplicates = true;
 	NetUpdateFrequency = 66.f;  // How many times variables are replicated from server to client per sec.
 	MinNetUpdateFrequency = 33.f;  // The min net update frequency to be if the variables are not changing frequently.
+	Tags.AddUnique(FName("PlayerTeam"));
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);

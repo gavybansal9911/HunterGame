@@ -24,28 +24,13 @@ public:
 
 	/** Combat **/
 	void GetInCombat(AActor* TargetActor);
-	void GetInCombat_Melee(AActor* TargetActor);
-
+	void ChasePlayer();
 	void Attack();
-	void Attack_Melee();
 	/** Combat **/
-
+	
 protected:
 	virtual void BeginPlay() override;
-
-	/** Overlap CallBacks **/
-	UFUNCTION()
-	virtual void OnAttackSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
-	UFUNCTION()
-	virtual void OnAttackSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-	/** Overlap CallBacks **/
 	
-	/** Timer CallBacks **/
-	void MeleeCombatChaseTimer();
-	void MeleeAttackTimer();
-	/** Timer CallBacks **/
-	
-protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 	
@@ -61,13 +46,4 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* DaggerAttackMontage;
 	/** Animation **/
-
-	/* Range */
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> MeleeAttackSphere;
-	/* Range */
-
-private:
-	FTimerHandle MeleeCombatChaseTimerHandle;
-	FTimerHandle MeleeAttackTimerHandle;
 };

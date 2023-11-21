@@ -4,12 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "AI_Types.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "AIControllerBase.generated.h"
 
-class USphereComponent;
+struct CanSenseActorData
+{
+	bool Sensed;
+	FAIStimulus Stimulus;
+};
+
 class UBlackboardComponent;
 class UBehaviorTree;
-
+class UAIPerceptionComponent;
+class UAISenseConfig_Sight;
+class UAISenseConfig_Hearing;
+class UAISenseConfig_Damage;
 /**
  * 
  */
@@ -20,8 +30,33 @@ class HUNTERGAME_API AAIControllerBase : public AAIController
 
 public:
 	AAIControllerBase();
+	virtual void PostInitializeComponents() override;
+
+	// On Perception Updated CallBack
+	UFUNCTION()
+	virtual void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
+
+	CanSenseActorData CanSenseActor(AActor* Actor, EAISense Sense);
+	
+	// Handle Sense
+	void HandleSightSense(AActor* SensedActor);
+	void HandleHearingSense(FVector SoundOrigin_Loc);
+	void HandleDamageSense();
 
 protected:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY()
 	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	/** AI Perception **/
+	UPROPERTY()
+	UAISenseConfig_Sight* SenseConfig_Sight;
+
+	UPROPERTY()
+	UAISenseConfig_Hearing* SenseConfig_Hearing;
+
+	UPROPERTY()
+	UAISenseConfig_Damage* SenseConfig_Damage;
+	/** AI Perception **/
 };
