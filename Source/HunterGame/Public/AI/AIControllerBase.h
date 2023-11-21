@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "AIControllerBase.generated.h"
 
+class USphereComponent;
 class UBlackboardComponent;
 class UBehaviorTree;
 
@@ -21,9 +22,6 @@ public:
 	AAIControllerBase();
 
 protected:
-	UPROPERTY()
-	TObjectPtr<UBlackboardComponent> BlackboardComponent;
-
 	UPROPERTY()
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 };
