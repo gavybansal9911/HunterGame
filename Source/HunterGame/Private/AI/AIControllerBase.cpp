@@ -87,38 +87,40 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAISense Sense
 {
 	FActorPerceptionBlueprintInfo ActorPerceptionBlueprintInfo;
 	PerceptionComponent->GetActorsPerception(Actor,ActorPerceptionBlueprintInfo);
+
+	TSubclassOf<UAISense> SightSenseClass = UAISense_Sight::StaticClass();
+	TSubclassOf<UAISense> HearingSenseClass = UAISense_Hearing::StaticClass();
+	TSubclassOf<UAISense> DamageSenseClass = UAISense_Damage::StaticClass();
 	
 	for (FAIStimulus AIStimulas : ActorPerceptionBlueprintInfo.LastSensedStimuli)
 	{
 		TSubclassOf<UAISense> SenseClass = UAIPerceptionSystem::GetSenseClassForStimulus(this, AIStimulas);
-
+		
 		CanSenseActorData Local_CanSenseActorData;
 		Local_CanSenseActorData.Stimulus = AIStimulas;
-		switch (Sense)
+		if (Sense == EAISense::EAIS_Sight)
 		{
-			case EAISense::EAIS_Sight:
-				if (SenseClass == SenseConfig_Sight->GetClass())
-				{
-					Local_CanSenseActorData.Sensed = AIStimulas.WasSuccessfullySensed();
-					return Local_CanSenseActorData;
-				}
-				break;
-			case EAISense::EAIS_Hearing:
-				if (SenseClass == SenseConfig_Hearing->GetClass())
-				{
-					Local_CanSenseActorData.Sensed = AIStimulas.WasSuccessfullySensed();
-					return Local_CanSenseActorData;
-				}
-				break;
-			case EAISense::EAIS_Damage:
-				if (SenseClass == SenseConfig_Damage->GetClass())
-				{
-					Local_CanSenseActorData.Sensed = AIStimulas.WasSuccessfullySensed();
-					return Local_CanSenseActorData;
-				}
-				break;
-			default:
-				break;
+			if (SenseClass == SightSenseClass)
+			{
+				Local_CanSenseActorData.Sensed = AIStimulas.WasSuccessfullySensed();
+				return Local_CanSenseActorData;
+			}
+		}
+		else if (Sense == EAISense::EAIS_Hearing)
+		{
+			if (SenseClass == HearingSenseClass)
+			{
+				Local_CanSenseActorData.Sensed = AIStimulas.WasSuccessfullySensed();
+				return Local_CanSenseActorData;
+			}
+		}
+		else if (Sense == EAISense::EAIS_Damage)
+		{
+			if (SenseClass == DamageSenseClass)
+			{
+				Local_CanSenseActorData.Sensed = AIStimulas.WasSuccessfullySensed();
+				return Local_CanSenseActorData;
+			}
 		}
 	}
 	CanSenseActorData CanSenseActorData;
