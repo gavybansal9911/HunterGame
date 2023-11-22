@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "AI_Types.h"
+#include "BehaviorTree/BehaviorTreeTypes.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "AIControllerBase.generated.h"
 
@@ -47,6 +48,7 @@ public:
 	void SetStateAsPassive();
 	
 	/** State and Properties **/
+	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EAIState AIState = EAIState::EAIS_Passive;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	EEquippedWeaponType EquippedWeaponType = EEquippedWeaponType::EEWT_None;

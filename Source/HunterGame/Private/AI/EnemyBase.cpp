@@ -7,9 +7,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Tasks/AITask_MoveTo.h"
-#include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
-#include "Components/SphereComponent.h"
 
 AEnemyBase::AEnemyBase()
 {
@@ -19,13 +17,6 @@ AEnemyBase::AEnemyBase()
 void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(this, 0);
-	if (PlayerCharacter)
-	{
-		EquippedWeaponType = EEquippedWeaponType::EEWT_Melee;
-		GetInCombat(PlayerCharacter);
-	}
 }
 
 void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -44,6 +35,12 @@ void AEnemyBase::PossessedBy(AController* NewController)
 	AIController->RunBehaviorTree(BehaviorTree);
 }
 
+/** Interface **/
+EAIState AEnemyBase::GetEnemyState() const
+{
+	return AIState;
+}
+/** Interface **/
 
 
 void AEnemyBase::GetInCombat(AActor* TargetActor)

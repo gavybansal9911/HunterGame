@@ -19,7 +19,7 @@ enum class EEquippedWeaponType : uint8
 	EEWT_Both UMETA(DisplayName = "Both")
 };
 
-UENUM(BlueprintType)
+UENUM(Blueprintable)
 enum class EAIState : uint8
 {
 	EAIS_None UMETA(DisplayName = "None"),
