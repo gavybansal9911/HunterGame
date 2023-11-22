@@ -52,6 +52,7 @@ void AAIControllerBase::PostInitializeComponents()
 void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
+	EquippedWeaponType = EEquippedWeaponType::EEWT_Melee;
 }
 
 void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
@@ -132,6 +133,7 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAISense Sense
 
 void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 {
+	SetStateAsAttacking(SensedActor);
 }
 
 void AAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)
@@ -139,5 +141,13 @@ void AAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)
 }
 
 void AAIControllerBase::HandleDamageSense()
+{
+}
+
+void AAIControllerBase::SetStateAsAttacking(AActor* AttackTarget)
+{
+}
+
+void AAIControllerBase::SetStateAsPassive()
 {
 }

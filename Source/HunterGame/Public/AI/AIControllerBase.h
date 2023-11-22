@@ -43,6 +43,15 @@ public:
 	void HandleHearingSense(FVector SoundOrigin_Loc);
 	void HandleDamageSense();
 
+	void SetStateAsAttacking(AActor* AttackTarget);
+	void SetStateAsPassive();
+	
+	/** State and Properties **/
+	EAIState AIState = EAIState::EAIS_Passive;
+	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
+	EEquippedWeaponType EquippedWeaponType = EEquippedWeaponType::EEWT_None;
+	/** State and Properties **/
+
 protected:
 	virtual void BeginPlay() override;
 	
