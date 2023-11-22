@@ -38,7 +38,7 @@ AAIControllerBase::AAIControllerBase()
 
 	SenseConfig_Damage = CreateDefaultSubobject<UAISenseConfig_Damage>(TEXT("AI Damage Config"));
 	PerceptionComponent->ConfigureSense(*SenseConfig_Damage);
-	SenseConfig_Damage->SetMaxAge(6.5f);
+	SenseConfig_Damage->SetMaxAge(3.f);
 
 	PerceptionComponent->SetDominantSense(SenseConfig_Damage->GetSenseImplementation());  // Dominant Sense
 }
@@ -65,6 +65,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		if (SenseActorData.Sensed)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Sight Triggered"));
+			HandleSightSense(Actor);
 		}
 
 		// Sensed Hearing?
@@ -72,6 +73,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		if (SenseActorData.Sensed)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Hearing Triggered"));
+			HandleHearingSense(SenseActorData.Stimulus.StimulusLocation);
 		}
 
 		// Sensed Damage?
@@ -79,6 +81,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		if (SenseActorData.Sensed)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Damage Triggered"));
+			HandleDamageSense();
 		}
 	}
 }
