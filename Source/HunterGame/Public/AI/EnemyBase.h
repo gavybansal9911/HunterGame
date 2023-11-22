@@ -27,12 +27,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual EAIState GetEnemyState() const override;
 	/** Interface **/
-
-	/** Combat **/
-	void GetInCombat(AActor* TargetActor);
-	void ChasePlayer();
-	void Attack();
-	/** Combat **/
 	
 protected:
 	virtual void BeginPlay() override;

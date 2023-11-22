@@ -41,21 +41,3 @@ EAIState AEnemyBase::GetEnemyState() const
 	return AIState;
 }
 /** Interface **/
-
-
-void AEnemyBase::GetInCombat(AActor* TargetActor)
-{
-	FAIMoveRequest AIMoveRequest;
-	AIMoveRequest.SetGoalActor(TargetActor);
-	AIController->MoveTo(AIMoveRequest);
-}
-
-void AEnemyBase::ChasePlayer()
-{
-}
-
-void AEnemyBase::Attack()
-{
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (!AnimInstance) return;
-}

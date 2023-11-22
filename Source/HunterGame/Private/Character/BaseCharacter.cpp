@@ -182,7 +182,7 @@ void ABaseCharacter::ServerInteractButtonPressed_Implementation()
 
 void ABaseCharacter::AimButtonPressed()
 {
-	if (!Combat) return;
+	if (Combat == nullptr || Combat->GetWeaponInHand() == nullptr) return;
 	Combat->SetAiming(true);
 }
 
