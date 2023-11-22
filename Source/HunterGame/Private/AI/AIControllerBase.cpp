@@ -133,6 +133,7 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAISense Sense
 
 void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 {
+	Blackboard->SetValueAsObject(FName("TargetActor"), SensedActor);
 	SetStateAsAttacking(SensedActor);
 }
 
@@ -146,8 +147,10 @@ void AAIControllerBase::HandleDamageSense()
 
 void AAIControllerBase::SetStateAsAttacking(AActor* AttackTarget)
 {
+	AIState = EAIState::EAIS_Attacking;
 }
 
 void AAIControllerBase::SetStateAsPassive()
 {
+	AIState = EAIState::EAIS_Passive;
 }
