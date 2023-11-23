@@ -25,6 +25,8 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(UCombatComponent, bIsCombatEnabled);
 	DOREPLIFETIME(UCombatComponent, bIsAiming);
 	DOREPLIFETIME(UCombatComponent, bShootButtonPressed);
+	DOREPLIFETIME(UCombatComponent, PrimaryWeapon);
+	DOREPLIFETIME(UCombatComponent, SecondaryWeapon);
 }
 
 void UCombatComponent::BeginPlay()
@@ -58,10 +60,22 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 {
 	if (!Weapon || !HunterCharacter) return;
 	if (Weapon->GetWeaponState() != EWeaponState::EWS_Unattached) return;
+	if (CheckIfWeaponWithSameClassIsEquipped(Weapon->GetWeaponClass())) return;
 
 	if (Weapon->AreaSphere->GetGenerateOverlapEvents()) {Weapon->AreaSphere->SetGenerateOverlapEvents(false);}
 	AttachToActor(HunterCharacter, Weapon, Weapon->GetInHandAttachSocketName());
 	WeaponInHand = Weapon;
+	switch (Weapon->GetWeaponClass())
+	{
+		case EWeaponClass::EWC_Primary:
+			PrimaryWeapon = Weapon;
+			break;
+		case EWeaponClass::EWC_Secondary:
+			SecondaryWeapon = Weapon;
+			break;
+		default:
+			break;;
+	}
 	bIsCombatEnabled = true;
 	Weapon->SetWeaponState(EWeaponState::EWS_Attached);
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
@@ -77,6 +91,13 @@ void UCombatComponent::AttachToActor(const ACharacter* InParent, AActor* ActorTo
 {
 	const FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
 	ActorToAttach->AttachToComponent(InParent->GetMesh(), AttachmentTransformRules, SocketName);
+}
+
+bool UCombatComponent::CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponClass)
+{
+	if (WeaponClass == EWeaponClass::EWC_Primary) { if (PrimaryWeapon) { return true; } { return false; } }
+	if (WeaponClass == EWeaponClass::EWC_Secondary) { if (SecondaryWeapon) { return true; } { return false; } }
+	return true;
 }
 
 void UCombatComponent::SetAiming(bool bAiming)
@@ -131,6 +152,27 @@ void UCombatComponent::MulticastShoot_Implementation(bool bShootPressed, const F
 		HunterCharacter->PlayShootMontage(bIsAiming);
 		WeaponInHand->Shoot(TraceHitTarget);                        // Shoot
 	}
+}
+
+void UCombatComponent::TogglePrimaryWeapon()
+{
+	if (!PrimaryWeapon) return;
+
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
+	{
+		HunterCharacter->PlayAnimationMontage(WeaponInHand->PutWeaponInMontage, FName(), false);
+		WeaponInHand = nullptr;
+	}
+	else
+	{
+		HunterCharacter->PlayAnimationMontage(PrimaryWeapon->TakeOutWeaponMontage, FName(), false);
+		WeaponInHand = PrimaryWeapon;
+	}
+}
+
+void UCombatComponent::ToggleSecondaryWeapon()
+{
+	if (!SecondaryWeapon) return;
 }
 
 void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
@@ -247,6 +289,15 @@ void UCombatComponent::OnRep_EquippedWeapon()
 	{
 		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 		HunterCharacter->bUseControllerRotationYaw = true;
+		WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	}
+}
+
+void UCombatComponent::OnRep_PrimaryWeapon()
+{
+}
+
+void UCombatComponent::OnRep_SecondaryWeapon()
+{
 }
 /** Rep Notifies **/

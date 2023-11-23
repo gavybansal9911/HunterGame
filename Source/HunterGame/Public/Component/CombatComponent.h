@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Weapon/WeaponTypes.h"
 #include "CombatComponent.generated.h"
 
 #define TRACE_LENGTH 100000.f
@@ -39,11 +40,11 @@ public:
 	/** Combat **/
 	void EquipWeapon(AWeapon* Weapon);
 	void AttachToActor(const ACharacter* InParent, AActor* ActorToAttach, const FName SocketName);
+	bool CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponClass);
 	/** Combat **/
 
 protected:
 	virtual void BeginPlay() override;
-
 	/** Aiming **/
 	void SetAiming(bool bAiming);
 
@@ -60,6 +61,11 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastShoot(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget);
 	/** Shooting **/
+
+	/** Weapon **/
+	void TogglePrimaryWeapon();
+	void ToggleSecondaryWeapon();
+	/** Weapon **/
 	
 	/** Hitting Targets **/
 	void TraceUnderCrosshair(FHitResult& TraceHitResult);
@@ -76,6 +82,10 @@ protected:
 	/** Rep Notifies **/
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
+	UFUNCTION()
+	void OnRep_PrimaryWeapon();
+	UFUNCTION()
+	void OnRep_SecondaryWeapon();
 	/** Rep Notifies **/
 
 private:
@@ -83,10 +93,10 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* WeaponInHand;
 
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing = OnRep_PrimaryWeapon)
 	AWeapon* PrimaryWeapon;
 
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing = OnRep_SecondaryWeapon)
 	AWeapon* SecondaryWeapon;
 
 	UPROPERTY(Replicated)

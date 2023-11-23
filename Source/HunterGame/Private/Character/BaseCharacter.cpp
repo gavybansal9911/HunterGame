@@ -109,6 +109,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &ABaseCharacter::ShootButtonPressed);
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Completed, this, &ABaseCharacter::ShootButtonReleased);
 		EnhancedInputComponent->BindAction(ChangeCameraModeAction, ETriggerEvent::Started, this, &ABaseCharacter::ChangeCameraMode);
+		EnhancedInputComponent->BindAction(TogglePrimaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::TogglePrimaryWeaponButtonPressed);
+		EnhancedInputComponent->BindAction(ToggleSecondaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleSecondaryWeaponButtonPressed);
 	}
 }
 
@@ -117,6 +119,32 @@ void ABaseCharacter::GetHit()
 {
 	if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Hit"));}
 }
+
+void ABaseCharacter::PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
+{
+	ServerPlayAnimationMontage(Montage, SectionName, bJumpToSection);
+}
+
+void ABaseCharacter::ServerPlayAnimationMontage_Implementation(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
+{
+	MulticastPlayAnimationMontage(Montage, SectionName, bJumpToSection);
+}
+
+void ABaseCharacter::MulticastPlayAnimationMontage_Implementation(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
+{
+	if (Montage == nullptr) return;
+
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		AnimInstance->Montage_Play(Montage);
+
+		if (bJumpToSection)
+		{
+			AnimInstance->Montage_JumpToSection(SectionName);
+		}
+	}
+}
+
 /** Interface **/
 
 void ABaseCharacter::Move(const FInputActionValue& Value)
@@ -233,6 +261,18 @@ void ABaseCharacter::ChangeCameraMode()
 		TP_ViewCamera->SetActive(true);
 		FP_ViewCamera->SetActive(false);
 	}
+}
+
+void ABaseCharacter::TogglePrimaryWeaponButtonPressed()
+{
+	if (!Combat) return;
+	Combat->TogglePrimaryWeapon();
+}
+
+void ABaseCharacter::ToggleSecondaryWeaponButtonPressed()
+{
+	if (!Combat) return;
+	Combat->ToggleSecondaryWeapon();
 }
 
 /** Stats **/

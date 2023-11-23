@@ -12,6 +12,7 @@ class ABulletShell;
 class USphereComponent;
 class UAnimationAsset;
 class UTexture2D;
+class UAnimMontage;
 
 UCLASS()
 class HUNTERGAME_API AWeapon : public AActor, public IInteractInterface
@@ -56,6 +57,14 @@ public:
 	UTexture2D* CrosshairBottom;
 	/** Textures for the weapon crosshair **/
 
+	/** Animation **/
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* TakeOutWeaponMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* PutWeaponInMontage;
+	/** Animation **/
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -75,8 +84,9 @@ private:
 	/** Attachment Properties **/
 
 	/** Weapon Properties && Status **/
-	EWeaponName WeaponName = EWeaponName::EWN_Rifle;
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	EWeaponClass WeaponClass = EWeaponClass::EWC_Max;
+	EWeaponName WeaponName = EWeaponName::EWN_Rifle;
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Properties && Status **/
@@ -86,16 +96,17 @@ private:
 	TSubclassOf<ABulletShell> BulletShellClass;
 	/** Weapon Properties **/
 
-	/** Animation **/
+	/** Weapon Animation **/
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimationAsset* FireAnimationAsset;    // Weapon Animation Sequence reference
-	/** Animation **/
+	/** Weapon Animation **/
 
 public:
 	FORCEINLINE FName GetInHandAttachSocketName() const {return InHandAttachSocketName;}
 	FORCEINLINE FName GetOutHandAttachSocketName() const {return OutHandAttachSocketName;}
 	FORCEINLINE EWeaponState GetWeaponState() const {return WeaponState;}
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const {return WeaponMesh;}
+	FORCEINLINE EWeaponClass GetWeaponClass() const {return WeaponClass;}
 
 	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}
 	FORCEINLINE void SetWeaponAttachmentStatus(const EAttachmentStatus NewWeaponAttachmentStatus) {AttachmentStatus = NewWeaponAttachmentStatus;}

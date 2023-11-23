@@ -34,10 +34,20 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 	/** Interface **/
 	virtual void GetHit() override;
 	/** Interface **/
+
+	/** Generic Functions **/
+	void PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
+
+	UFUNCTION(Server, Reliable)
+	void ServerPlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastPlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
+	/** Generic Functions **/
 	
 	/** Components **/
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -65,6 +75,8 @@ protected:
 	void ShootButtonPressed();
 	void ShootButtonReleased();
 	void ChangeCameraMode();
+	void TogglePrimaryWeaponButtonPressed();
+	void ToggleSecondaryWeaponButtonPressed();
 	/** Input CallBacks **/
 
 	/** Input CallBacks RPCs **/
@@ -110,6 +122,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> ChangeCameraModeAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> TogglePrimaryWeaponAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ToggleSecondaryWeaponAction;
 	/** Input **/
 
 	/** Character States **/
