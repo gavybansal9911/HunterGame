@@ -75,7 +75,10 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AimOffset(DeltaTime);
+	if (Combat && Combat->WeaponInHand)
+	{
+		AimOffset(DeltaTime);
+	}
 }
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -119,7 +122,9 @@ void ABaseCharacter::GetHit()
 {
 	if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Hit"));}
 }
+/** Interface **/
 
+/** Generic **/
 void ABaseCharacter::PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
 {
 	ServerPlayAnimationMontage(Montage, SectionName, bJumpToSection);
@@ -144,8 +149,8 @@ void ABaseCharacter::MulticastPlayAnimationMontage_Implementation(UAnimMontage* 
 		}
 	}
 }
+/** Generic **/
 
-/** Interface **/
 
 void ABaseCharacter::Move(const FInputActionValue& Value)
 {
