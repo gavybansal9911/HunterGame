@@ -100,6 +100,52 @@ bool UCombatComponent::CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponC
 	return true;
 }
 
+void UCombatComponent::TogglePrimaryWeaponAttachment()
+{
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
+	{
+		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand = nullptr;
+		DisableCombat();
+	}
+	else if (WeaponInHand == nullptr && PrimaryWeapon)
+	{
+		AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
+		WeaponInHand = PrimaryWeapon;
+		EnableCombat();
+	}
+}
+
+void UCombatComponent::ToggleSecondaryWeaponAttachment()
+{
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
+	{
+		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand = nullptr;
+		DisableCombat();
+	}
+	else if (WeaponInHand == nullptr && SecondaryWeapon)
+	{
+		AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
+		WeaponInHand = SecondaryWeapon;
+		EnableCombat();
+	}
+}
+
+void UCombatComponent::DisableCombat()
+{
+	SetIsCombatEnabled(false);
+	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
+	HunterCharacter->bUseControllerRotationYaw = false;
+}
+
+void UCombatComponent::EnableCombat()
+{
+	SetIsCombatEnabled(true);
+	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+	HunterCharacter->bUseControllerRotationYaw = true;
+}
+
 void UCombatComponent::SetAiming(bool bAiming)
 {
 	bIsAiming = bAiming;
@@ -154,35 +200,31 @@ void UCombatComponent::MulticastShoot_Implementation(bool bShootPressed, const F
 	}
 }
 
-void UCombatComponent::TogglePrimaryWeapon()
+void UCombatComponent::OnTogglePrimaryWeaponButtonPressed()
 {
 	if (!PrimaryWeapon) return;
 
 	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
 	{
 		HunterCharacter->PlayAnimationMontage(WeaponInHand->PutWeaponInMontage, FName(), false);
-		WeaponInHand = nullptr;
 	}
 	else if (WeaponInHand == nullptr)
 	{
 		HunterCharacter->PlayAnimationMontage(PrimaryWeapon->TakeOutWeaponMontage, FName(), false);
-		WeaponInHand = PrimaryWeapon;
 	}
 }
 
-void UCombatComponent::ToggleSecondaryWeapon()
+void UCombatComponent::OnToggleSecondaryWeaponButtonPressed()
 {
 	if (!SecondaryWeapon) return;
 
 	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
 	{
 		HunterCharacter->PlayAnimationMontage(WeaponInHand->PutWeaponInMontage, FName(), false);
-		WeaponInHand = nullptr;
 	}
 	else if (WeaponInHand == nullptr)
 	{
 		HunterCharacter->PlayAnimationMontage(SecondaryWeapon->TakeOutWeaponMontage, FName(), false);
-		WeaponInHand = SecondaryWeapon;
 	}
 }
 

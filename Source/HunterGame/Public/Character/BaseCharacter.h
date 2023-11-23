@@ -87,8 +87,15 @@ protected:
 	/** Combat **/
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
+	
 	void AimOffset(float DeltaTime);
 	void TurnInPlace(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable)
+	void TogglePrimaryWeapon_AnimNotifyCallBack();
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleSecondaryWeapon_AnimNotifyCallBack();
 	/** Combat **/
 
 	/** Stats **/

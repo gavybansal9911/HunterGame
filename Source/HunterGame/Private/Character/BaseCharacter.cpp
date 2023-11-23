@@ -266,13 +266,13 @@ void ABaseCharacter::ChangeCameraMode()
 void ABaseCharacter::TogglePrimaryWeaponButtonPressed()
 {
 	if (!Combat) return;
-	Combat->TogglePrimaryWeapon();
+	Combat->OnTogglePrimaryWeaponButtonPressed();
 }
 
 void ABaseCharacter::ToggleSecondaryWeaponButtonPressed()
 {
 	if (!Combat) return;
-	Combat->ToggleSecondaryWeapon();
+	Combat->OnToggleSecondaryWeaponButtonPressed();
 }
 
 /** Stats **/
@@ -367,6 +367,19 @@ void ABaseCharacter::TurnInPlace(float DeltaTime)
 		}
 	}
 }
+
+void ABaseCharacter::TogglePrimaryWeapon_AnimNotifyCallBack()
+{
+	if (!Combat) return;
+	Combat->TogglePrimaryWeaponAttachment();
+}
+
+void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
+{
+	if (!Combat) return;
+	Combat->ToggleSecondaryWeaponAttachment();
+}
+
 /** Combat **/
 
 /** Animation **/

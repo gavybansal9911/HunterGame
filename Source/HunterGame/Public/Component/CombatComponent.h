@@ -41,6 +41,10 @@ public:
 	void EquipWeapon(AWeapon* Weapon);
 	void AttachToActor(const ACharacter* InParent, AActor* ActorToAttach, const FName SocketName);
 	bool CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponClass);
+	void TogglePrimaryWeaponAttachment();
+	void ToggleSecondaryWeaponAttachment();
+	void DisableCombat();
+	void EnableCombat();
 	/** Combat **/
 
 protected:
@@ -63,8 +67,8 @@ protected:
 	/** Shooting **/
 
 	/** Weapon **/
-	void TogglePrimaryWeapon();
-	void ToggleSecondaryWeapon();
+	void OnTogglePrimaryWeaponButtonPressed();
+	void OnToggleSecondaryWeaponButtonPressed();
 	/** Weapon **/
 	
 	/** Hitting Targets **/
