@@ -163,7 +163,7 @@ void UCombatComponent::TogglePrimaryWeapon()
 		HunterCharacter->PlayAnimationMontage(WeaponInHand->PutWeaponInMontage, FName(), false);
 		WeaponInHand = nullptr;
 	}
-	else
+	else if (WeaponInHand == nullptr)
 	{
 		HunterCharacter->PlayAnimationMontage(PrimaryWeapon->TakeOutWeaponMontage, FName(), false);
 		WeaponInHand = PrimaryWeapon;
@@ -173,6 +173,17 @@ void UCombatComponent::TogglePrimaryWeapon()
 void UCombatComponent::ToggleSecondaryWeapon()
 {
 	if (!SecondaryWeapon) return;
+
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
+	{
+		HunterCharacter->PlayAnimationMontage(WeaponInHand->PutWeaponInMontage, FName(), false);
+		WeaponInHand = nullptr;
+	}
+	else if (WeaponInHand == nullptr)
+	{
+		HunterCharacter->PlayAnimationMontage(SecondaryWeapon->TakeOutWeaponMontage, FName(), false);
+		WeaponInHand = SecondaryWeapon;
+	}
 }
 
 void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
