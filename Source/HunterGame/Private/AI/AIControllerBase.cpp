@@ -62,7 +62,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	for (AActor* Actor : UpdatedActors)
 	{
 		// Sensed Sight?
-		SenseActorData = CanSenseActor(Actor, EAISense::EAIS_Sight);
+		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Sight);
 		if (SenseActorData.Sensed)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Sight Triggered"));
@@ -70,7 +70,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		}
 
 		// Sensed Hearing?
-		SenseActorData = CanSenseActor(Actor, EAISense::EAIS_Hearing);
+		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Hearing);
 		if (SenseActorData.Sensed)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Hearing Triggered"));
@@ -78,7 +78,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		}
 
 		// Sensed Damage?
-		SenseActorData = CanSenseActor(Actor, EAISense::EAIS_Damage);
+		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Damage);
 		if (SenseActorData.Sensed)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Damage Triggered"));
@@ -87,7 +87,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 	}
 }
 
-CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAISense Sense)
+CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAIPerceptionSense Sense)
 {
 	FActorPerceptionBlueprintInfo ActorPerceptionBlueprintInfo;
 	PerceptionComponent->GetActorsPerception(Actor,ActorPerceptionBlueprintInfo);
@@ -102,7 +102,7 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAISense Sense
 		
 		CanSenseActorData Local_CanSenseActorData;
 		Local_CanSenseActorData.Stimulus = AIStimulas;
-		if (Sense == EAISense::EAIS_Sight)
+		if (Sense == EAIPerceptionSense::EAIS_Sight)
 		{
 			if (SenseClass == SightSenseClass)
 			{
@@ -110,7 +110,7 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAISense Sense
 				return Local_CanSenseActorData;
 			}
 		}
-		else if (Sense == EAISense::EAIS_Hearing)
+		else if (Sense == EAIPerceptionSense::EAIS_Hearing)
 		{
 			if (SenseClass == HearingSenseClass)
 			{
@@ -118,7 +118,7 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAISense Sense
 				return Local_CanSenseActorData;
 			}
 		}
-		else if (Sense == EAISense::EAIS_Damage)
+		else if (Sense == EAIPerceptionSense::EAIS_Damage)
 		{
 			if (SenseClass == DamageSenseClass)
 			{

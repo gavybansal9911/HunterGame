@@ -32,7 +32,7 @@ enum class EAIState : uint8
 
 // Use ScriptName metadata to provide a unique name for the enum in Python
 UENUM(BlueprintType)
-enum class EAISense : uint8
+enum class EAIPerceptionSense : uint8
 {
 	EAIS_None UMETA(DisplayName = "None"),
 	EAIS_Sight UMETA(DisplayName = "Sight"),

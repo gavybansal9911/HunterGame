@@ -37,7 +37,7 @@ public:
 	UFUNCTION()
 	virtual void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
 
-	CanSenseActorData CanSenseActor(AActor* Actor, EAISense Sense);
+	CanSenseActorData CanSenseActor(AActor* Actor, EAIPerceptionSense Sense);
 	
 	// Handle Sense
 	void HandleSightSense(AActor* SensedActor);
