@@ -59,6 +59,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 {
 	if (!Weapon || !HunterCharacter) return;
+	if (WeaponInHand) return;
 	if (Weapon->GetWeaponState() != EWeaponState::EWS_Unattached) return;
 	if (CheckIfWeaponWithSameClassIsEquipped(Weapon->GetWeaponClass())) return;
 
@@ -218,7 +219,7 @@ void UCombatComponent::OnToggleSecondaryWeaponButtonPressed()
 {
 	if (!SecondaryWeapon) return;
 
-	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
 	{
 		HunterCharacter->PlayAnimationMontage(WeaponInHand->PutWeaponInMontage, FName(), false);
 	}
