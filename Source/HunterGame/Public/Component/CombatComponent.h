@@ -60,6 +60,7 @@ protected:
 	void ShootButtonPressed(bool bPressed);
 	bool CanShoot();
 	void Shoot();
+	void OnShootFailedDueToEmptyMagazine();
 	
 	UFUNCTION(Server, Reliable)
 	void ServerShoot(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget);
