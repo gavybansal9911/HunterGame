@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
+#include "Component/InventoryComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -48,6 +49,7 @@ ABaseCharacter::ABaseCharacter()
 
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -93,7 +95,8 @@ void ABaseCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	if (InteractionComponent) {InteractionComponent->HunterCharacter = this;}
-	if(Combat) {Combat->HunterCharacter = this;}
+	if (Combat) {Combat->HunterCharacter = this;}
+	if (InventoryComponent) {InventoryComponent->InitInventory();}
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

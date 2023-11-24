@@ -13,6 +13,7 @@
 #define CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH 175.f
 #define CAMERA_BOOM_SFP_TARGET_ARM_LENGTH 0.f
 
+class UInventoryComponent;
 class AHunterPlayerController;
 class AWeapon;
 class UCombatComponent;
@@ -55,6 +56,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UCombatComponent> Combat;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UInventoryComponent> InventoryComponent;
 	/** Components **/
 
 	/** Animation **/
