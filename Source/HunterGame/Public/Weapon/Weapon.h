@@ -13,6 +13,8 @@ class USphereComponent;
 class UAnimationAsset;
 class UTexture2D;
 class UAnimMontage;
+class ABaseCharacter;
+class AHunterPlayerController;
 
 UCLASS()
 class HUNTERGAME_API AWeapon : public AActor, public IInteractInterface
@@ -21,6 +23,8 @@ class HUNTERGAME_API AWeapon : public AActor, public IInteractInterface
 	
 public:	
 	AWeapon();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void OnRep_Owner() override;
 	virtual void Tick(float DeltaTime) override;
 
 	/** Interface **/
@@ -28,6 +32,8 @@ public:
 	virtual void InteractWith(ABaseCharacter* HunterCharacter) override;
 	/** Interface **/
 
+	void SetHUDWeaponAmmo();
+	
 	/** Components **/
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
@@ -37,7 +43,7 @@ public:
 	/** Components **/
 
 	/** Shooting **/
-	virtual void Shoot(const FVector& HitTarget) const;
+	virtual void Shoot(const FVector& HitTarget);
 	/** Shooting **/
 
 	/** Textures for the weapon crosshair **/
@@ -76,6 +82,13 @@ protected:
 	/** Overlap Triggers **/
 
 private:
+	/** Reference **/
+	UPROPERTY()
+	ABaseCharacter* OwnerCharacter;
+	UPROPERTY()
+	AHunterPlayerController* OwnerController;
+	/** Reference **/
+	
 	/** Attachment Properties **/
 	UPROPERTY(EditAnywhere, Category = "Attachment")
 	FName OutHandAttachSocketName;
@@ -85,9 +98,18 @@ private:
 
 	/** Weapon Properties && Status **/
 	UPROPERTY(EditAnywhere, Category = "Properties")
-	EWeaponClass WeaponClass = EWeaponClass::EWC_Max;
-	EWeaponName WeaponName = EWeaponName::EWN_Rifle;
+	bool bAutomatic;
+	
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	float AutoFireDelay = 0.1f;
+	
+	UPROPERTY(Replicated)
 	EWeaponState WeaponState = EWeaponState::EWS_Unattached;
+
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	EWeaponClass WeaponClass = EWeaponClass::EWC_Max;
+
+	EWeaponName WeaponName = EWeaponName::EWN_Rifle;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Properties && Status **/
 
@@ -101,12 +123,30 @@ private:
 	UAnimationAsset* FireAnimationAsset;    // Weapon Animation Sequence reference
 	/** Weapon Animation **/
 
+	/** Ammo **/
+	void SpendRound();
+	
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Ammo, Category = "Ammo")
+	int32 Ammo;
+	
+	UPROPERTY(EditAnywhere, Category = "Ammo")
+	int32 MagazineSize;
+	/** Ammo **/
+
+	/** Rep Notifies **/
+	UFUNCTION()
+	void OnRep_Ammo();
+	/** Rep Notifies **/
+
 public:
 	FORCEINLINE FName GetInHandAttachSocketName() const {return InHandAttachSocketName;}
 	FORCEINLINE FName GetOutHandAttachSocketName() const {return OutHandAttachSocketName;}
 	FORCEINLINE EWeaponState GetWeaponState() const {return WeaponState;}
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const {return WeaponMesh;}
 	FORCEINLINE EWeaponClass GetWeaponClass() const {return WeaponClass;}
+	FORCEINLINE float GetAutoFireDelay() const {return AutoFireDelay;}
+	FORCEINLINE bool IsWeaponAutomatic() const {return bAutomatic;}
+	bool IsMagazineEmpty() const;
 
 	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}
 	FORCEINLINE void SetWeaponAttachmentStatus(const EAttachmentStatus NewWeaponAttachmentStatus) {AttachmentStatus = NewWeaponAttachmentStatus;}

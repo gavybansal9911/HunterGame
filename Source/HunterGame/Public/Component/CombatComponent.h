@@ -58,6 +58,8 @@ protected:
 
 	/** Shooting **/
 	void ShootButtonPressed(bool bPressed);
+	bool CanShoot();
+	void Shoot();
 	
 	UFUNCTION(Server, Reliable)
 	void ServerShoot(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget);
@@ -124,6 +126,16 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Movement Properties");
 	float AimWalkSpeed{400.f};
 	/** Speed **/
+
+	/** Automatic Fire **/
+	FTimerHandle FireTimer;
+	void StartFireTimer();
+	void FireTimerFinished();
+	/** Automatic Fire **/
+
+	/** Other Properties **/
+	bool bCanShoot = true;
+	/** Other Properties **/
 
 public:
 	FORCEINLINE void SetIsCombatEnabled(bool bCombatEnabled) {bIsCombatEnabled = bCombatEnabled;}

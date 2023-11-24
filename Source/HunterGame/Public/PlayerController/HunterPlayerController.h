@@ -18,6 +18,7 @@ class HUNTERGAME_API AHunterPlayerController : public APlayerController
 
 public:
 	void SetHUDHealth(float Health, float MaxHealth);
+	void SetHUDWeaponAmmo(int32 AmmoAmount);
 
 protected:
 	virtual void BeginPlay() override;

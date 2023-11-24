@@ -17,7 +17,7 @@ class HUNTERGAME_API AProjectileWeapon : public AWeapon
 	GENERATED_BODY()
 
 public:
-	virtual void Shoot(const FVector& HitTarget) const override;
+	virtual void Shoot(const FVector& HitTarget) override;
 	
 private:
 	UPROPERTY(EditAnywhere, Category = "Properties")

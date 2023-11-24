@@ -7,6 +7,8 @@
 #include "Component/InteractionComponent.h"
 #include "Components/SphereComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Net/UnrealNetwork.h"
+#include "PlayerController/HunterPlayerController.h"
 #include "Weapon/BulletShell.h"
 
 AWeapon::AWeapon()
@@ -24,6 +26,14 @@ AWeapon::AWeapon()
 	AreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Area Sphere"));
 	AreaSphere->SetupAttachment(WeaponMesh);
 	AreaSphere->SetGenerateOverlapEvents(true);
+}
+
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AWeapon, WeaponState);
+	DOREPLIFETIME(AWeapon, Ammo);
 }
 
 void AWeapon::BeginPlay()
@@ -67,7 +77,7 @@ void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
 	HunterCharacter->Combat->EquipWeapon(this);
 }
 
-void AWeapon::Shoot(const FVector& HitTarget) const
+void AWeapon::Shoot(const FVector& HitTarget)
 {
 	if (FireAnimationAsset)
 	{
@@ -87,4 +97,51 @@ void AWeapon::Shoot(const FVector& HitTarget) const
 			}
 		}
 	}
+	SpendRound();
 }
+
+void AWeapon::SetHUDWeaponAmmo()
+{
+	OwnerCharacter = OwnerCharacter == nullptr ? Cast<ABaseCharacter>(GetOwner()) : OwnerCharacter;
+	if (OwnerCharacter)
+	{
+		OwnerController = OwnerController == nullptr ? Cast<AHunterPlayerController>(OwnerCharacter->GetController()) : OwnerController;
+		if (OwnerController)
+		{
+			OwnerController->SetHUDWeaponAmmo(Ammo);
+		}
+	}
+}
+
+void AWeapon::SpendRound()
+{
+	Ammo = FMath::Clamp(Ammo - 1, 0, MagazineSize);
+	SetHUDWeaponAmmo();
+}
+
+bool AWeapon::IsMagazineEmpty() const
+{
+	return Ammo <= 0;
+}
+
+/** Rep Notifies **/
+void AWeapon::OnRep_Ammo()
+{
+	SetHUDWeaponAmmo();
+}
+
+void AWeapon::OnRep_Owner()
+{
+	Super::OnRep_Owner();
+	
+	if (Owner == nullptr)
+	{
+		OwnerCharacter = nullptr;
+		OwnerController = nullptr;
+	}
+	else
+	{
+		SetHUDWeaponAmmo();
+	}
+}
+/** Rep Notifies **/

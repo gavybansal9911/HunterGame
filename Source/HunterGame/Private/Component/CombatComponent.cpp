@@ -5,11 +5,14 @@
 #include "Character/BaseCharacter.h"
 #include "PlayerController/HunterPlayerController.h"
 #include "Components/SphereComponent.h"
+#include "Components/TextBlock.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "HUD/CharacterOverlay.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Weapon/Weapon.h"
 #include "HUD/HunterHUD.h"
+#include "TimerManager.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -83,7 +86,13 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	/** We are not spawning the projectile on the client so for now there is no need to disable weapon collision for clients, but this may cause issues while performing hit and damage so later, we may have to disable weapon collision for clients as well.
 	* Set collision response to overlap for all channels so that the projectile or the trace(if performed from the muzzle position vector) doesn't collide with the weapon it's fired from. **/
 	WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	Weapon->SetOwner(HunterCharacter);
+	WeaponInHand->SetOwner(HunterCharacter);
+	if (HunterHUD && HunterHUD->CharacterOverlay && HunterHUD->CharacterOverlay->AmmoText && HunterHUD->CharacterOverlay->WeaponAmmoAmountText)
+	{
+		HunterHUD->CharacterOverlay->AmmoText->SetVisibility(ESlateVisibility::Visible);
+		HunterHUD->CharacterOverlay->WeaponAmmoAmountText->SetVisibility(ESlateVisibility::Visible);
+	}
+	WeaponInHand->SetHUDWeaponAmmo();
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
 }
@@ -138,6 +147,11 @@ void UCombatComponent::DisableCombat()
 	SetIsCombatEnabled(false);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 	HunterCharacter->bUseControllerRotationYaw = false;
+	if (HunterHUD && HunterHUD->CharacterOverlay && HunterHUD->CharacterOverlay->AmmoText && HunterHUD->CharacterOverlay->WeaponAmmoAmountText)
+	{
+		HunterHUD->CharacterOverlay->AmmoText->SetVisibility(ESlateVisibility::Hidden);
+		HunterHUD->CharacterOverlay->WeaponAmmoAmountText->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UCombatComponent::EnableCombat()
@@ -145,6 +159,15 @@ void UCombatComponent::EnableCombat()
 	SetIsCombatEnabled(true);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
+	if (HunterHUD && HunterHUD->CharacterOverlay && HunterHUD->CharacterOverlay->AmmoText && HunterHUD->CharacterOverlay->WeaponAmmoAmountText)
+	{
+		HunterHUD->CharacterOverlay->AmmoText->SetVisibility(ESlateVisibility::Visible);
+		HunterHUD->CharacterOverlay->WeaponAmmoAmountText->SetVisibility(ESlateVisibility::Visible);
+	}
+	if (WeaponInHand && WeaponInHand->GetOwner())
+	{
+		WeaponInHand->SetHUDWeaponAmmo();
+	}
 }
 
 void UCombatComponent::SetAiming(bool bAiming)
@@ -172,15 +195,29 @@ void UCombatComponent::ShootButtonPressed(bool bPressed)
 	
 	if (bShootButtonPressed)
 	{
-		FHitResult HitResult;
-		TraceUnderCrosshair(HitResult);	
-		ServerShoot(bShootButtonPressed, HitResult.ImpactPoint);
-
-		if (WeaponInHand)
-		{
-			CrosshairShootFactor = 1.2f;
-		}
+		//FHitResult HitResult;
+		//TraceUnderCrosshair(HitResult);	
+		Shoot();
 	}
+}
+
+bool UCombatComponent::CanShoot()
+{
+	if (WeaponInHand == nullptr) return false;
+	return !WeaponInHand->IsMagazineEmpty() || !bCanShoot;
+}
+
+void UCombatComponent::Shoot()
+{
+	if (!CanShoot()) return;
+
+	bCanShoot = false;
+	ServerShoot(bShootButtonPressed, HitTarget);
+	if (WeaponInHand)
+	{
+		CrosshairShootFactor = 1.2f;
+	}
+	StartFireTimer();
 }
 
 void UCombatComponent::ServerShoot_Implementation(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget)
@@ -333,6 +370,22 @@ void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 			// Update HUDPackage on HunterHUD
 			HunterHUD->SetHUDPackage(HUDPackage);
 		}
+	}
+}
+
+void UCombatComponent::StartFireTimer()
+{
+	if (WeaponInHand == nullptr || HunterCharacter == nullptr) return;
+	
+	HunterCharacter->GetWorldTimerManager().SetTimer(FireTimer, this, &UCombatComponent::FireTimerFinished, WeaponInHand->GetAutoFireDelay());
+}
+
+void UCombatComponent::FireTimerFinished()
+{
+	bCanShoot = true;
+	if (bShootButtonPressed && WeaponInHand && WeaponInHand->IsWeaponAutomatic())
+	{
+		Shoot();
 	}
 }
 

@@ -22,4 +22,10 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* HealthText;
+	
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* AmmoText;
+	
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* WeaponAmmoAmountText;
 };
