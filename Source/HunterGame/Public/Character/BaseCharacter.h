@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "CharacterTypes.h"
+#include "Component/CombatComponent.h"
+#include "Component/CombatTypes.h"
 #include "Interface/HitInterface.h"
 #include "BaseCharacter.generated.h"
 
@@ -81,6 +83,7 @@ protected:
 	void ChangeCameraMode();
 	void TogglePrimaryWeaponButtonPressed();
 	void ToggleSecondaryWeaponButtonPressed();
+	void ReloadButtonPressed();
 	/** Input CallBacks **/
 
 	/** Input CallBacks RPCs **/
@@ -95,6 +98,9 @@ protected:
 	void AimOffset(float DeltaTime);
 	void TurnInPlace(float DeltaTime);
 
+	UFUNCTION(BlueprintCallable)
+	void OnReloadEnd_AnimNotifyCallBack();
+	
 	UFUNCTION(BlueprintCallable)
 	void TogglePrimaryWeapon_AnimNotifyCallBack();
 
@@ -139,6 +145,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> ToggleSecondaryWeaponAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ReloadAction;
 	/** Input **/
 
 	/** Character States **/
@@ -210,4 +219,5 @@ public:
 	FORCEINLINE FVector GetCameraBoomAimSocketOffset() const {return  CameraBoomAimSocketOffset_TP;}
 	FORCEINLINE ECameraMode GetCurrentCameraMode() const {return CurrentCameraMode;}
 	FVector GetHitTarget() const;
+	ECombatState GetCombatState() const;
 };

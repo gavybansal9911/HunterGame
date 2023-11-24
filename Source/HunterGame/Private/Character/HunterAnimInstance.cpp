@@ -2,13 +2,13 @@
 
 
 #include "Character/HunterAnimInstance.h"
-
 #include "Camera/CameraComponent.h"
 #include "Character/BaseCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Weapon/Weapon.h"
+#include "Component/CombatTypes.h"
 
 void UHunterAnimInstance::NativeInitializeAnimation()
 {
@@ -103,7 +103,7 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		/** Fixing Weapon Rotation **/
 		if (bIsCombatEnabled && EquippedWeapon && EquippedWeapon->GetWeaponMesh() && HunterCharacter->GetMesh())
 		{
-			if (HunterCharacter->IsLocallyControlled())
+			if (HunterCharacter->IsLocallyControlled())     // Character locally controller ?
 			{
 				bLocallyControlled = true;
 				FTransform RightHandTransform = HunterCharacter->GetMesh()->GetSocketTransform(FName("hand_r"), ERelativeTransformSpace::RTS_World);
@@ -126,5 +126,9 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		/** Turning in Place **/
 		TurningInPlace = HunterCharacter->GetTurningInPlace();
 		/** Turning in Place **/
+
+		/** General **/
+		bUseFABRIK = HunterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+		/** General **/
 	}
 }

@@ -117,6 +117,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(ChangeCameraModeAction, ETriggerEvent::Started, this, &ABaseCharacter::ChangeCameraMode);
 		EnhancedInputComponent->BindAction(TogglePrimaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::TogglePrimaryWeaponButtonPressed);
 		EnhancedInputComponent->BindAction(ToggleSecondaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleSecondaryWeaponButtonPressed);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ABaseCharacter::ReloadButtonPressed);
 	}
 }
 
@@ -283,6 +284,12 @@ void ABaseCharacter::ToggleSecondaryWeaponButtonPressed()
 	Combat->OnToggleSecondaryWeaponButtonPressed();
 }
 
+void ABaseCharacter::ReloadButtonPressed()
+{
+	if (!Combat) return;
+	Combat->Reload();
+}
+
 /** Stats **/
 void ABaseCharacter::UpdateHUDHealth()
 {
@@ -376,6 +383,12 @@ void ABaseCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 
+void ABaseCharacter::OnReloadEnd_AnimNotifyCallBack()
+{
+	if (!Combat) return;;
+	Combat->OnReloadEnd();
+}
+
 void ABaseCharacter::TogglePrimaryWeapon_AnimNotifyCallBack()
 {
 	if (!Combat) return;
@@ -433,5 +446,11 @@ FVector ABaseCharacter::GetHitTarget() const
 {
 	if (!Combat) return FVector();
 	return Combat->HitTarget;
+}
+
+ECombatState ABaseCharacter::GetCombatState() const
+{
+	if (!Combat) return ECombatState::ECS_Max;
+	return Combat->CombatState;
 }
 /** Getter / Setter **/

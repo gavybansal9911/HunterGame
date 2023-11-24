@@ -91,5 +91,8 @@ protected:
 	/** General **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "General")
 	bool bLocallyControlled;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "General")
+	bool bUseFABRIK;
 	/** General **/
 };

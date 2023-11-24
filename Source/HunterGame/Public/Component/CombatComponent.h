@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CombatTypes.h"
 #include "Components/ActorComponent.h"
 #include "Weapon/WeaponTypes.h"
 #include "CombatComponent.generated.h"
@@ -41,12 +42,19 @@ public:
 	void EquipWeapon(AWeapon* Weapon);
 	void AttachToActor(const ACharacter* InParent, AActor* ActorToAttach, const FName SocketName);
 	bool CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponClass);
-	void TogglePrimaryWeaponAttachment();
-	void ToggleSecondaryWeaponAttachment();
 
+	void Reload();
+	UFUNCTION(Server, Reliable)
+	void ServerReload();
+	void HandleReload();
+	void PlayReloadMontage();
+	void OnReloadEnd();
+
+	void TogglePrimaryWeaponAttachment();
 	UFUNCTION(Server, Reliable)
 	void ServerTogglePrimaryWeaponAttachment();
 
+	void ToggleSecondaryWeaponAttachment();
 	UFUNCTION(Server, Reliable)
 	void ServerToggleSecondaryWeaponAttachment();
 	
@@ -100,10 +108,15 @@ protected:
 	void OnRep_PrimaryWeapon();
 	UFUNCTION()
 	void OnRep_SecondaryWeapon();
+	UFUNCTION()
+	void OnRep_CombatState();
 	/** Rep Notifies **/
 
 private:
 	/** Combat **/
+	UPROPERTY(ReplicatedUsing = OnRep_CombatState)
+	ECombatState CombatState = ECombatState::ECS_Unoccupied;    // Combat State
+	
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeapon* WeaponInHand;
 
@@ -149,4 +162,13 @@ public:
 	FORCEINLINE void SetIsCombatEnabled(bool bCombatEnabled) {bIsCombatEnabled = bCombatEnabled;}
 	FORCEINLINE AWeapon* GetWeaponInHand() const {return WeaponInHand;}
 	FORCEINLINE void SetWeaponInHand(AWeapon* InWeapon) {WeaponInHand = InWeapon;}
+
+/** Temporary **/
+public:
+	UPROPERTY(ReplicatedUsing = OnRep_CarriedAmmo)
+	int32 CarriedAmmo = 90;
+
+	UFUNCTION()
+	void OnRep_CarriedAmmo();
+/** Temporary **/
 };

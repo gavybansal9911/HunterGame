@@ -30,6 +30,11 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(UCombatComponent, bShootButtonPressed);
 	DOREPLIFETIME(UCombatComponent, PrimaryWeapon);
 	DOREPLIFETIME(UCombatComponent, SecondaryWeapon);
+	DOREPLIFETIME(UCombatComponent, CombatState);
+
+	/** Temporary **/
+	DOREPLIFETIME_CONDITION(UCombatComponent, CarriedAmmo, COND_OwnerOnly);
+	/** Temporary **/
 }
 
 void UCombatComponent::BeginPlay()
@@ -108,6 +113,53 @@ bool UCombatComponent::CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponC
 	if (WeaponClass == EWeaponClass::EWC_Primary) { if (PrimaryWeapon) { return true; } { return false; } }
 	if (WeaponClass == EWeaponClass::EWC_Secondary) { if (SecondaryWeapon) { return true; } { return false; } }
 	return true;
+}
+
+void UCombatComponent::Reload()
+{
+	if (CarriedAmmo > 0 && CombatState == ECombatState::ECS_Unoccupied)
+	{
+		ServerReload();
+	}
+}
+
+void UCombatComponent::ServerReload_Implementation()
+{
+	if (HunterCharacter == nullptr) return;
+
+	CombatState = ECombatState::ECS_Reloading;
+	PlayReloadMontage();    // This function further calls a generic PlayAnimationMontage which is set in a way that the montage is played for the server and all the clients so, no need to replicate this montage here again.
+}
+
+void UCombatComponent::HandleReload()
+{
+	
+}
+
+void UCombatComponent::PlayReloadMontage()
+{
+	if (WeaponInHand == nullptr || HunterCharacter == nullptr) return;
+
+	FName SectionName;
+	switch (bIsAiming)
+	{
+	case true:
+		SectionName = FName("Reload_Ironsights");
+		break;
+	case false:
+		SectionName = FName("Reload_Hip");
+	}
+	HunterCharacter->PlayAnimationMontage(WeaponInHand->ReloadMontage, SectionName, true);
+}
+
+void UCombatComponent::OnReloadEnd()
+{
+	if (HunterCharacter == nullptr) return;
+
+	if (HunterCharacter->HasAuthority())
+	{
+		CombatState = ECombatState::ECS_Unoccupied;	
+	}
 }
 
 void UCombatComponent::TogglePrimaryWeaponAttachment()
@@ -509,4 +561,24 @@ void UCombatComponent::OnRep_PrimaryWeapon()
 void UCombatComponent::OnRep_SecondaryWeapon()
 {
 }
+
+void UCombatComponent::OnRep_CombatState()
+{
+	switch (CombatState)
+	{
+		case ECombatState::ECS_Reloading:
+			HandleReload();
+			break;
+		default:
+			break;
+	}
+}
 /** Rep Notifies **/
+
+
+// <------------------------------------------------------------------------------------->
+/** Temporary **/
+void UCombatComponent::OnRep_CarriedAmmo()
+{
+}
+/** Temporary **/
