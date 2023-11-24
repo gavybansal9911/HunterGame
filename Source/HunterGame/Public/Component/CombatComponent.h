@@ -43,6 +43,13 @@ public:
 	bool CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponClass);
 	void TogglePrimaryWeaponAttachment();
 	void ToggleSecondaryWeaponAttachment();
+
+	UFUNCTION(Server, Reliable)
+	void ServerTogglePrimaryWeaponAttachment();
+
+	UFUNCTION(Server, Reliable)
+	void ServerToggleSecondaryWeaponAttachment();
+	
 	void DisableCombat();
 	void EnableCombat();
 	/** Combat **/

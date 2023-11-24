@@ -112,31 +112,117 @@ bool UCombatComponent::CheckIfWeaponWithSameClassIsEquipped(EWeaponClass WeaponC
 
 void UCombatComponent::TogglePrimaryWeaponAttachment()
 {
+	if (HunterCharacter->HasAuthority())
+	{
+		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
+		{
+			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+			WeaponInHand = nullptr;
+			DisableCombat();
+		}
+		else if (WeaponInHand == nullptr && PrimaryWeapon)
+		{
+			AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
+			PrimaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+			WeaponInHand = PrimaryWeapon;
+			EnableCombat();
+		}
+	}
+	else if (HunterCharacter->IsLocallyControlled())
+	{
+		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
+		{
+			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+			WeaponInHand = nullptr;
+			DisableCombat();
+		}
+		else if (WeaponInHand == nullptr && PrimaryWeapon)
+		{
+			AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
+			PrimaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+			WeaponInHand = PrimaryWeapon;
+			EnableCombat();
+		}
+		
+		// Server call
+		ServerTogglePrimaryWeaponAttachment();
+	}
+}
+
+void UCombatComponent::ToggleSecondaryWeaponAttachment()
+{
+	if (HunterCharacter->HasAuthority())
+	{
+		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
+		{
+			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+			WeaponInHand = nullptr;
+			DisableCombat();
+		}
+		else if (WeaponInHand == nullptr && SecondaryWeapon)
+		{
+			AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
+			SecondaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+			WeaponInHand = SecondaryWeapon;
+			EnableCombat();
+		}
+	}
+	else if (HunterCharacter->IsLocallyControlled())
+	{
+		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
+		{
+			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+			WeaponInHand = nullptr;
+			DisableCombat();
+		}
+		else if (WeaponInHand == nullptr && SecondaryWeapon)
+		{
+			AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
+			SecondaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+			WeaponInHand = SecondaryWeapon;
+			EnableCombat();
+		}
+		
+		// Server call
+		ServerToggleSecondaryWeaponAttachment();
+	}
+}
+
+void UCombatComponent::ServerTogglePrimaryWeaponAttachment_Implementation()
+{
 	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
 	{
 		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
 		WeaponInHand = nullptr;
 		DisableCombat();
 	}
 	else if (WeaponInHand == nullptr && PrimaryWeapon)
 	{
 		AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
+		PrimaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
 		WeaponInHand = PrimaryWeapon;
 		EnableCombat();
 	}
 }
 
-void UCombatComponent::ToggleSecondaryWeaponAttachment()
+void UCombatComponent::ServerToggleSecondaryWeaponAttachment_Implementation()
 {
 	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
 	{
 		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
 		WeaponInHand = nullptr;
 		DisableCombat();
 	}
 	else if (WeaponInHand == nullptr && SecondaryWeapon)
 	{
 		AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
+		SecondaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
 		WeaponInHand = SecondaryWeapon;
 		EnableCombat();
 	}
@@ -207,6 +293,14 @@ bool UCombatComponent::CanShoot()
 	return bCanShoot;
 }
 
+void UCombatComponent::OnShootFailedDueToEmptyMagazine()
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Purple, FString("Shoot failed due to 0 ammo in weapon, TODO: Play a weapon animation for no bullet shooting try"));
+	}
+}
+
 void UCombatComponent::Shoot()
 {
 	if (!CanShoot()) return;
@@ -226,14 +320,6 @@ void UCombatComponent::Shoot()
 		CrosshairShootFactor = 1.2f;
 	}
 	StartFireTimer();
-}
-
-void UCombatComponent::OnShootFailedDueToEmptyMagazine()
-{
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Purple, FString("Shoot failed due to 0 ammo in weapon, TODO: Play a weapon animation for no bullet shooting try"));
-	}
 }
 
 void UCombatComponent::ServerShoot_Implementation(bool bShootPressed, const FVector_NetQuantize& TraceHitTarget)
