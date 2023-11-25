@@ -23,5 +23,5 @@ class HUNTERGAME_API IInteractInterface
 
 public:
 	virtual FString LookAt();
-	virtual void InteractWith(ABaseCharacter* HunterCharacter) = 0;
+	virtual void InteractWith(ABaseCharacter* PlayerCharacter) = 0;
 };

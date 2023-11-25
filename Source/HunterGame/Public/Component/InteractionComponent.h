@@ -20,7 +20,7 @@ public:
 
 	/** Player Reference **/
 	UPROPERTY()
-	ABaseCharacter* HunterCharacter;
+	ABaseCharacter* PlayerCharacter;
 	/** Player Reference **/
 
 protected:

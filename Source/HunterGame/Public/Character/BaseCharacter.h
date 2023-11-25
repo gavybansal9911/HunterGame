@@ -220,4 +220,6 @@ public:
 	FORCEINLINE ECameraMode GetCurrentCameraMode() const {return CurrentCameraMode;}
 	FVector GetHitTarget() const;
 	ECombatState GetCombatState() const;
+
+	void SetOverlappingActor(AActor* InOverlappingActor);
 };

@@ -94,7 +94,7 @@ void ABaseCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	if (InteractionComponent) {InteractionComponent->HunterCharacter = this;}
+	if (InteractionComponent) {InteractionComponent->PlayerCharacter = this;}
 	if (CombatComponent) {CombatComponent->HunterCharacter = this;}
 	if (InventoryComponent) {InventoryComponent->InitInventory();}
 }
@@ -452,5 +452,11 @@ ECombatState ABaseCharacter::GetCombatState() const
 {
 	if (!CombatComponent) return ECombatState::ECS_Max;
 	return CombatComponent->CombatState;
+}
+
+void ABaseCharacter::SetOverlappingActor(AActor* InOverlappingActor)
+{
+	if (!InteractionComponent) return;
+	InteractionComponent->SetOverlappingActor(InOverlappingActor);
 }
 /** Getter / Setter **/

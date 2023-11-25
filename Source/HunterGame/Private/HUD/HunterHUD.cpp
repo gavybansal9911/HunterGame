@@ -25,7 +25,7 @@ void AHunterHUD::AddCharacterOverlay()
 void AHunterHUD::DrawHUD()
 {
 	Super::DrawHUD();
-
+	
 	// Drawing Crosshair
 	FVector2d ViewportSize;
 	if (GEngine)

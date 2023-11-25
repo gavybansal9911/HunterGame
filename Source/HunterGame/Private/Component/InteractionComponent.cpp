@@ -22,12 +22,11 @@ void UInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 void UInteractionComponent::Interact()
 {
-	if (OverlappingActor)
+	if (OverlappingActor == nullptr) return;
+	
+	if (IInteractInterface* InteractiveItem = Cast<IInteractInterface>(OverlappingActor))
 	{
-		if (AWeapon* Weapon = Cast<AWeapon>(OverlappingActor))
-		{
-			Weapon->InteractWith(HunterCharacter);
-			OverlappingActor = nullptr;
-		}
+		InteractiveItem->InteractWith(PlayerCharacter);
+		OverlappingActor = nullptr;
 	}
 }
