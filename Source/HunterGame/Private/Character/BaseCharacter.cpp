@@ -24,7 +24,7 @@ ABaseCharacter::ABaseCharacter()
 	NetUpdateFrequency = 66.f;  // How many times variables are replicated from server to client per sec.
 	MinNetUpdateFrequency = 33.f;  // The min net update frequency to be if the variables are not changing frequently.
 	Tags.AddUnique(FName("PlayerTeam"));
-
+	
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	
@@ -47,8 +47,8 @@ ABaseCharacter::ABaseCharacter()
 	
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent Component"));
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
-	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
 }
 
@@ -77,18 +77,9 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (Combat && Combat->WeaponInHand)
+	if (CombatComponent && CombatComponent->WeaponInHand)
 	{
 		AimOffset(DeltaTime);
-	}
-
-	if (Combat)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString("Valid"));
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString("Not Valid"));
 	}
 }
 
@@ -104,7 +95,7 @@ void ABaseCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	if (InteractionComponent) {InteractionComponent->HunterCharacter = this;}
-	if (Combat) {Combat->HunterCharacter = this;}
+	if (CombatComponent) {CombatComponent->HunterCharacter = this;}
 	if (InventoryComponent) {InventoryComponent->InitInventory();}
 }
 
@@ -228,30 +219,30 @@ void ABaseCharacter::ServerInteractButtonPressed_Implementation()
 
 void ABaseCharacter::AimButtonPressed()
 {
-	if (Combat == nullptr || Combat->GetWeaponInHand() == nullptr) return;
-	Combat->SetAiming(true);
+	if (CombatComponent == nullptr || CombatComponent->GetWeaponInHand() == nullptr) return;
+	CombatComponent->SetAiming(true);
 }
 
 void ABaseCharacter::AimButtonReleased()
 {
-	if (!Combat) return;
-	Combat->SetAiming(false);
+	if (!CombatComponent) return;
+	CombatComponent->SetAiming(false);
 }
 
 void ABaseCharacter::ShootButtonPressed()
 {
 	if (GetCharacterMovement()->IsFalling()) return;
-	if (Combat)
+	if (CombatComponent)
 	{
-		Combat->ShootButtonPressed(true);
+		CombatComponent->ShootButtonPressed(true);
 	}
 }
 
 void ABaseCharacter::ShootButtonReleased()
 {
-	if (Combat)
+	if (CombatComponent)
 	{
-		Combat->ShootButtonPressed(false);
+		CombatComponent->ShootButtonPressed(false);
 	}
 }
 
@@ -283,20 +274,20 @@ void ABaseCharacter::ChangeCameraMode()
 
 void ABaseCharacter::TogglePrimaryWeaponButtonPressed()
 {
-	if (!Combat) return;
-	Combat->OnTogglePrimaryWeaponButtonPressed();
+	if (!CombatComponent) return;
+	CombatComponent->OnTogglePrimaryWeaponButtonPressed();
 }
 
 void ABaseCharacter::ToggleSecondaryWeaponButtonPressed()
 {
-	if (!Combat) return;
-	Combat->OnToggleSecondaryWeaponButtonPressed();
+	if (!CombatComponent) return;
+	CombatComponent->OnToggleSecondaryWeaponButtonPressed();
 }
 
 void ABaseCharacter::ReloadButtonPressed()
 {
-	if (!Combat) return;
-	Combat->Reload();
+	if (!CombatComponent) return;
+	CombatComponent->Reload();
 }
 
 /** Stats **/
@@ -309,7 +300,7 @@ void ABaseCharacter::UpdateHUDHealth()
 }
 /** Stats **/
 
-/** Combat **/
+/** CombatComponent **/
 void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 	AController* InstigatorController, AActor* DamageCauser)
 {
@@ -319,7 +310,7 @@ void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDa
 
 void ABaseCharacter::AimOffset(float DeltaTime)
 {
-	if (Combat && Combat->GetWeaponInHand() == nullptr) return;;
+	if (CombatComponent && CombatComponent->GetWeaponInHand() == nullptr) return;;
 	
 	FVector Velocity = GetVelocity();
 	Velocity.Z = 0.f;
@@ -372,13 +363,13 @@ void ABaseCharacter::TurnInPlace(float DeltaTime)
 	}
 	if (AO_Yaw > 45.f)
 	{
-		if (!Combat) return;
-		if (Combat->bIsAiming) {TurningInPlace = ETurningInPlace::ETIP_Right;}
+		if (!CombatComponent) return;
+		if (CombatComponent->bIsAiming) {TurningInPlace = ETurningInPlace::ETIP_Right;}
 	}
 	else if (AO_Yaw < -45.f)
 	{
-		if (!Combat) return;
-		if (Combat->bIsAiming) {TurningInPlace = ETurningInPlace::ETIP_Left;}
+		if (!CombatComponent) return;
+		if (CombatComponent->bIsAiming) {TurningInPlace = ETurningInPlace::ETIP_Left;}
 	}
 	if (TurningInPlace != ETurningInPlace::ETIP_NotTurning)
 	{
@@ -394,28 +385,28 @@ void ABaseCharacter::TurnInPlace(float DeltaTime)
 
 void ABaseCharacter::OnReloadEnd_AnimNotifyCallBack()
 {
-	if (!Combat) return;;
-	Combat->OnReloadEnd();
+	if (!CombatComponent) return;;
+	CombatComponent->OnReloadEnd();
 }
 
 void ABaseCharacter::TogglePrimaryWeapon_AnimNotifyCallBack()
 {
-	if (!Combat) return;
-	Combat->TogglePrimaryWeaponAttachment();
+	if (!CombatComponent) return;
+	CombatComponent->TogglePrimaryWeaponAttachment();
 }
 
 void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
 {
-	if (!Combat) return;
-	Combat->ToggleSecondaryWeaponAttachment();
+	if (!CombatComponent) return;
+	CombatComponent->ToggleSecondaryWeaponAttachment();
 }
 
-/** Combat **/
+/** CombatComponent **/
 
 /** Animation **/
 void ABaseCharacter::PlayShootMontage(bool bAiming)
 {
-	if (Combat == nullptr || Combat->GetWeaponInHand() == nullptr) return;
+	if (CombatComponent == nullptr || CombatComponent->GetWeaponInHand() == nullptr) return;
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && ShootWeaponMontage)
@@ -437,29 +428,29 @@ void ABaseCharacter::OnRep_Health()
 /** Getter / Setter **/
 AWeapon* ABaseCharacter::GetEquippedWeapon() const
 {
-	if (!Combat) return nullptr;
-	return Combat->GetWeaponInHand();
+	if (!CombatComponent) return nullptr;
+	return CombatComponent->GetWeaponInHand();
 }
 
 bool ABaseCharacter::IsCombatEnabled() const
 {
-	return Combat && Combat->bIsCombatEnabled;
+	return CombatComponent && CombatComponent->bIsCombatEnabled;
 }
 
 bool ABaseCharacter::IsAiming() const
 {
-	return Combat && Combat->bIsAiming;
+	return CombatComponent && CombatComponent->bIsAiming;
 }
 
 FVector ABaseCharacter::GetHitTarget() const
 {
-	if (!Combat) return FVector();
-	return Combat->HitTarget;
+	if (!CombatComponent) return FVector();
+	return CombatComponent->HitTarget;
 }
 
 ECombatState ABaseCharacter::GetCombatState() const
 {
-	if (!Combat) return ECombatState::ECS_Max;
-	return Combat->CombatState;
+	if (!CombatComponent) return ECombatState::ECS_Max;
+	return CombatComponent->CombatState;
 }
 /** Getter / Setter **/

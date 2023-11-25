@@ -83,7 +83,7 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 			SecondaryWeapon = Weapon;
 			break;
 		default:
-			break;;
+			break;
 	}
 	bIsCombatEnabled = true;
 	Weapon->SetWeaponState(EWeaponState::EWS_Attached);
@@ -92,14 +92,14 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	* Set collision response to overlap for all channels so that the projectile or the trace(if performed from the muzzle position vector) doesn't collide with the weapon it's fired from. **/
 	WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	WeaponInHand->SetOwner(HunterCharacter);
+	WeaponInHand->SetHUDWeaponAmmo();
+	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+	HunterCharacter->bUseControllerRotationYaw = true;
 	if (HunterHUD && HunterHUD->CharacterOverlay && HunterHUD->CharacterOverlay->AmmoText && HunterHUD->CharacterOverlay->WeaponAmmoAmountText)
 	{
 		HunterHUD->CharacterOverlay->AmmoText->SetVisibility(ESlateVisibility::Visible);
 		HunterHUD->CharacterOverlay->WeaponAmmoAmountText->SetVisibility(ESlateVisibility::Visible);
 	}
-	WeaponInHand->SetHUDWeaponAmmo();
-	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
-	HunterCharacter->bUseControllerRotationYaw = true;
 }
 
 void UCombatComponent::AttachToActor(const ACharacter* InParent, AActor* ActorToAttach, const FName SocketName)

@@ -57,7 +57,7 @@ public:
 	TObjectPtr<UInteractionComponent> InteractionComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	TObjectPtr<UCombatComponent> Combat;
+	TObjectPtr<UCombatComponent> CombatComponent;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UInventoryComponent> InventoryComponent;
