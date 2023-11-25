@@ -1,17 +1,44 @@
 ﻿#pragma once
 
+#include "CoreMinimal.h"
+#include "InventoryTypes.generated.h"
+
+USTRUCT(BlueprintType)
 struct FItemData
 {
-	FString ItemID;
-	FName ItemName;
-	FString Description;
-	int32 NumberOfElements;
-	int32 MaxStackSize;
+	GENERATED_BODY()
+
+	FItemData() {}
+
+	UPROPERTY(EditDefaultsOnly)
+	FString ItemID = FString();
+
+	UPROPERTY(EditDefaultsOnly)
+	FName ItemName = FName();
+
+	UPROPERTY(EditDefaultsOnly)
+	FString Description = FString();
+
+	UPROPERTY(EditDefaultsOnly)
+	int32 NumberOfElements = 0;
+
+	UPROPERTY(EditDefaultsOnly)
+	int32 MaxStackSize = 0;
 };
 
+USTRUCT(BlueprintType)
 struct FSlotData
 {
-	FString ItemID;
-	int32 Quantity;
-	FItemData ItemData;
+	GENERATED_BODY()
+
+	FSlotData() {}
+
+	UPROPERTY(EditDefaultsOnly)
+	FString ItemID = FString();
+
+	UPROPERTY(EditDefaultsOnly)
+	int32 Quantity = 0;
+	
+	UPROPERTY(EditDefaultsOnly)
+	FItemData ItemData = FItemData();
 };

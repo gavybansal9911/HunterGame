@@ -3,7 +3,9 @@
 
 #include "Actor/BaseInventoryItem.h"
 
-ABaseInventoryItem::ABaseInventoryItem()
+#include "Character/BaseCharacter.h"
+
+ABaseInventoryItem::ABaseInventoryItem(): ItemData()
 {
 }
 
@@ -12,9 +14,13 @@ void ABaseInventoryItem::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ABaseInventoryItem::InteractWith(ABaseCharacter* HunterCharacter)
+void ABaseInventoryItem::InteractWith(ABaseCharacter* PlayerCharacter)
 {
-	Super::InteractWith(HunterCharacter);
+	if (!PlayerCharacter) return;
+	Super::InteractWith(PlayerCharacter);
+	
+	int32 Local_Remaining = PlayerCharacter->AddItemToInventory(ItemData);
+	if (Local_Remaining == 0) {Destroy();}
 }
 
 void ABaseInventoryItem::UseItem()

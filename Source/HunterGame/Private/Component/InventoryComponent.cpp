@@ -18,6 +18,14 @@ void UInventoryComponent::InitInventory()
 	Content.SetNum(NumberOfSlots);
 }
 
+void UInventoryComponent::PrintContent()
+{
+	for (FSlotData Slot : Content)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Blue, FString::Printf(TEXT("%d"), Slot.Quantity));
+	}
+}
+
 int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 {
 	int32 ExistingSlotIndex;
@@ -46,9 +54,10 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 		else
 		{
 			// TODO: Notify player that no space is available for the item
+			return ItemToAddData.NumberOfElements;
 		}
 	}
-
+	PrintContent();
 	return 0;
 }
 
@@ -107,7 +116,7 @@ int32 UInventoryComponent::AddItemToExistingSlot(FItemData ItemToAddData, int32 
 
 	while (ItemToAddData.NumberOfElements > 0 && Content[ExistingSlotIndex].Quantity < ItemToAddData.MaxStackSize)
 	{
-		Content[ExistingSlotIndex].ItemData.NumberOfElements++;
+		Content[ExistingSlotIndex].Quantity++;
 		ItemToAddData.NumberOfElements--;
 		NumberOfElementsRemaining--;
 	}

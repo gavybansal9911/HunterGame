@@ -19,7 +19,7 @@ public:
 	ABaseItemActor();
 
 	/** Interface **/
-	virtual void InteractWith(ABaseCharacter* HunterCharacter) override;
+	virtual void InteractWith(ABaseCharacter* PlayerCharacter) override;
 	/** Interface **/
 
 protected:

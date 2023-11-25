@@ -8,6 +8,7 @@
 #include "CharacterTypes.h"
 #include "Component/CombatComponent.h"
 #include "Component/CombatTypes.h"
+#include "Component/InventoryTypes.h"
 #include "Interface/HitInterface.h"
 #include "BaseCharacter.generated.h"
 
@@ -66,6 +67,10 @@ public:
 	/** Animation **/
 	void PlayShootMontage(bool bAiming);
 	/** Animation **/
+
+	/** Interaction **/
+	int32 AddItemToInventory(FItemData ItemData);   // Returns -1 if fails or in case of any error
+	/** Interaction **/
 	
 protected:
 	virtual void BeginPlay() override;

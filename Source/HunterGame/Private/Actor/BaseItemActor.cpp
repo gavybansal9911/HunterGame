@@ -44,6 +44,6 @@ void ABaseItemActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	}
 }
 
-void ABaseItemActor::InteractWith(ABaseCharacter* HunterCharacter)
+void ABaseItemActor::InteractWith(ABaseCharacter* PlayerCharacter)
 {
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Actor/BaseItemActor.h"
+#include "Component/InventoryTypes.h"
 #include "Interface/InventoryItemInterface.h"
 #include "BaseInventoryItem.generated.h"
 
@@ -19,11 +20,15 @@ public:
 	ABaseInventoryItem();
 
 	/** Interface **/
-	virtual void InteractWith(ABaseCharacter* HunterCharacter) override;   // IInteractInterface
+	virtual void InteractWith(ABaseCharacter* PlayerCharacter) override;   // IInteractInterface
 	virtual void UseItem() override;                                       // IInventoryItemInterface
 	virtual void DropItem() override;                                      // IInventoryItemInterface
 	/** Interface **/
 
 protected:
 	virtual void BeginPlay() override;
+	
+	// Item Data
+	UPROPERTY(EditDefaultsOnly, Category = "Item Data")
+	FItemData ItemData;
 };

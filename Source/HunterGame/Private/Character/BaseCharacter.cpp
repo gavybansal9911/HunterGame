@@ -300,7 +300,7 @@ void ABaseCharacter::UpdateHUDHealth()
 }
 /** Stats **/
 
-/** CombatComponent **/
+/** Combat **/
 void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 	AController* InstigatorController, AActor* DamageCauser)
 {
@@ -401,7 +401,17 @@ void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
 	CombatComponent->ToggleSecondaryWeaponAttachment();
 }
 
-/** CombatComponent **/
+/** Combat **/
+
+/** Interaction **/
+int32 ABaseCharacter::AddItemToInventory(FItemData ItemData)
+{
+	if (!InventoryComponent) return -1;
+
+	int32 Local_Remaining = InventoryComponent->AddItemToInventory(ItemData);
+	return Local_Remaining;
+}
+/** Interaction **/
 
 /** Animation **/
 void ABaseCharacter::PlayShootMontage(bool bAiming)
