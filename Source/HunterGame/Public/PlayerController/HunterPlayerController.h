@@ -26,4 +26,10 @@ protected:
 private:
 	UPROPERTY()
     AHunterHUD* HunterHUD;
+
+	UPROPERTY()
+	float LookSensitivity = 0.65f;      // Sensitivity Range for controls menu => [0, 0.75]
+	
+public:
+	FORCEINLINE float GetLookSensitivity() const {return LookSensitivity;}
 };

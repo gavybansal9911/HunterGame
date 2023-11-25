@@ -178,7 +178,7 @@ void ABaseCharacter::Look(const FInputActionValue& Value)
 {
 	if (!Controller) return;
 
-	const FVector2d InputValue = Value.Get<FVector2d>();
+	const FVector2d InputValue = Value.Get<FVector2d>() * HunterPlayerController->GetLookSensitivity();
 	if (InputValue.X != 0.f) {AddControllerYawInput(InputValue.X);}
 	if (InputValue.Y != 0.f) {AddControllerPitchInput(InputValue.Y);}
 }

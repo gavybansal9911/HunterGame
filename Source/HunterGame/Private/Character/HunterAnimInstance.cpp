@@ -57,16 +57,16 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		AO_Pitch = HunterCharacter->GetAO_Pitch();   // Aim Pitch Offset
 		/** Combat **/
 
-		/** Camera Movements **/
+		/** Camera Movements **//*    // TODO: Rewrite this code with a new approach
 		if (HunterCharacter->GetCurrentCameraMode() == ECameraMode::ECM_ThirdPerson)
 		{
 			if (bIsAiming && HunterCharacter->IsCombatEnabled() && HunterCharacter->GetCameraBoom()->TargetArmLength != CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH)  // Not valid if TargetArmLength is already set correctly
 				{
-				const float NewTargetArmLength = HunterCharacter->GetCameraBoom()->TargetArmLength = FMath::FInterpTo(HunterCharacter->GetCameraBoom()->TargetArmLength, CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH, DeltaSeconds, 6.f);
-				HunterCharacter->GetCameraBoom()->TargetArmLength = NewTargetArmLength;
-				if (HunterCharacter->GetCameraBoom()->SocketOffset == HunterCharacter->GetCameraBoomAimSocketOffset()) return;
-				const FVector NewSocketOffset = FMath::VInterpTo(HunterCharacter->GetCameraBoom()->SocketOffset, HunterCharacter->GetCameraBoomAimSocketOffset(), DeltaSeconds, 6.f);
-				HunterCharacter->GetCameraBoom()->SocketOffset = NewSocketOffset;
+					const float NewTargetArmLength = HunterCharacter->GetCameraBoom()->TargetArmLength = FMath::FInterpTo(HunterCharacter->GetCameraBoom()->TargetArmLength, CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH, DeltaSeconds, 6.f);
+					HunterCharacter->GetCameraBoom()->TargetArmLength = NewTargetArmLength;
+					if (HunterCharacter->GetCameraBoom()->SocketOffset == HunterCharacter->GetCameraBoomAimSocketOffset()) return;
+					const FVector NewSocketOffset = FMath::VInterpTo(HunterCharacter->GetCameraBoom()->SocketOffset, HunterCharacter->GetCameraBoomAimSocketOffset(), DeltaSeconds, 6.f);
+					HunterCharacter->GetCameraBoom()->SocketOffset = NewSocketOffset;
 				}
 			else
 			{
@@ -107,7 +107,8 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			{
 				bLocallyControlled = true;
 				FTransform RightHandTransform = HunterCharacter->GetMesh()->GetSocketTransform(FName("hand_r"), ERelativeTransformSpace::RTS_World);
-				RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(), RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - HunterCharacter->GetHitTarget()));
+				FRotator Local_RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(), RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - HunterCharacter->GetHitTarget()));
+				RightHandRotation = FMath::RInterpTo(RightHandRotation, Local_RightHandRotation, DeltaSeconds, 35.f);
 
 				/** Debug **/
 				FTransform MuzzleTipTransform = EquippedWeapon->GetWeaponMesh()->GetSocketTransform(FName("MuzzleFlash"));
