@@ -42,9 +42,10 @@ public:
 	TObjectPtr<USphereComponent> AreaSphere;
 	/** Components **/
 
-	/** Shooting **/
+	/** Combat **/
 	virtual void Shoot(const FVector& HitTarget);
-	/** Shooting **/
+	void AddAmmoToWeapon(int32 AmmoToAdd);
+	/** Combat **/
 
 	/** Textures for the weapon crosshair **/
 	UPROPERTY(EditAnywhere, Category = "Crosshair")
@@ -150,7 +151,10 @@ public:
 	FORCEINLINE float GetAutoFireDelay() const {return AutoFireDelay;}
 	FORCEINLINE bool IsWeaponAutomatic() const {return bAutomatic;}
 	bool IsMagazineEmpty() const;
+	FORCEINLINE int32 GetAmmoInWeapon() const {return Ammo;}
+	FORCEINLINE int32 GetMagazineSize() const {return MagazineSize;}
 
 	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}
 	FORCEINLINE void SetWeaponAttachmentStatus(const EAttachmentStatus NewWeaponAttachmentStatus) {AttachmentStatus = NewWeaponAttachmentStatus;}
+	FORCEINLINE void SetAmmoInWeapon(const int32 InAmmo) {Ammo = InAmmo;}
 };

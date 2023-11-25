@@ -50,7 +50,7 @@ void UCombatComponent::BeginPlay()
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	
 	if (WeaponInHand && bIsCombatEnabled)
 	{
 		SetHUDCrosshair(DeltaTime);
@@ -125,8 +125,13 @@ void UCombatComponent::Reload()
 
 void UCombatComponent::ServerReload_Implementation()
 {
-	if (HunterCharacter == nullptr) return;
+	if (HunterCharacter == nullptr || WeaponInHand == nullptr) return;
 
+	// TODO: Take different ammo types an weapons in account
+	int32 ReloadAmount = CalcAmountToReload();
+	CarriedAmmo = CarriedAmmo - ReloadAmount;
+	WeaponInHand->AddAmmoToWeapon(ReloadAmount);
+	
 	CombatState = ECombatState::ECS_Reloading;
 	PlayReloadMontage();    // This function further calls a generic PlayAnimationMontage which is set in a way that the montage is played for the server and all the clients so, no need to replicate this montage here again.
 }
@@ -160,6 +165,18 @@ void UCombatComponent::OnReloadEnd()
 	{
 		CombatState = ECombatState::ECS_Unoccupied;	
 	}
+}
+
+int32 UCombatComponent::CalcAmountToReload()
+{
+	if (WeaponInHand == nullptr) return 0;
+
+	// TODO: Every weapon have different type of ammo, take that into account for calculations
+	int32 RoomInMag = WeaponInHand->GetMagazineSize() - WeaponInHand->GetAmmoInWeapon();
+	int32 AmountCarried = CarriedAmmo;
+	int32 Least = FMath::Min(RoomInMag, AmountCarried);
+
+	return FMath::Clamp(RoomInMag, 0, Least);
 }
 
 void UCombatComponent::TogglePrimaryWeaponAttachment()
@@ -342,7 +359,7 @@ void UCombatComponent::ShootButtonPressed(bool bPressed)
 bool UCombatComponent::CanShoot()
 {
 	if (WeaponInHand == nullptr) return false;
-	return bCanShoot;
+	return bCanShoot && CombatState == ECombatState::ECS_Unoccupied;
 }
 
 void UCombatComponent::OnShootFailedDueToEmptyMagazine()
@@ -385,7 +402,8 @@ void UCombatComponent::MulticastShoot_Implementation(bool bShootPressed, const F
 {
 	bShootButtonPressed = bShootPressed;   // Set bShootButtonPressed from all clients(MulticastShoot is called from the server)
 	if (WeaponInHand == nullptr) return;
-	if (HunterCharacter && bShootButtonPressed)
+	//if (HunterCharacter && bShootButtonPressed)
+	if (HunterCharacter && bShootButtonPressed && CombatState == ECombatState::ECS_Unoccupied)
 	{
 		HunterCharacter->PlayShootMontage(bIsAiming);
 		WeaponInHand->Shoot(TraceHitTarget);                        // Shoot

@@ -81,6 +81,15 @@ void ABaseCharacter::Tick(float DeltaTime)
 	{
 		AimOffset(DeltaTime);
 	}
+
+	if (Combat)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString("Valid"));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, FString("Not Valid"));
+	}
 }
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

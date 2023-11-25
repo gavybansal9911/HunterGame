@@ -100,6 +100,12 @@ void AWeapon::Shoot(const FVector& HitTarget)
 	SpendRound();
 }
 
+void AWeapon::AddAmmoToWeapon(int32 AmmoToAdd)
+{
+	Ammo = FMath::Clamp(Ammo + AmmoToAdd, 0, MagazineSize);
+	SetHUDWeaponAmmo();
+}
+
 void AWeapon::SetHUDWeaponAmmo()
 {
 	OwnerCharacter = OwnerCharacter == nullptr ? Cast<ABaseCharacter>(GetOwner()) : OwnerCharacter;
