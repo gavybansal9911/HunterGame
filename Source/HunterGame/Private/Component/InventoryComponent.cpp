@@ -56,8 +56,7 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 		else
 		{
 			PrintContent();
-			// TODO: Notify player that no space is available for the item
-			return ItemToAddData.NumberOfElements;
+			return -1;
 		}
 	}
 	PrintContent();

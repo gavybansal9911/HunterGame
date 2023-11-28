@@ -21,8 +21,15 @@ void ABaseInventoryItem::InteractWith(ABaseCharacter* PlayerCharacter)
 	
 	int32 Local_Remaining = PlayerCharacter->AddItemToInventory(ItemData);
 	ItemData.NumberOfElements = Local_Remaining;
-	if (Local_Remaining > 0) {this->InteractWith(PlayerCharacter);}
-	if (Local_Remaining == 0) {Destroy();}
+	if (Local_Remaining == -1)
+	{
+		// TODO: Notify Player that we no space is available
+	}
+	else
+	{
+		if (Local_Remaining > 0) {this->InteractWith(PlayerCharacter);}
+		if (Local_Remaining == 0) {Destroy();}
+	}
 }
 
 void ABaseInventoryItem::UseItem()
