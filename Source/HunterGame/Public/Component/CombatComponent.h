@@ -61,6 +61,9 @@ public:
 	
 	void DisableCombat();
 	void EnableCombat();
+
+	UPROPERTY(ReplicatedUsing = OnRep_CarriedAmmo)
+	int32 CarriedAmmo = 90;
 	/** Combat **/
 
 protected:
@@ -111,9 +114,15 @@ protected:
 	void OnRep_SecondaryWeapon();
 	UFUNCTION()
 	void OnRep_CombatState();
+	UFUNCTION()
+	void OnRep_CarriedAmmo();
 	/** Rep Notifies **/
 
 private:
+	/** Event Trigger CallBacks **/
+	void OnInventoryUpdated();
+	/** Event Trigger CallBacks **/
+	
 	/** Combat **/
 	UPROPERTY(ReplicatedUsing = OnRep_CombatState)
 	ECombatState CombatState = ECombatState::ECS_Unoccupied;    // Combat State
@@ -163,13 +172,4 @@ public:
 	FORCEINLINE void SetIsCombatEnabled(bool bCombatEnabled) {bIsCombatEnabled = bCombatEnabled;}
 	FORCEINLINE AWeapon* GetWeaponInHand() const {return WeaponInHand;}
 	FORCEINLINE void SetWeaponInHand(AWeapon* InWeapon) {WeaponInHand = InWeapon;}
-
-/** Temporary **/
-public:
-	UPROPERTY(ReplicatedUsing = OnRep_CarriedAmmo)
-	int32 CarriedAmmo = 90;
-
-	UFUNCTION()
-	void OnRep_CarriedAmmo();
-/** Temporary **/
 };

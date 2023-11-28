@@ -8,6 +8,7 @@
 #include "Interface/InteractInterface.h"
 #include "Weapon.generated.h"
 
+class AWeaponAmmo;
 class ABulletShell;
 class USphereComponent;
 class UAnimationAsset;
@@ -28,7 +29,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	/** Interface **/
-	virtual FString LookAt() override;;
+	virtual FString LookAt() override;
 	virtual void InteractWith(ABaseCharacter* HunterCharacter) override;
 	/** Interface **/
 
@@ -128,6 +129,11 @@ private:
 	/** Weapon Animation **/
 
 	/** Ammo **/
+	UPROPERTY(EditAnywhere, Category = "Ammo")
+	TSubclassOf<AWeaponAmmo> WeaponAmmoClass;
+
+	int32 GetAmmoInInventory();
+	
 	void SpendRound();
 	
 	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Ammo, Category = "Ammo")
@@ -153,6 +159,7 @@ public:
 	bool IsMagazineEmpty() const;
 	FORCEINLINE int32 GetAmmoInWeapon() const {return Ammo;}
 	FORCEINLINE int32 GetMagazineSize() const {return MagazineSize;}
+	FORCEINLINE TSubclassOf<AWeaponAmmo> GetWeaponAmmoClass() const {return WeaponAmmoClass;}
 
 	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}
 	FORCEINLINE void SetWeaponAttachmentStatus(const EAttachmentStatus NewWeaponAttachmentStatus) {AttachmentStatus = NewWeaponAttachmentStatus;}

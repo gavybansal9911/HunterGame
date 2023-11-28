@@ -95,10 +95,9 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	WeaponInHand->SetHUDWeaponAmmo();
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
-	if (HunterHUD && HunterHUD->CharacterOverlay && HunterHUD->CharacterOverlay->AmmoText && HunterHUD->CharacterOverlay->WeaponAmmoAmountText)
+	if (HunterHUD)
 	{
-		HunterHUD->CharacterOverlay->AmmoText->SetVisibility(ESlateVisibility::Visible);
-		HunterHUD->CharacterOverlay->WeaponAmmoAmountText->SetVisibility(ESlateVisibility::Visible);
+		HunterHUD->OnCombatEnabled();
 	}
 }
 
@@ -126,10 +125,9 @@ void UCombatComponent::Reload()
 void UCombatComponent::ServerReload_Implementation()
 {
 	if (HunterCharacter == nullptr || WeaponInHand == nullptr) return;
-
-	// TODO: Take different ammo types an weapons in account
+	
 	int32 ReloadAmount = CalcAmountToReload();
-	CarriedAmmo = CarriedAmmo - ReloadAmount;
+	CarriedAmmo = HunterCharacter->GetAmmoInInventory() - ReloadAmount;
 	WeaponInHand->AddAmmoToWeapon(ReloadAmount);
 	
 	CombatState = ECombatState::ECS_Reloading;
@@ -169,11 +167,11 @@ void UCombatComponent::OnReloadEnd()
 
 int32 UCombatComponent::CalcAmountToReload()
 {
+	if (HunterCharacter == nullptr) return 0;
 	if (WeaponInHand == nullptr) return 0;
-
-	// TODO: Every weapon have different type of ammo, take that into account for calculations
+	
 	int32 RoomInMag = WeaponInHand->GetMagazineSize() - WeaponInHand->GetAmmoInWeapon();
-	int32 AmountCarried = CarriedAmmo;
+	int32 AmountCarried = HunterCharacter->GetAmmoInInventory();
 	int32 Least = FMath::Min(RoomInMag, AmountCarried);
 
 	return FMath::Clamp(RoomInMag, 0, Least);
@@ -302,22 +300,23 @@ void UCombatComponent::DisableCombat()
 	SetIsCombatEnabled(false);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 	HunterCharacter->bUseControllerRotationYaw = false;
-	if (HunterHUD && HunterHUD->CharacterOverlay && HunterHUD->CharacterOverlay->AmmoText && HunterHUD->CharacterOverlay->WeaponAmmoAmountText)
+	if (HunterHUD)
 	{
-		HunterHUD->CharacterOverlay->AmmoText->SetVisibility(ESlateVisibility::Hidden);
-		HunterHUD->CharacterOverlay->WeaponAmmoAmountText->SetVisibility(ESlateVisibility::Hidden);
+		HunterHUD->OnCombatDisabled();
 	}
 }
 
 void UCombatComponent::EnableCombat()
 {
+	if (HunterCharacter == nullptr) return;
+	
 	SetIsCombatEnabled(true);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
-	if (HunterHUD && HunterHUD->CharacterOverlay && HunterHUD->CharacterOverlay->AmmoText && HunterHUD->CharacterOverlay->WeaponAmmoAmountText)
+	CarriedAmmo = HunterCharacter->GetAmmoInInventory();
+	if (HunterHUD)
 	{
-		HunterHUD->CharacterOverlay->AmmoText->SetVisibility(ESlateVisibility::Visible);
-		HunterHUD->CharacterOverlay->WeaponAmmoAmountText->SetVisibility(ESlateVisibility::Visible);
+		HunterHUD->OnCombatEnabled();
 	}
 	if (WeaponInHand && WeaponInHand->GetOwner())
 	{
@@ -591,12 +590,17 @@ void UCombatComponent::OnRep_CombatState()
 			break;
 	}
 }
-/** Rep Notifies **/
 
-
-// <------------------------------------------------------------------------------------->
-/** Temporary **/
 void UCombatComponent::OnRep_CarriedAmmo()
 {
 }
-/** Temporary **/
+/** Rep Notifies **/
+
+/** Event Trigger CallBacks **/
+void UCombatComponent::OnInventoryUpdated()
+{
+	if (HunterCharacter == nullptr || WeaponInHand == nullptr) return;
+	CarriedAmmo = HunterCharacter->GetAmmoInInventory();
+	HunterController->SetHUDWeaponAmmo(WeaponInHand->GetAmmoInWeapon(), CarriedAmmo);
+}
+/** Event Trigger CallBacks **/

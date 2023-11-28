@@ -9,6 +9,8 @@
 
 class ABaseCharacter;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdated);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HUNTERGAME_API UInventoryComponent : public UActorComponent
 {
@@ -18,6 +20,9 @@ public:
 	friend ABaseCharacter;
 	UInventoryComponent();
 
+	// On Inventory Update Delegate
+	FOnInventoryUpdated OnInventoryUpdated;
+	
 	/** Inventory Actions **/
 	void PrintContent();
 	int32 AddItemToInventory(FItemData ItemToAddData);      // Return Value => (int32) Number of items left (unable to add)

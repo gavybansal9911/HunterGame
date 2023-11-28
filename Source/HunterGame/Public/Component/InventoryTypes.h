@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "InventoryTypes.generated.h"
 
+class ABaseInventoryItem;
+
 USTRUCT(BlueprintType)
 struct FItemData
 {
@@ -19,11 +21,14 @@ struct FItemData
 	UPROPERTY(EditDefaultsOnly)
 	FString Description = FString();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly)
 	int32 NumberOfElements = 0;
 
 	UPROPERTY(EditDefaultsOnly)
 	int32 MaxStackSize = 0;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ABaseInventoryItem> ItemClass;
 };
 
 USTRUCT(BlueprintType)

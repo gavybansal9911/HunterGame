@@ -34,6 +34,9 @@ class HUNTERGAME_API AHunterHUD : public AHUD
 public:
 	virtual void DrawHUD() override;   // This function is called every frame
 
+	void OnCombatEnabled();
+	void OnCombatDisabled();
+	
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UUserWidget> CharacterOverlayClass;
 

@@ -68,6 +68,10 @@ public:
 	void PlayShootMontage(bool bAiming);
 	/** Animation **/
 
+	/** Combat **/
+	int32 GetAmmoInInventory() const;
+	/** Combat **/
+	
 	/** Interaction **/
 	int32 AddItemToInventory(FItemData ItemData);   // Returns -1 if fails or in case of any error
 	/** Interaction **/
@@ -95,6 +99,11 @@ protected:
 	UFUNCTION(Server, Reliable)
 	void ServerInteractButtonPressed();
 	/** Input CallBacks RPCs **/
+
+	/** Event Trigger CallBacks **/
+	UFUNCTION()
+	void OnInventoryUpdated();
+	/** Event Trigger CallBacks **/
 	
 	/** Combat **/
 	UFUNCTION()
@@ -102,7 +111,7 @@ protected:
 	
 	void AimOffset(float DeltaTime);
 	void TurnInPlace(float DeltaTime);
-
+	
 	UFUNCTION(BlueprintCallable)
 	void OnReloadEnd_AnimNotifyCallBack();
 	

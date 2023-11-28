@@ -6,6 +6,7 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputAction.h"
+#include "Actor/WeaponAmmo/WeaponAmmo.h"
 #include "Camera/CameraComponent.h"
 #include "Component/CombatComponent.h"
 #include "Component/InteractionComponent.h"
@@ -16,6 +17,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "PlayerController/HunterPlayerController.h"
+#include "Weapon/Weapon.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -96,7 +98,11 @@ void ABaseCharacter::PostInitializeComponents()
 
 	if (InteractionComponent) {InteractionComponent->PlayerCharacter = this;}
 	if (CombatComponent) {CombatComponent->HunterCharacter = this;}
-	if (InventoryComponent) {InventoryComponent->InitInventory();}
+	if (InventoryComponent)
+	{
+		InventoryComponent->InitInventory();
+		InventoryComponent->OnInventoryUpdated.AddDynamic(this, &ABaseCharacter::OnInventoryUpdated);
+	}
 }
 
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -155,7 +161,7 @@ void ABaseCharacter::MulticastPlayAnimationMontage_Implementation(UAnimMontage* 
 }
 /** Generic **/
 
-
+/** Input CallBacks **/
 void ABaseCharacter::Move(const FInputActionValue& Value)
 {
 	if (!Controller || GetCharacterMovement()->IsFalling()) return;
@@ -289,6 +295,14 @@ void ABaseCharacter::ReloadButtonPressed()
 	if (!CombatComponent) return;
 	CombatComponent->Reload();
 }
+/** Input CallBacks **/
+
+/** Event Trigger CallBacks **/
+void ABaseCharacter::OnInventoryUpdated()
+{
+	if (CombatComponent) {CombatComponent->OnInventoryUpdated();}
+}
+/** Event Trigger CallBacks **/
 
 /** Stats **/
 void ABaseCharacter::UpdateHUDHealth()
@@ -381,6 +395,25 @@ void ABaseCharacter::TurnInPlace(float DeltaTime)
 			StartingAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
 		}
 	}
+}
+
+int32 ABaseCharacter::GetAmmoInInventory() const
+{
+	if (CombatComponent == nullptr || CombatComponent->bIsCombatEnabled == false) return 0;
+	if (CombatComponent->GetWeaponInHand() == nullptr) return 0;
+	if (InventoryComponent == nullptr) return 0;
+
+	int32 Local_InInventoryAmmo = 0;
+	
+	for (FSlotData Slot : InventoryComponent->GetContent())
+	{
+		if (CombatComponent->GetWeaponInHand()->GetWeaponAmmoClass() == Slot.ItemData.ItemClass)
+		{
+			Local_InInventoryAmmo = Local_InInventoryAmmo + Slot.Quantity;
+		}
+	}
+
+	return Local_InInventoryAmmo;
 }
 
 void ABaseCharacter::OnReloadEnd_AnimNotifyCallBack()

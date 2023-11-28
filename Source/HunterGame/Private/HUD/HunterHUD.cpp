@@ -74,3 +74,15 @@ void AHunterHUD::DrawCrosshair(UTexture2D* Texture, FVector2d ViewportCenter, FV
 	DrawTexture(Texture, TextureDrawPoint.X, TextureDrawPoint.Y, TextureWidth, TextureHeight,
 		0.f, 0.f, 1.f, 1.f, FLinearColor::White);
 }
+
+void AHunterHUD::OnCombatEnabled()
+{
+	if (CharacterOverlay == nullptr) return;
+	CharacterOverlay->OnCombatEnabled();
+}
+
+void AHunterHUD::OnCombatDisabled()
+{
+	if (CharacterOverlay == nullptr) return;
+	CharacterOverlay->OnCombatDisabled();
+}

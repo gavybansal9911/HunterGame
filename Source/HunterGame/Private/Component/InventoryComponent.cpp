@@ -34,9 +34,8 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 		const int32 Local_ElementsRemaining = AddItemToExistingSlot(ItemToAddData, ExistingSlotIndex);
 		if (Local_ElementsRemaining > 0)
 		{
-			// // TODO: Try to add remaining elements again
 			ItemToAddData.NumberOfElements = Local_ElementsRemaining;
-			//AddItemToInventory(ItemToAddData);
+			OnInventoryUpdated.Broadcast();  // Trigger OnInventoryUpdated delegate
 			return Local_ElementsRemaining;
 		}
 	}
@@ -48,9 +47,8 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 			const int32 Local_ElementsRemaining = CreateNewStack(ItemToAddData, EmptySlotIndex);
 			if (Local_ElementsRemaining > 0)
 			{
-				// // TODO: Try to add remaining elements again
 				ItemToAddData.NumberOfElements = Local_ElementsRemaining;
-				//AddItemToInventory(ItemToAddData);
+				OnInventoryUpdated.Broadcast();  // Trigger OnInventoryUpdated delegate
 				return Local_ElementsRemaining;
 			}
 		}
@@ -63,6 +61,7 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 		}
 	}
 	PrintContent();
+	OnInventoryUpdated.Broadcast();  // Trigger OnInventoryUpdated delegate
 	return 0;
 }
 

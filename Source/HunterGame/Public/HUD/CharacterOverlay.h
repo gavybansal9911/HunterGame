@@ -15,6 +15,10 @@ UCLASS()
 class HUNTERGAME_API UCharacterOverlay : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	void OnCombatEnabled();
+	void OnCombatDisabled();
 	
 public:
 	UPROPERTY(meta=(BindWidget))
@@ -28,4 +32,7 @@ public:
 	
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* WeaponAmmoAmountText;
+	
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* AmmoInInventoryText;
 };

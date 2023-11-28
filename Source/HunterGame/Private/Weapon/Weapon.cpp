@@ -114,9 +114,15 @@ void AWeapon::SetHUDWeaponAmmo()
 		OwnerController = OwnerController == nullptr ? Cast<AHunterPlayerController>(OwnerCharacter->GetController()) : OwnerController;
 		if (OwnerController)
 		{
-			OwnerController->SetHUDWeaponAmmo(Ammo);
+			OwnerController->SetHUDWeaponAmmo(Ammo, GetAmmoInInventory());
 		}
 	}
+}
+
+int32 AWeapon::GetAmmoInInventory()
+{
+	if (!OwnerCharacter) return 0;
+	return OwnerCharacter->GetAmmoInInventory();
 }
 
 void AWeapon::SpendRound()
