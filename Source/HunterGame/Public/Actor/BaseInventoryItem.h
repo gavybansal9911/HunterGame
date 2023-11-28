@@ -29,6 +29,6 @@ protected:
 	virtual void BeginPlay() override;
 	
 	// Item Data
-	UPROPERTY(EditDefaultsOnly, Category = "Item Data")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Data")
 	FItemData ItemData;
 };

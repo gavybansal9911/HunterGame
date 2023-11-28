@@ -19,7 +19,7 @@ struct FItemData
 	UPROPERTY(EditDefaultsOnly)
 	FString Description = FString();
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int32 NumberOfElements = 0;
 
 	UPROPERTY(EditDefaultsOnly)

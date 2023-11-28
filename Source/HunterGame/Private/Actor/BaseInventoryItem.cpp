@@ -20,6 +20,7 @@ void ABaseInventoryItem::InteractWith(ABaseCharacter* PlayerCharacter)
 	Super::InteractWith(PlayerCharacter);
 	
 	int32 Local_Remaining = PlayerCharacter->AddItemToInventory(ItemData);
+	ItemData.NumberOfElements = Local_Remaining;
 	if (Local_Remaining == 0) {Destroy();}
 }
 

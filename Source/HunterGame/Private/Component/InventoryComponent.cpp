@@ -34,7 +34,9 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 		const int32 Local_ElementsRemaining = AddItemToExistingSlot(ItemToAddData, ExistingSlotIndex);
 		if (Local_ElementsRemaining > 0)
 		{
-			// TODO: Try to add remaining elements again
+			// // TODO: Try to add remaining elements again
+			ItemToAddData.NumberOfElements = Local_ElementsRemaining;
+			//AddItemToInventory(ItemToAddData);
 			return Local_ElementsRemaining;
 		}
 	}
@@ -46,13 +48,16 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 			const int32 Local_ElementsRemaining = CreateNewStack(ItemToAddData, EmptySlotIndex);
 			if (Local_ElementsRemaining > 0)
 			{
-				// TODO: Try to add remaining elements again
+				// // TODO: Try to add remaining elements again
+				ItemToAddData.NumberOfElements = Local_ElementsRemaining;
+				//AddItemToInventory(ItemToAddData);
 				return Local_ElementsRemaining;
 			}
 		}
 		
 		else
 		{
+			PrintContent();
 			// TODO: Notify player that no space is available for the item
 			return ItemToAddData.NumberOfElements;
 		}
@@ -135,7 +140,7 @@ int32 UInventoryComponent::CreateNewStack(FItemData ItemToAddData, int32 NewStac
 		Content[NewStackIndex].Quantity = ItemToAddData.MaxStackSize;
 
 		// Return the number of elements remaining
-		return ItemToAddData.NumberOfElements = ItemToAddData.MaxStackSize;
+		return ItemToAddData.NumberOfElements - ItemToAddData.MaxStackSize;
 	}
 	else
 	{
