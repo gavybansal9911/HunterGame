@@ -148,3 +148,22 @@ int32 UInventoryComponent::CreateNewStack(FItemData ItemToAddData, int32 NewStac
 	
 	return 0;
 }
+
+int32 UInventoryComponent::RemoveItemFromSlot(int32 SlotIndex, int32 NumberOfElementsToRemove)
+{
+	int32 Local_NumberOfElementsToBeRemoved = NumberOfElementsToRemove;
+	
+	if (NumberOfElementsToRemove > Content[SlotIndex].Quantity)
+	{
+		Local_NumberOfElementsToBeRemoved = Content[SlotIndex].Quantity;
+		Content[SlotIndex].Quantity = 0;
+		OnInventoryUpdated.Broadcast();
+		return Local_NumberOfElementsToBeRemoved;
+	}
+	else
+	{
+		Content[SlotIndex].Quantity = Content[SlotIndex].Quantity - NumberOfElementsToRemove;
+		OnInventoryUpdated.Broadcast();
+		return Local_NumberOfElementsToBeRemoved;
+	}
+}

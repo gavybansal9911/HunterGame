@@ -5,9 +5,7 @@
 #include "Character/BaseCharacter.h"
 #include "PlayerController/HunterPlayerController.h"
 #include "Components/SphereComponent.h"
-#include "Components/TextBlock.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "HUD/CharacterOverlay.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Weapon/Weapon.h"
@@ -129,6 +127,7 @@ void UCombatComponent::ServerReload_Implementation()
 	int32 ReloadAmount = CalcAmountToReload();
 	CarriedAmmo = HunterCharacter->GetAmmoInInventory() - ReloadAmount;
 	WeaponInHand->AddAmmoToWeapon(ReloadAmount);
+	HunterCharacter->RemoveAmmoFromInventory(ReloadAmount);
 	
 	CombatState = ECombatState::ECS_Reloading;
 	PlayReloadMontage();    // This function further calls a generic PlayAnimationMontage which is set in a way that the montage is played for the server and all the clients so, no need to replicate this montage here again.
@@ -136,7 +135,6 @@ void UCombatComponent::ServerReload_Implementation()
 
 void UCombatComponent::HandleReload()
 {
-	
 }
 
 void UCombatComponent::PlayReloadMontage()

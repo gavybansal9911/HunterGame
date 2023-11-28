@@ -70,6 +70,7 @@ public:
 
 	/** Combat **/
 	int32 GetAmmoInInventory() const;
+	bool RemoveAmmoFromInventory(int32 AmountOfAmmoToRemove);
 	/** Combat **/
 	
 	/** Interaction **/
@@ -180,7 +181,7 @@ protected:
 	TObjectPtr<UCameraComponent> FP_ViewCamera;
 	
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	FVector CameraBoomSocketOffset_TP = FVector(0.f, 0.f, 0.f);     // Camera offset when not aiming
+	FVector CameraBoomSocketOffset_TP = FVector(0.f, 75.f, 75.f);     // Camera offset when not aiming
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector CameraBoomAimSocketOffset_TP = FVector(0.f, 75.f, 75.f);    // Camera offset when aiming
 	UPROPERTY(EditAnywhere, Category = "Camera")

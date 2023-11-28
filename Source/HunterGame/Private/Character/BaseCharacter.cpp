@@ -416,6 +416,29 @@ int32 ABaseCharacter::GetAmmoInInventory() const
 	return Local_InInventoryAmmo;
 }
 
+bool ABaseCharacter::RemoveAmmoFromInventory(int32 AmountOfAmmoToRemove)
+{
+	if (CombatComponent == nullptr || InventoryComponent == nullptr) return false;
+
+	int Local_Index = 0;
+	for (FSlotData Slot : InventoryComponent->GetContent())
+	{
+		if (CombatComponent->GetWeaponInHand()->GetWeaponAmmoClass() == Slot.ItemData.ItemClass)
+		{
+			int32 ElementsRemoved = InventoryComponent->RemoveItemFromSlot(Local_Index, AmountOfAmmoToRemove);
+			if (AmountOfAmmoToRemove > ElementsRemoved)
+			{
+				RemoveAmmoFromInventory(AmountOfAmmoToRemove - ElementsRemoved);
+				return true;
+			}
+		}
+
+		Local_Index++;
+	}
+
+	return false;
+}
+
 void ABaseCharacter::OnReloadEnd_AnimNotifyCallBack()
 {
 	if (!CombatComponent) return;;
