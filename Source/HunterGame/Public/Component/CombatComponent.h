@@ -52,6 +52,9 @@ public:
 	int32 CalcAmountToReload();    // Returns 0 if fails to calculate a valid amount or if weapon magazine is already full
 	
 	void TogglePrimaryWeaponAttachment();
+	UFUNCTION(Server, Reliable)
+	void ServerTogglePrimaryWeaponAttachment();
+	
 	void ToggleSecondaryWeaponAttachment();
 	
 	void DisableCombat();

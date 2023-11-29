@@ -177,63 +177,47 @@ int32 UCombatComponent::CalcAmountToReload()
 
 void UCombatComponent::TogglePrimaryWeaponAttachment()
 {
-	if (HunterCharacter->HasAuthority())
+	if (!HunterCharacter->IsLocallyControlled()) return;
+	
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
 	{
-		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
-		{
-			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
-			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
-			WeaponInHand = nullptr;
-			DisableCombat();
-		}
-		else if (WeaponInHand == nullptr && PrimaryWeapon)
-		{
-			AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
-			PrimaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
-			WeaponInHand = PrimaryWeapon;
-			EnableCombat();
-		}
+		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+		WeaponInHand = nullptr;
+		DisableCombat();
 	}
-	else if (!HunterCharacter->HasAuthority() && HunterCharacter->IsLocallyControlled())
+	else if (WeaponInHand == nullptr && PrimaryWeapon)
 	{
-		
-		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
-		{
-			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
-			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
-			WeaponInHand = nullptr;
-			DisableCombat();
-		}
-		else if (WeaponInHand == nullptr && PrimaryWeapon)
-		{
-			AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
-			PrimaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
-			WeaponInHand = PrimaryWeapon;
-			EnableCombat();
-		}
+		AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
+		PrimaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+		WeaponInHand = PrimaryWeapon;
+		EnableCombat();
+	}
+}
+
+void UCombatComponent::ServerTogglePrimaryWeaponAttachment_Implementation()
+{
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Primary)
+	{
+		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+		WeaponInHand = nullptr;
+		DisableCombat();
+	}
+	else if (WeaponInHand == nullptr && PrimaryWeapon)
+	{
+		AttachToActor(HunterCharacter, PrimaryWeapon, PrimaryWeapon->GetInHandAttachSocketName());
+		PrimaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+		WeaponInHand = PrimaryWeapon;
+		EnableCombat();
 	}
 }
 
 void UCombatComponent::ToggleSecondaryWeaponAttachment()
 {
+	if (!HunterCharacter->IsLocallyControlled()) return;
+	
 	if (HunterCharacter->HasAuthority())
-	{
-		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
-		{
-			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
-			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
-			WeaponInHand = nullptr;
-			DisableCombat();
-		}
-		else if (WeaponInHand == nullptr && SecondaryWeapon)
-		{
-			AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
-			SecondaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
-			WeaponInHand = SecondaryWeapon;
-			EnableCombat();
-		}
-	}
-	else if (!HunterCharacter->HasAuthority() && HunterCharacter->IsLocallyControlled())
 	{
 		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
 		{
@@ -254,6 +238,8 @@ void UCombatComponent::ToggleSecondaryWeaponAttachment()
 
 void UCombatComponent::DisableCombat()
 {
+	if (HunterCharacter == nullptr) return;
+	
 	SetIsCombatEnabled(false);
 	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 	HunterCharacter->bUseControllerRotationYaw = false;

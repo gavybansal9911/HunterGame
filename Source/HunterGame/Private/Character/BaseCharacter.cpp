@@ -460,7 +460,15 @@ void ABaseCharacter::OnReloadEnd_AnimNotifyCallBack()
 void ABaseCharacter::TogglePrimaryWeapon_AnimNotifyCallBack()
 {
 	if (!CombatComponent) return;
-	CombatComponent->TogglePrimaryWeaponAttachment();
+	
+	if (HasAuthority())
+	{
+		CombatComponent->TogglePrimaryWeaponAttachment();
+	}
+	if (!HasAuthority() && IsLocallyControlled())
+	{
+		CombatComponent->ServerTogglePrimaryWeaponAttachment();
+	}
 }
 
 void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
