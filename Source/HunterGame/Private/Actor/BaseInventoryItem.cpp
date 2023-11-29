@@ -2,7 +2,6 @@
 
 
 #include "Actor/BaseInventoryItem.h"
-
 #include "Character/BaseCharacter.h"
 
 ABaseInventoryItem::ABaseInventoryItem(): ItemData()

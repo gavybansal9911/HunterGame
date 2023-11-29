@@ -17,6 +17,8 @@ class HUNTERGAME_API AHunterPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	void ToggleInventory();
+	
 	void SetHUDHealth(float Health, float MaxHealth);
 	void SetHUDWeaponAmmo(int32 InWeaponAmmoAmount, int32 InInventoryAmmoAmount);
 

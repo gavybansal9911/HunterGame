@@ -94,6 +94,7 @@ protected:
 	void TogglePrimaryWeaponButtonPressed();
 	void ToggleSecondaryWeaponButtonPressed();
 	void ReloadButtonPressed();
+	void ToggleInventoryButtonPressed();
 	/** Input CallBacks **/
 
 	/** Input CallBacks RPCs **/
@@ -163,6 +164,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> ReloadAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ToggleInventoryAction;
 	/** Input **/
 
 	/** Character States **/

@@ -4,6 +4,7 @@
 #include "HUD/HunterHUD.h"
 #include "GameFramework/PlayerController.h"
 #include "HUD/CharacterOverlay.h"
+#include "HUD/InventoryUI/InventoryMenuUW.h"
 
 void AHunterHUD::BeginPlay()
 {
@@ -75,6 +76,24 @@ void AHunterHUD::DrawCrosshair(UTexture2D* Texture, FVector2d ViewportCenter, FV
 		0.f, 0.f, 1.f, 1.f, FLinearColor::White);
 }
 
+void AHunterHUD::SetInputModeAsUIOnly()
+{
+	if (!GetOwningPlayerController()) return;
+	
+	FInputModeUIOnly InputMode;
+	GetOwningPlayerController()->SetInputMode(InputMode);
+	GetOwningPlayerController()->SetShowMouseCursor(true);
+}
+
+void AHunterHUD::SetInputModeAsGameAndUI()
+{
+	if (!GetOwningPlayerController()) return;
+	
+	FInputModeGameAndUI InputMode;
+	GetOwningPlayerController()->SetInputMode(InputMode);
+	GetOwningPlayerController()->SetShowMouseCursor(false);
+}
+
 void AHunterHUD::OnCombatEnabled()
 {
 	if (CharacterOverlay == nullptr) return;
@@ -85,4 +104,31 @@ void AHunterHUD::OnCombatDisabled()
 {
 	if (CharacterOverlay == nullptr) return;
 	CharacterOverlay->OnCombatDisabled();
+}
+
+void AHunterHUD::ToggleInventory()
+{
+	if (!GetOwningPlayerController()) return;
+	
+	if (CharacterOverlay)
+	{
+		CharacterOverlay->RemoveFromParent();
+		CharacterOverlay = nullptr;
+		InventoryMenu = CreateWidget<UInventoryMenuUW>(GetOwningPlayerController(), InventoryMenuClass);
+		if (InventoryMenu)
+		{
+			InventoryMenu->SetOwnerHUD(this);
+			InventoryMenu->AddToViewport();
+		}
+		SetInputModeAsUIOnly();
+	}
+	else if (InventoryMenu)
+	{
+		InventoryMenu->RemoveFromParent();
+		InventoryMenu->SetOwnerHUD(nullptr);
+		InventoryMenu = nullptr;
+		CharacterOverlay = CreateWidget<UCharacterOverlay>(GetOwningPlayerController(), CharacterOverlayClass);
+		if (CharacterOverlay) {CharacterOverlay->AddToViewport();}
+		SetInputModeAsGameAndUI();
+	}
 }

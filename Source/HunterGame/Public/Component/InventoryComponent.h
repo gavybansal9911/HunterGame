@@ -48,4 +48,5 @@ private:
 
 public:
 	FORCEINLINE TArray<FSlotData> GetContent() const {return Content;}
+	FORCEINLINE int32 GetNumberOfSlots() const {return NumberOfSlots;}
 };

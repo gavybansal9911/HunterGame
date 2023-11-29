@@ -14,6 +14,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "HUD/CharacterOverlay.h"
+#include "HUD/HunterHUD.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "PlayerController/HunterPlayerController.h"
@@ -124,6 +126,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(TogglePrimaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::TogglePrimaryWeaponButtonPressed);
 		EnhancedInputComponent->BindAction(ToggleSecondaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleSecondaryWeaponButtonPressed);
 		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ABaseCharacter::ReloadButtonPressed);
+		EnhancedInputComponent->BindAction(ToggleInventoryAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleInventoryButtonPressed);
 	}
 }
 
@@ -295,6 +298,13 @@ void ABaseCharacter::ReloadButtonPressed()
 	if (!CombatComponent) return;
 	CombatComponent->Reload();
 }
+
+void ABaseCharacter::ToggleInventoryButtonPressed()
+{
+	if (HunterPlayerController == nullptr) return;
+	HunterPlayerController->ToggleInventory();
+}
+
 /** Input CallBacks **/
 
 /** Event Trigger CallBacks **/
@@ -425,11 +435,13 @@ bool ABaseCharacter::RemoveAmmoFromInventory(int32 AmountOfAmmoToRemove)
 	{
 		if (CombatComponent->GetWeaponInHand()->GetWeaponAmmoClass() == Slot.ItemData.ItemClass)
 		{
-			int32 ElementsRemoved = InventoryComponent->RemoveItemFromSlot(Local_Index, AmountOfAmmoToRemove);
+			int32 ElementsRemoved = 0;
+			ElementsRemoved = InventoryComponent->RemoveItemFromSlot(Local_Index, AmountOfAmmoToRemove);
 			if (AmountOfAmmoToRemove > ElementsRemoved)
 			{
-				RemoveAmmoFromInventory(AmountOfAmmoToRemove - ElementsRemoved);
-				return true;
+				// TODO: Resolve Issue -> Calling RemoveAmmoFromInventory creates a infinite loop (Creates a infinite loop only if inventory is full)
+				//RemoveAmmoFromInventory(AmountOfAmmoToRemove - ElementsRemoved);
+				return true; // Return so it doesn't remove ammo from every stack of ammo in the inventory
 			}
 		}
 
