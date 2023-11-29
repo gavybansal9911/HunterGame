@@ -2,6 +2,7 @@
 
 
 #include "HUD/InventoryUI/InventoryMenuUW.h"
+#include "Components/Button.h"
 #include "HUD/HunterHUD.h"
 #include "HUD/InventoryUI/InventoryGridUW.h"
 
@@ -13,6 +14,8 @@ UInventoryMenuUW::UInventoryMenuUW()
 void UInventoryMenuUW::NativeConstruct()
 {
 	Super::NativeConstruct();
+	BindCallBacks();
+	if (InventoryGrid) {InventoryGrid->MakeSlots();}
 }
 
 FReply UInventoryMenuUW::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
@@ -27,4 +30,19 @@ FReply UInventoryMenuUW::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 
 	// Pass the event to the parent class
 	return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
+}
+
+void UInventoryMenuUW::BindCallBacks()
+{
+	if (CloseInventoryMenuButton)
+	{
+		CloseInventoryMenuButton->OnClicked.AddDynamic(this, &UInventoryMenuUW::OnCloseInventoryMenuButtonClicked);
+	}
+}
+
+void UInventoryMenuUW::OnCloseInventoryMenuButtonClicked()
+{
+	if (!OwnerHUD) return;
+	OwnerHUD->SetInputModeAsGameOnly();
+	OwnerHUD->ToggleInventory();
 }

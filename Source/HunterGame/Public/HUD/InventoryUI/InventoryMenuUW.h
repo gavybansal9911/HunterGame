@@ -6,6 +6,8 @@
 #include "HUD/UserWidgetBase.h"
 #include "InventoryMenuUW.generated.h"
 
+class UInventoryGridUW;
+class UButton;
 class AHunterHUD;
 class UInventoryComponent;
 
@@ -20,12 +22,25 @@ class HUNTERGAME_API UInventoryMenuUW : public UUserWidgetBase
 public:
 	UInventoryMenuUW();
 	virtual void NativeConstruct() override;
-	
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
+	void BindCallBacks();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(ExposeOnSpawn))
 	UInventoryComponent* InventoryComponent;
 
+	/** Widget Components **/
+	UPROPERTY(meta=(BindWidget))
+	UButton* CloseInventoryMenuButton;
+
+	UPROPERTY(meta=(BindWidget), BlueprintReadOnly)
+	UInventoryGridUW* InventoryGrid;
+	/** Widget Components **/
+
+protected:
+	// Button CallBacks
+	UFUNCTION()
+	void OnCloseInventoryMenuButtonClicked();
+	
 private:
 	UPROPERTY()
 	AHunterHUD* OwnerHUD;

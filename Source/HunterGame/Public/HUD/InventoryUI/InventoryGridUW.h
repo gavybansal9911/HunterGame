@@ -30,4 +30,10 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UGridPanel* InventoryGridPanel;
 	/** Widget Components **/
+
+private:
+	/** Properties **/
+	int NumberOfRows = 2;
+	int NumberOfColumns = 8;
+	/** Properties **/
 };
