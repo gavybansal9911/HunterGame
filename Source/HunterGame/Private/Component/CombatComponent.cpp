@@ -216,23 +216,38 @@ void UCombatComponent::ServerTogglePrimaryWeaponAttachment_Implementation()
 void UCombatComponent::ToggleSecondaryWeaponAttachment()
 {
 	if (!HunterCharacter->IsLocallyControlled()) return;
-	
-	if (HunterCharacter->HasAuthority())
+
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
 	{
-		if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
-		{
-			AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
-			WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
-			WeaponInHand = nullptr;
-			DisableCombat();
-		}
-		else if (WeaponInHand == nullptr && SecondaryWeapon)
-		{
-			AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
-			SecondaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
-			WeaponInHand = SecondaryWeapon;
-			EnableCombat();
-		}
+		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+		WeaponInHand = nullptr;
+		DisableCombat();
+	}
+	else if (WeaponInHand == nullptr && SecondaryWeapon)
+	{
+		AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
+		SecondaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+		WeaponInHand = SecondaryWeapon;
+		EnableCombat();
+	}
+}
+
+void UCombatComponent::ServerToggleSecondaryWeaponAttachment_Implementation()
+{
+	if (WeaponInHand && WeaponInHand->GetWeaponClass() == EWeaponClass::EWC_Secondary)
+	{
+		AttachToActor(HunterCharacter, WeaponInHand, WeaponInHand->GetOutHandAttachSocketName());
+		WeaponInHand->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+		WeaponInHand = nullptr;
+		DisableCombat();
+	}
+	else if (WeaponInHand == nullptr && SecondaryWeapon)
+	{
+		AttachToActor(HunterCharacter, SecondaryWeapon, SecondaryWeapon->GetInHandAttachSocketName());
+		SecondaryWeapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+		WeaponInHand = SecondaryWeapon;
+		EnableCombat();
 	}
 }
 

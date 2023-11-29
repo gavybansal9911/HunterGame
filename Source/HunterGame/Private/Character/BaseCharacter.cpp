@@ -435,8 +435,7 @@ bool ABaseCharacter::RemoveAmmoFromInventory(int32 AmountOfAmmoToRemove)
 	{
 		if (CombatComponent->GetWeaponInHand()->GetWeaponAmmoClass() == Slot.ItemData.ItemClass)
 		{
-			int32 ElementsRemoved = 0;
-			ElementsRemoved = InventoryComponent->RemoveItemFromSlot(Local_Index, AmountOfAmmoToRemove);
+			int32 ElementsRemoved = InventoryComponent->RemoveItemFromSlot(Local_Index, AmountOfAmmoToRemove);
 			if (AmountOfAmmoToRemove > ElementsRemoved)
 			{
 				// TODO: Resolve Issue -> Calling RemoveAmmoFromInventory creates a infinite loop (Creates a infinite loop only if inventory is full)
@@ -474,7 +473,15 @@ void ABaseCharacter::TogglePrimaryWeapon_AnimNotifyCallBack()
 void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
 {
 	if (!CombatComponent) return;
-	CombatComponent->ToggleSecondaryWeaponAttachment();
+
+	if (HasAuthority())
+	{
+		CombatComponent->ToggleSecondaryWeaponAttachment();
+	}
+	if (!HasAuthority() && IsLocallyControlled())
+	{
+		CombatComponent->ServerToggleSecondaryWeaponAttachment();
+	}
 }
 
 /** Combat **/

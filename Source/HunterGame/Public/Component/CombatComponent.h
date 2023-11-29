@@ -56,6 +56,8 @@ public:
 	void ServerTogglePrimaryWeaponAttachment();
 	
 	void ToggleSecondaryWeaponAttachment();
+	UFUNCTION(Server, Reliable)
+	void ServerToggleSecondaryWeaponAttachment();
 	
 	void DisableCombat();
 	void EnableCombat();
