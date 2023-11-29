@@ -153,7 +153,9 @@ private:
 
 	/** Speed **/
 	UPROPERTY(EditAnywhere, Category = "Movement Properties");
-	float BaseWalkSpeed{600.f};
+	float BaseWalkSpeed{300.f};
+	UPROPERTY(EditAnywhere, Category = "Movement Properties");
+	float RUnSpeed{600.f};
 	UPROPERTY(EditAnywhere, Category = "Movement Properties");
 	float AimWalkSpeed{400.f};
 	/** Speed **/

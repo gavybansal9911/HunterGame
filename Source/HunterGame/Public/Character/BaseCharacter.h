@@ -95,6 +95,8 @@ protected:
 	void ToggleSecondaryWeaponButtonPressed();
 	void ReloadButtonPressed();
 	void ToggleInventoryButtonPressed();
+	void RunButtonPressed();
+	void RunButtonReleased();
 	/** Input CallBacks **/
 
 	/** Input CallBacks RPCs **/
@@ -106,6 +108,13 @@ protected:
 	UFUNCTION()
 	void OnInventoryUpdated();
 	/** Event Trigger CallBacks **/
+
+	/** Movement **/
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float WalkSpeed = 300.f;
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float RunSpeed = 600.f;
+	/** Movement **/
 	
 	/** Combat **/
 	UFUNCTION()
@@ -167,6 +176,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> ToggleInventoryAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> RunAction;
 	/** Input **/
 
 	/** Character States **/

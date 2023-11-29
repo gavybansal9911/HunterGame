@@ -14,8 +14,6 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "HUD/CharacterOverlay.h"
-#include "HUD/HunterHUD.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "PlayerController/HunterPlayerController.h"
@@ -50,6 +48,7 @@ ABaseCharacter::ABaseCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent Component"));
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
@@ -127,6 +126,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(ToggleSecondaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleSecondaryWeaponButtonPressed);
 		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ABaseCharacter::ReloadButtonPressed);
 		EnhancedInputComponent->BindAction(ToggleInventoryAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleInventoryButtonPressed);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &ABaseCharacter::RunButtonPressed);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ABaseCharacter::RunButtonReleased);
 	}
 }
 
@@ -303,6 +304,22 @@ void ABaseCharacter::ToggleInventoryButtonPressed()
 {
 	if (HunterPlayerController == nullptr) return;
 	HunterPlayerController->ToggleInventory();
+}
+
+void ABaseCharacter::RunButtonPressed()
+{
+	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
+	if (CombatComponent->bIsAiming) return;
+
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+}
+
+void ABaseCharacter::RunButtonReleased()
+{
+	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
+	if (CombatComponent->bIsAiming) return;
+
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
 /** Input CallBacks **/
