@@ -18,21 +18,22 @@ void UInventoryGridUW::NativeConstruct()
 
 void UInventoryGridUW::MakeSlots()
 {
-	if (InventoryComponent == nullptr || InventoryGridPanel == nullptr) return;
+	if (InventoryComponent == nullptr || InventoryGridPanel == nullptr || InventorySlotUWClass == nullptr) return;
 
 	int Local_Row = 0;
 	int Local_Column = 0;
 	const int Local_NumberOfSlots = InventoryComponent->GetNumberOfSlots();
 	for (int i = 0; i < Local_NumberOfSlots; i++)
 	{
-		if (Local_Column > NumberOfColumns)
+		if (Local_Column >= NumberOfColumns)
 		{
 			Local_Column = 0;
 			Local_Row++;
 		}
 		
-		UInventorySlotUW* InventorySlot = CreateWidget<UInventorySlotUW>(this, UInventorySlotUW::StaticClass());
+		UInventorySlotUW* InventorySlot = CreateWidget<UInventorySlotUW>(GetWorld(), InventorySlotUWClass);
 		InventoryGridPanel->AddChildToGrid(InventorySlot, Local_Row, Local_Column);
+		UE_LOG(LogTemp, Warning, TEXT("Adding slot to row %d, column %d"), Local_Row, Local_Column);
 		Local_Column++;
 	}
 }

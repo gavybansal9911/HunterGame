@@ -15,7 +15,11 @@ void UInventoryMenuUW::NativeConstruct()
 {
 	Super::NativeConstruct();
 	BindCallBacks();
-	if (InventoryGrid) {InventoryGrid->MakeSlots();}
+	if (InventoryGrid)
+	{
+		InventoryGrid->InventorySlotUWClass = InventorySlotClass;
+		InventoryGrid->MakeSlots();
+	}
 }
 
 FReply UInventoryMenuUW::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)

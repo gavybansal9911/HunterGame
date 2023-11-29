@@ -6,6 +6,7 @@
 #include "HUD/UserWidgetBase.h"
 #include "InventoryGridUW.generated.h"
 
+class UInventorySlotUW;
 class UGridPanel;
 class USizeBox;
 class UInventoryComponent;
@@ -31,9 +32,12 @@ public:
 	UGridPanel* InventoryGridPanel;
 	/** Widget Components **/
 
+	// References
+	TSubclassOf<UInventorySlotUW> InventorySlotUWClass;
+	
 private:
 	/** Properties **/
-	int NumberOfRows = 2;
-	int NumberOfColumns = 8;
+	int NumberOfRows = 3;
+	int NumberOfColumns = 5;
 	/** Properties **/
 };

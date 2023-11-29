@@ -6,6 +6,7 @@
 #include "HUD/UserWidgetBase.h"
 #include "InventoryMenuUW.generated.h"
 
+class UInventorySlotUW;
 class UInventoryGridUW;
 class UButton;
 class AHunterHUD;
@@ -27,7 +28,7 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(ExposeOnSpawn))
 	UInventoryComponent* InventoryComponent;
-
+	
 	/** Widget Components **/
 	UPROPERTY(meta=(BindWidget))
 	UButton* CloseInventoryMenuButton;
@@ -40,6 +41,10 @@ protected:
 	// Button CallBacks
 	UFUNCTION()
 	void OnCloseInventoryMenuButtonClicked();
+
+	// References
+	UPROPERTY(EditAnywhere, Category = "Slots")
+	TSubclassOf<UInventorySlotUW> InventorySlotClass;
 	
 private:
 	UPROPERTY()
