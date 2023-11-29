@@ -21,7 +21,7 @@ FReply UInventoryMenuUW::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 	
 	if (InKeyEvent.GetKey() == EKeys::I)
 	{
-		OwnerHUD->SetInputModeAsGameAndUI();
+		OwnerHUD->SetInputModeAsGameOnly();
 		OwnerHUD->ToggleInventory();
 	}
 

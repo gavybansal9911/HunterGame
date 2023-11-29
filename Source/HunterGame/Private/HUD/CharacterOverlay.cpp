@@ -2,7 +2,6 @@
 
 
 #include "HUD/CharacterOverlay.h"
-
 #include "Components/TextBlock.h"
 
 void UCharacterOverlay::OnCombatEnabled()

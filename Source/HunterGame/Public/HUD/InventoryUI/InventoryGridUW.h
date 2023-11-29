@@ -23,13 +23,10 @@ public:
 	void virtual NativeConstruct() override;
 	void MakeSlots();
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(ExposeOnSpawn))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UInventoryComponent* InventoryComponent;
 
 	/** Widget Components **/
-	UPROPERTY(meta=(BindWidget))
-	USizeBox* InventoryGridSizeBox;
-
 	UPROPERTY(meta=(BindWidget))
 	UGridPanel* InventoryGridPanel;
 	/** Widget Components **/

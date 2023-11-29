@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "HunterHUD.generated.h"
 
+class ABaseCharacter;
 class UInventoryMenuUW;
 class UCharacterOverlay;
 class UTexture2D;
@@ -40,7 +41,7 @@ public:
 	void ToggleInventory();
 
 	void SetInputModeAsUIOnly();
-	void SetInputModeAsGameAndUI();
+	void SetInputModeAsGameOnly();
 	
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UUserWidget> CharacterOverlayClass;
@@ -65,6 +66,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Crosshair")
 	float CrosshairSpreadMax = 16.f;
+
+	UPROPERTY()
+	ABaseCharacter* OwnerCharacter;
 
 public:
 	FORCEINLINE void SetHUDPackage(const FHUDPackage& InHUDPackage) {HUDPackage = InHUDPackage;}

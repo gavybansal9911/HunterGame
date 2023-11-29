@@ -2,6 +2,7 @@
 
 
 #include "HUD/HunterHUD.h"
+#include "Character/BaseCharacter.h"
 #include "GameFramework/PlayerController.h"
 #include "HUD/CharacterOverlay.h"
 #include "HUD/InventoryUI/InventoryMenuUW.h"
@@ -9,8 +10,11 @@
 void AHunterHUD::BeginPlay()
 {
 	Super::BeginPlay();
-
 	AddCharacterOverlay();
+	if (ABaseCharacter* Character = Cast<ABaseCharacter>(GetOwningPawn()))
+	{
+		OwnerCharacter = Character;
+	}
 }
 
 void AHunterHUD::AddCharacterOverlay()
@@ -85,11 +89,11 @@ void AHunterHUD::SetInputModeAsUIOnly()
 	GetOwningPlayerController()->SetShowMouseCursor(true);
 }
 
-void AHunterHUD::SetInputModeAsGameAndUI()
+void AHunterHUD::SetInputModeAsGameOnly()
 {
 	if (!GetOwningPlayerController()) return;
 	
-	FInputModeGameAndUI InputMode;
+	FInputModeGameOnly InputMode;
 	GetOwningPlayerController()->SetInputMode(InputMode);
 	GetOwningPlayerController()->SetShowMouseCursor(false);
 }
@@ -117,8 +121,12 @@ void AHunterHUD::ToggleInventory()
 		InventoryMenu = CreateWidget<UInventoryMenuUW>(GetOwningPlayerController(), InventoryMenuClass);
 		if (InventoryMenu)
 		{
-			InventoryMenu->SetOwnerHUD(this);
-			InventoryMenu->AddToViewport();
+			if (OwnerCharacter && OwnerCharacter->InventoryComponent)
+			{
+				InventoryMenu->InventoryComponent = OwnerCharacter->InventoryComponent;
+				InventoryMenu->SetOwnerHUD(this);
+				InventoryMenu->AddToViewport();
+			}
 		}
 		SetInputModeAsUIOnly();
 	}
@@ -129,6 +137,6 @@ void AHunterHUD::ToggleInventory()
 		InventoryMenu = nullptr;
 		CharacterOverlay = CreateWidget<UCharacterOverlay>(GetOwningPlayerController(), CharacterOverlayClass);
 		if (CharacterOverlay) {CharacterOverlay->AddToViewport();}
-		SetInputModeAsGameAndUI();
+		SetInputModeAsGameOnly();
 	}
 }
