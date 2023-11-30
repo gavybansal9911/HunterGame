@@ -29,6 +29,8 @@ void ABaseItemActor::BeginPlay()
 void ABaseItemActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	HighlightActor();
+	
 	if (ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
 		PlayerCharacter->SetOverlappingActor(this);
@@ -38,6 +40,8 @@ void ABaseItemActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 void ABaseItemActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	UnHighlightActor();
+	
 	if (ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
 		PlayerCharacter->SetOverlappingActor(nullptr);
@@ -46,4 +50,16 @@ void ABaseItemActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 void ABaseItemActor::InteractWith(ABaseCharacter* PlayerCharacter)
 {
+}
+
+void ABaseItemActor::HighlightActor()
+{
+	ItemMesh->SetRenderCustomDepth(true);
+	ItemMesh->SetCustomDepthStencilValue(250);
+}
+
+void ABaseItemActor::UnHighlightActor()
+{
+	ItemMesh->SetRenderCustomDepth(false);
+	ItemMesh->SetCustomDepthStencilValue(0);
 }

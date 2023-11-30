@@ -39,4 +39,9 @@ protected:
 	UFUNCTION()                                                                                                                                                                                  
 	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);                                               
 	/** Overlap Trigger CallBacks **/
+
+	/** Effects **/
+	virtual void HighlightActor();      // Post process highlight
+	virtual void UnHighlightActor();       // Post process unhighlight
+	/** Effects **/
 };

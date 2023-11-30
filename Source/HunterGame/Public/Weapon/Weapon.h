@@ -86,6 +86,11 @@ protected:
 	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	/** Overlap Triggers **/
 
+	/** Effects **/
+	virtual void HighlightWeapon();      // Post process highlight
+	virtual void UnHighlightWeapon();       // Post process unhighlight
+	/** Effects **/
+
 private:
 	/** Reference **/
 	UPROPERTY()
