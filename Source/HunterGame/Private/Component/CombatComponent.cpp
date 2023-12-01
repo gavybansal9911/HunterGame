@@ -35,11 +35,6 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (HunterCharacter)
-	{
-		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
-	}
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
