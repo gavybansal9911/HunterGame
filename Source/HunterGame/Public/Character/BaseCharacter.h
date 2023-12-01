@@ -13,7 +13,7 @@
 #include "BaseCharacter.generated.h"
 
 #define CAMERA_BOOM_TP_TARGET_ARM_LENGTH 300.f
-#define CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH 175.f
+#define CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH 125.f
 #define CAMERA_BOOM_SFP_TARGET_ARM_LENGTH 0.f
 
 class UInventoryComponent;
@@ -199,7 +199,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector CameraBoomSocketOffset_TP = FVector(0.f, 75.f, 75.f);     // Camera offset when not aiming
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	FVector CameraBoomAimSocketOffset_TP = FVector(0.f, 75.f, 75.f);    // Camera offset when aiming
+	FVector CameraBoomAimSocketOffset_TP = FVector(0.f, 90.f, 75.f);    // Camera offset when aiming
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	FVector CameraBoomSocketOffset_SFP = FVector(0.f, -5.f, 65.f);    // Camera offset when aiming
 	/** Camera **/
