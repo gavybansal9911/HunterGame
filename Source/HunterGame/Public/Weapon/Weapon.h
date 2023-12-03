@@ -130,6 +130,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	bool bNeedsFABRIK = true;
+	
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	bool bApplyFABRIKOnlyWhenAiming = false;
 	/** Weapon Properties **/
 
 	/** Weapon Animation **/
@@ -170,6 +173,7 @@ public:
 	FORCEINLINE TSubclassOf<AWeaponAmmo> GetWeaponAmmoClass() const {return WeaponAmmoClass;}
 	FORCEINLINE EWeaponName GetWeaponName() const {return WeaponName;}
 	FORCEINLINE bool ShouldApplyFABRIK() const {return bNeedsFABRIK;}
+	FORCEINLINE bool ShouldApplyFABRIKOnlyWhenAiming() const {return bApplyFABRIKOnlyWhenAiming;}
 	bool IsMagazineEmpty() const;
 
 	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}

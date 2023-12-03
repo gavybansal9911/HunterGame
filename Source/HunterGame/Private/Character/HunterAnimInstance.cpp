@@ -131,8 +131,23 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		/** General **/
 		if (EquippedWeapon)
 		{
-			bUseFABRIK = EquippedWeapon->ShouldApplyFABRIK() &&
-				HunterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+			if (EquippedWeapon->ShouldApplyFABRIKOnlyWhenAiming())
+			{
+				if (bIsAiming)
+				{
+					bUseFABRIK = EquippedWeapon->ShouldApplyFABRIK() &&
+						HunterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+				}
+				else
+				{
+					bUseFABRIK = false;
+				}
+			}
+			else
+			{
+				bUseFABRIK = EquippedWeapon->ShouldApplyFABRIK() &&
+					HunterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+			}
 		}
 		/** General **/
 	}
