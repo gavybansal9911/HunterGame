@@ -32,8 +32,13 @@ void UInventoryGridUW::MakeSlots()
 		}
 		
 		UInventorySlotUW* InventorySlot = CreateWidget<UInventorySlotUW>(GetWorld(), InventorySlotUWClass);
-		InventoryGridPanel->AddChildToGrid(InventorySlot, Local_Row, Local_Column);
-		UE_LOG(LogTemp, Warning, TEXT("Adding slot to row %d, column %d"), Local_Row, Local_Column);
+		if (InventorySlot)
+		{
+			InventorySlot->SlotData = InventoryComponent->GetContent()[i];
+			InventorySlot->SlotDataSet();
+			InventoryGridPanel->AddChildToGrid(InventorySlot, Local_Row, Local_Column);
+			UE_LOG(LogTemp, Warning, TEXT("Adding slot to row %d, column %d"), Local_Row, Local_Column);
+		}
 		Local_Column++;
 	}
 }

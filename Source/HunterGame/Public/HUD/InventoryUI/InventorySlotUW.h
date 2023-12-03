@@ -3,10 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Component/InventoryTypes.h"
 #include "HUD/UserWidgetBase.h"
 #include "InventorySlotUW.generated.h"
 
+class UTextBlock;
+class UImage;
+class UButton;
 class USizeBox;
+
 /**
  * 
  */
@@ -19,8 +24,36 @@ public:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 
+	// On Slot Data Set
+	void SlotDataSet();
+
+	// Set Slot Properties
+	void SetSlotProperties();
+	
+	// Slot Data
+	FSlotData SlotData;
+	
+	/** Widget CallBacks **/
+	void BindWidgetCallBacks();
+	void OnSlotButtonPressed();
+	/** Widget CallBacks **/
+	
 	/** Widget Components **/
 	UPROPERTY(meta=(BindWidget))
 	USizeBox* SlotSizeBox;
+
+	UPROPERTY(meta=(BindWidget))
+	UButton* SlotButton;
+
+	UPROPERTY(meta=(BindWidget))
+	UImage* IconTexture;
+
+	UPROPERTY(meta=(BindWidget))
+	UTextBlock* QuantityText;
 	/** Widget Components **/
+
+	/** Other Variables **/
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	UTexture2D* EmptySlotTexture;
+	/** Other Variables **/
 };
