@@ -459,6 +459,7 @@ bool ABaseCharacter::RemoveAmmoFromInventory(int32 AmountOfAmmoToRemove)
 				//RemoveAmmoFromInventory(AmountOfAmmoToRemove - ElementsRemoved);
 				return true; // Return so it doesn't remove ammo from every stack of ammo in the inventory
 			}
+			return true;
 		}
 
 		Local_Index++;
