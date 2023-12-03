@@ -119,6 +119,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	EWeaponClass WeaponClass = EWeaponClass::EWC_Max;
 
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	EWeaponName WeaponName = EWeaponName::EWN_Rifle;
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
 	/** Weapon Properties && Status **/
@@ -126,6 +127,9 @@ private:
 	/** Weapon Properties **/
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	TSubclassOf<ABulletShell> BulletShellClass;
+
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	bool bNeedsFABRIK = true;
 	/** Weapon Properties **/
 
 	/** Weapon Animation **/
@@ -161,10 +165,12 @@ public:
 	FORCEINLINE EWeaponClass GetWeaponClass() const {return WeaponClass;}
 	FORCEINLINE float GetAutoFireDelay() const {return AutoFireDelay;}
 	FORCEINLINE bool IsWeaponAutomatic() const {return bAutomatic;}
-	bool IsMagazineEmpty() const;
 	FORCEINLINE int32 GetAmmoInWeapon() const {return Ammo;}
 	FORCEINLINE int32 GetMagazineSize() const {return MagazineSize;}
 	FORCEINLINE TSubclassOf<AWeaponAmmo> GetWeaponAmmoClass() const {return WeaponAmmoClass;}
+	FORCEINLINE EWeaponName GetWeaponName() const {return WeaponName;}
+	FORCEINLINE bool ShouldApplyFABRIK() const {return bNeedsFABRIK;}
+	bool IsMagazineEmpty() const;
 
 	FORCEINLINE void SetWeaponState(const EWeaponState NewWeaponState) {WeaponState = NewWeaponState;}
 	FORCEINLINE void SetWeaponAttachmentStatus(const EAttachmentStatus NewWeaponAttachmentStatus) {AttachmentStatus = NewWeaponAttachmentStatus;}

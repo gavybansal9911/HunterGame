@@ -32,6 +32,7 @@ enum class EWeaponName : uint8
 {
 	EWN_Revolver UMETA(DisplayName = "Revolver"),
 	EWN_Rifle UMETA(DisplayName = "Rifle"),
+	EWN_Shotgun UMETA(DisplayName = "Shotgun"),
 
 	EWN_Max UMETA(DisplayName = "Max")
 };

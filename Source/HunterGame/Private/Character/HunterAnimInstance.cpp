@@ -51,6 +51,14 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		/** Combat **/
 		EquippedWeapon = HunterCharacter->GetEquippedWeapon();
+		if (EquippedWeapon)
+		{
+			EquippedWeaponName = EquippedWeapon->GetWeaponName();
+		}
+		else
+		{
+			EquippedWeaponName = EWeaponName::EWN_Max;
+		}
 		bIsCombatEnabled = HunterCharacter->IsCombatEnabled();
 		bIsAiming = HunterCharacter->IsAiming();
 		AO_Yaw = HunterCharacter->GetAO_Yaw();       // Aim Yaw Offset
@@ -121,7 +129,11 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		/** Turning in Place **/
 
 		/** General **/
-		bUseFABRIK = HunterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+		if (EquippedWeapon)
+		{
+			bUseFABRIK = EquippedWeapon->ShouldApplyFABRIK() &&
+				HunterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+		}
 		/** General **/
 	}
 }

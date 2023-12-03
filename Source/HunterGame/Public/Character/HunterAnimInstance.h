@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "Character/CharacterTypes.h"
+#include "Weapon/WeaponTypes.h"
 #include "HunterAnimInstance.generated.h"
 
 class AWeapon;
@@ -57,6 +58,9 @@ protected:
 	/** Combat **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<AWeapon> EquippedWeapon;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	EWeaponName EquippedWeaponName;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool bIsCombatEnabled;

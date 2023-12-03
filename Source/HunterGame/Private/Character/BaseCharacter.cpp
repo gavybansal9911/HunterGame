@@ -500,7 +500,6 @@ void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
 		CombatComponent->ServerToggleSecondaryWeaponAttachment();
 	}
 }
-
 /** Combat **/
 
 /** Interaction **/
