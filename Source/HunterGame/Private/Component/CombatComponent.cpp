@@ -83,7 +83,6 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	WeaponInHand->SetOwner(HunterCharacter);
 	WeaponInHand->SetHUDWeaponAmmo();
-	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
 	if (HunterHUD)
 	{
@@ -248,7 +247,6 @@ void UCombatComponent::DisableCombat()
 	if (HunterCharacter == nullptr) return;
 	
 	SetIsCombatEnabled(false);
-	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 	HunterCharacter->bUseControllerRotationYaw = false;
 	if (HunterHUD)
 	{
@@ -261,7 +259,6 @@ void UCombatComponent::EnableCombat()
 	if (HunterCharacter == nullptr) return;
 	
 	SetIsCombatEnabled(true);
-	HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	HunterCharacter->bUseControllerRotationYaw = true;
 	CarriedAmmo = HunterCharacter->GetAmmoInInventory();
 	if (HunterHUD)
@@ -280,6 +277,7 @@ void UCombatComponent::SetAiming(bool bAiming)
 	if (HunterCharacter)
 	{
 		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = bAiming ? AimWalkSpeed : BaseWalkSpeed;
+		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = bAiming;
 	}
 	ServerSetAiming(bIsAiming);
 }
@@ -290,6 +288,7 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
 	if (HunterCharacter)
 	{
 		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = bAiming ? AimWalkSpeed : BaseWalkSpeed;
+		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = bAiming;
 	}
 }
 
@@ -515,7 +514,6 @@ void UCombatComponent::OnRep_EquippedWeapon()
 {
 	if (HunterCharacter && WeaponInHand)
 	{
-		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 		HunterCharacter->bUseControllerRotationYaw = true;
 		WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	}

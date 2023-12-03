@@ -23,6 +23,8 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (HunterCharacter && HunterCharacter->GetCharacterMovement())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("%d"), HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement);
+		
 		/** Basic Movement **/
 		Speed = HunterCharacter->GetCharacterMovement()->Velocity.Size();
 		bIsFalling = HunterCharacter->GetCharacterMovement()->IsFalling();
