@@ -23,13 +23,12 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (HunterCharacter && HunterCharacter->GetCharacterMovement())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%d"), HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement);
-		
 		/** Basic Movement **/
 		Speed = HunterCharacter->GetCharacterMovement()->Velocity.Size();
 		bIsFalling = HunterCharacter->GetCharacterMovement()->IsFalling();
 		bIsCrouched = HunterCharacter->bIsCrouched;
 		bIsAccelerating = HunterCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
+		bOrientRotationToMovement_WhenInCombat = HunterCharacter->ShouldOrientRotationToMovement_WhenInCombat();
 		/** Basic Movement **/
 		
 		/** Leaning **/

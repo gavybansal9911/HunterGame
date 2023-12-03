@@ -102,6 +102,12 @@ protected:
 	/** Input CallBacks RPCs **/
 	UFUNCTION(Server, Reliable)
 	void ServerInteractButtonPressed();
+
+	UFUNCTION(Server, Reliable)
+	void ServerRunButtonPressed();
+	
+	UFUNCTION(Server, Reliable)
+	void ServerRunButtonReleased();
 	/** Input CallBacks RPCs **/
 
 	/** Event Trigger CallBacks **/
@@ -217,6 +223,11 @@ private:
 	UPROPERTY()
 	AHunterPlayerController* HunterPlayerController;
 	/** Player Controller **/
+
+	/** Character Movement **/
+	UPROPERTY(EditAnywhere, Category = "Character Movement (Custom)")
+	bool bOrientRotationToMovement_WhenInCombat = true;
+	/** Character Movement **/
 	
 	/** Stats **/
 	UPROPERTY(EditAnywhere, Category = "Player Stats")
@@ -251,6 +262,7 @@ public:
 	FORCEINLINE ECameraMode GetCurrentCameraMode() const {return CurrentCameraMode;}
 	FVector GetHitTarget() const;
 	ECombatState GetCombatState() const;
+	FORCEINLINE bool ShouldOrientRotationToMovement_WhenInCombat() const {return bOrientRotationToMovement_WhenInCombat;}
 
 	void SetOverlappingActor(AActor* InOverlappingActor);
 };

@@ -78,12 +78,16 @@ void UCombatComponent::EquipWeapon(AWeapon* Weapon)
 	bIsCombatEnabled = true;
 	Weapon->SetWeaponState(EWeaponState::EWS_Attached);
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+	if (HunterCharacter->ShouldOrientRotationToMovement_WhenInCombat() == false)
+	{
+		if (HunterCharacter->GetCharacterMovement() == nullptr) return;
+		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+	}
 	/** We are not spawning the projectile on the client so for now there is no need to disable weapon collision for clients, but this may cause issues while performing hit and damage so later, we may have to disable weapon collision for clients as well.
 	* Set collision response to overlap for all channels so that the projectile or the trace(if performed from the muzzle position vector) doesn't collide with the weapon it's fired from. **/
 	WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	WeaponInHand->SetOwner(HunterCharacter);
 	WeaponInHand->SetHUDWeaponAmmo();
-	HunterCharacter->bUseControllerRotationYaw = true;
 	if (HunterHUD)
 	{
 		HunterHUD->OnCombatEnabled();
@@ -247,37 +251,43 @@ void UCombatComponent::DisableCombat()
 	if (HunterCharacter == nullptr) return;
 	
 	SetIsCombatEnabled(false);
-	HunterCharacter->bUseControllerRotationYaw = false;
-	if (HunterHUD)
+	
+	if (HunterCharacter->ShouldOrientRotationToMovement_WhenInCombat() == false)
 	{
-		HunterHUD->OnCombatDisabled();
+		HunterCharacter->bUseControllerRotationYaw = false;
+		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
+	if (HunterHUD) {HunterHUD->OnCombatDisabled();}
 }
 
 void UCombatComponent::EnableCombat()
 {
-	if (HunterCharacter == nullptr) return;
+	if (HunterCharacter == nullptr || HunterCharacter->GetCharacterMovement() == nullptr) return;
 	
 	SetIsCombatEnabled(true);
-	HunterCharacter->bUseControllerRotationYaw = true;
 	CarriedAmmo = HunterCharacter->GetAmmoInInventory();
-	if (HunterHUD)
+	
+	if (HunterCharacter->ShouldOrientRotationToMovement_WhenInCombat() == false)
 	{
-		HunterHUD->OnCombatEnabled();
+		HunterCharacter->bUseControllerRotationYaw = true;
+		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	}
-	if (WeaponInHand && WeaponInHand->GetOwner())
-	{
-		WeaponInHand->SetHUDWeaponAmmo();
-	}
+	if (HunterHUD) {HunterHUD->OnCombatEnabled();}
+	if (WeaponInHand && WeaponInHand->GetOwner()) {WeaponInHand->SetHUDWeaponAmmo();}
 }
 
 void UCombatComponent::SetAiming(bool bAiming)
 {
 	bIsAiming = bAiming;
-	if (HunterCharacter)
+	if (HunterCharacter && HunterCharacter->GetCharacterMovement())
 	{
 		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = bAiming ? AimWalkSpeed : BaseWalkSpeed;
-		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = bAiming;
+		
+		if (HunterCharacter->ShouldOrientRotationToMovement_WhenInCombat() == true)
+		{
+			HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = !bAiming;
+			HunterCharacter->bUseControllerRotationYaw = bAiming;
+		}
 	}
 	ServerSetAiming(bIsAiming);
 }
@@ -288,7 +298,12 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bAiming)
 	if (HunterCharacter)
 	{
 		HunterCharacter->GetCharacterMovement()->MaxWalkSpeed = bAiming ? AimWalkSpeed : BaseWalkSpeed;
-		HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = bAiming;
+
+		if (HunterCharacter->ShouldOrientRotationToMovement_WhenInCombat() == true)
+		{
+			HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = !bAiming;
+			HunterCharacter->bUseControllerRotationYaw = bAiming;
+		}
 	}
 }
 
@@ -516,6 +531,14 @@ void UCombatComponent::OnRep_EquippedWeapon()
 	{
 		HunterCharacter->bUseControllerRotationYaw = true;
 		WeaponInHand->GetWeaponMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
+		if (HunterCharacter->GetCharacterMovement())
+		{
+			if (HunterCharacter->ShouldOrientRotationToMovement_WhenInCombat())
+			{
+				HunterCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
+			}
+		}
 	}
 }
 

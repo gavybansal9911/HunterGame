@@ -29,7 +29,6 @@ ABaseCharacter::ABaseCharacter()
 	
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
-	
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 	CameraBoom->SetupAttachment(GetMesh());
 	CameraBoom->TargetArmLength = CAMERA_BOOM_TP_TARGET_ARM_LENGTH;
@@ -311,7 +310,15 @@ void ABaseCharacter::RunButtonPressed()
 	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
 	if (CombatComponent->bIsAiming) return;
 
-	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	if (HasAuthority())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	}
+	else
+	{
+		ServerRunButtonPressed();
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	}
 }
 
 void ABaseCharacter::RunButtonReleased()
@@ -319,9 +326,26 @@ void ABaseCharacter::RunButtonReleased()
 	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
 	if (CombatComponent->bIsAiming) return;
 
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	if (HasAuthority())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	}
+	else
+	{
+		ServerRunButtonReleased();
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	}
 }
 
+void ABaseCharacter::ServerRunButtonPressed_Implementation()
+{
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+}
+
+void ABaseCharacter::ServerRunButtonReleased_Implementation()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
 /** Input CallBacks **/
 
 /** Event Trigger CallBacks **/
@@ -351,7 +375,8 @@ void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDa
 
 void ABaseCharacter::AimOffset(float DeltaTime)
 {
-	if (CombatComponent && CombatComponent->GetWeaponInHand() == nullptr) return;;
+	if (CombatComponent == nullptr || CombatComponent->GetWeaponInHand() == nullptr) return;
+	if (bOrientRotationToMovement_WhenInCombat == true && CombatComponent->bIsAiming == false) return;
 	
 	FVector Velocity = GetVelocity();
 	Velocity.Z = 0.f;

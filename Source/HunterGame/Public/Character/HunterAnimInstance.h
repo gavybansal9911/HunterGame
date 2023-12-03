@@ -40,6 +40,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsAccelerating;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	bool bOrientRotationToMovement_WhenInCombat;
 	/** Basic Movement **/
 	
 	/** Leaning **/
