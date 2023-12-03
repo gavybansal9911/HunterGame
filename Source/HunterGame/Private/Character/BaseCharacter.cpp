@@ -457,9 +457,8 @@ bool ABaseCharacter::RemoveAmmoFromInventory(int32 AmountOfAmmoToRemove)
 			{
 				// TODO: Resolve Issue -> Calling RemoveAmmoFromInventory creates a infinite loop (Creates a infinite loop only if inventory is full)
 				//RemoveAmmoFromInventory(AmountOfAmmoToRemove - ElementsRemoved);
-				return true; // Return so it doesn't remove ammo from every stack of ammo in the inventory
 			}
-			return true;
+			return true; // Return so it doesn't remove ammo from every stack of ammo in the inventory
 		}
 
 		Local_Index++;
