@@ -63,4 +63,5 @@ void UInventorySlotUW::BindWidgetCallBacks()
 
 void UInventorySlotUW::OnSlotButtonPressed()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Slot Button Pressed"));
 }
