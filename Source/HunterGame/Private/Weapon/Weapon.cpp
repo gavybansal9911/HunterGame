@@ -51,11 +51,11 @@ void AWeapon::Tick(float DeltaTime)
 
 void AWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	HighlightWeapon();
-	
-	if (const ABaseCharacter* HunterCharacter = Cast<ABaseCharacter>(OtherActor))
+	if (const ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
-		if (HunterCharacter->InteractionComponent) {HunterCharacter->InteractionComponent->SetOverlappingActor(this);}
+		if (PlayerCharacter->IsLocallyControlled()) {HighlightWeapon();}
+		if (PlayerCharacter->InteractionComponent)
+			{PlayerCharacter->InteractionComponent->SetOverlappingActor(this);}
 	}
 }
 
@@ -63,9 +63,11 @@ void AWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 {
 	UnHighlightWeapon();
 	
-	if (const ABaseCharacter* HunterCharacter = Cast<ABaseCharacter>(OtherActor))
+	if (const ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
-		if (HunterCharacter->InteractionComponent) {HunterCharacter->InteractionComponent->SetOverlappingActor(nullptr);}
+		if (PlayerCharacter->IsLocallyControlled()) {UnHighlightWeapon();}
+		if (PlayerCharacter->InteractionComponent)
+			{PlayerCharacter->InteractionComponent->SetOverlappingActor(nullptr);}
 	}
 }
 
@@ -87,10 +89,10 @@ FString AWeapon::LookAt()
 	return Message;
 }
 
-void AWeapon::InteractWith(ABaseCharacter* HunterCharacter)
+void AWeapon::InteractWith(ABaseCharacter* PlayerCharacter)
 {
-	if (!HunterCharacter->CombatComponent) return;
-	HunterCharacter->CombatComponent->EquipWeapon(this);
+	if (!PlayerCharacter->CombatComponent) return;
+	PlayerCharacter->CombatComponent->EquipWeapon(this);
 }
 
 void AWeapon::Shoot(const FVector& HitTarget)

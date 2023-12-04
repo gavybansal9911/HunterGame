@@ -30,7 +30,7 @@ public:
 
 	/** Interface **/
 	virtual FString LookAt() override;
-	virtual void InteractWith(ABaseCharacter* HunterCharacter) override;
+	virtual void InteractWith(ABaseCharacter* PlayerCharacter) override;
 	/** Interface **/
 
 	void SetHUDWeaponAmmo();
