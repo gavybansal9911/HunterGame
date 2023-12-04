@@ -7,6 +7,7 @@
 #include "HUD/UserWidgetBase.h"
 #include "InventorySlotUW.generated.h"
 
+class UInvItemActionDropDownMenuUW;
 class UTextBlock;
 class UImage;
 class UButton;
@@ -35,6 +36,8 @@ public:
 	
 	/** Widget CallBacks **/
 	void BindWidgetCallBacks();
+
+	UFUNCTION()
 	void OnSlotButtonPressed();
 	/** Widget CallBacks **/
 	
@@ -51,6 +54,14 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UTextBlock* QuantityText;
 	/** Widget Components **/
+
+	// Drop Down Menu Class
+	UPROPERTY(EditAnywhere, Category = "Drop Down Menu")
+	TSubclassOf<UInvItemActionDropDownMenuUW> DropDownMenuUWClass;
+	
+	// Drop Down Menu
+	UPROPERTY()
+	UInvItemActionDropDownMenuUW* DropDownMenuUW;
 
 	/** Other Variables **/
 	UPROPERTY(EditAnywhere, Category = "Properties")

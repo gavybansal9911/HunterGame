@@ -23,7 +23,11 @@ public:
 
 	/** Widget CallBacks **/
 	void BindWidgetCallBacks();
+
+	UFUNCTION()
 	void OnUseButtonPressed();
+	
+	UFUNCTION()
 	void OnDropButtonPressed();
 	/** Widget CallBacks **/
 	

@@ -6,11 +6,12 @@
 #include "Components/Image.h"
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
+#include "HUD/InventoryUI/InvItemActionDropDownMenuUW.h"
 
 void UInventorySlotUW::NativePreConstruct()
 {
 	Super::NativePreConstruct();
-
+	
 	if (SlotSizeBox)
 	{
 		SlotSizeBox->SetWidthOverride(100.f);
@@ -63,5 +64,13 @@ void UInventorySlotUW::BindWidgetCallBacks()
 
 void UInventorySlotUW::OnSlotButtonPressed()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Slot Button Pressed"));
+	if (DropDownMenuUWClass == nullptr) return;
+	
+	DropDownMenuUW = CreateWidget<UInvItemActionDropDownMenuUW>(GetWorld(), DropDownMenuUWClass);
+
+	if (DropDownMenuUW)
+	{
+		DropDownMenuUW->AddToViewport();
+		//DropDownMenuUW->SetPositionInViewport();
+	}
 }
