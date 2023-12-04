@@ -4,12 +4,13 @@
 #include "Actor/BaseItemActor.h"
 #include "Character/BaseCharacter.h"
 #include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
 
 ABaseItemActor::ABaseItemActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	SetReplicates(true);
-
+	
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Item Mesh"));
 	SetRootComponent(ItemMesh);
 	ItemMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -17,6 +18,10 @@ ABaseItemActor::ABaseItemActor()
 
 	AreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Area Sphere"));
 	AreaSphere->SetupAttachment(ItemMesh);
+
+	InteractWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interact Widget"));
+	InteractWidget->SetupAttachment(GetRootComponent());
+	InteractWidget->SetVisibility(false);
 }
 
 void ABaseItemActor::BeginPlay()
@@ -32,7 +37,11 @@ void ABaseItemActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 {
 	if (ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
-		if (PlayerCharacter->IsLocallyControlled()) {HighlightActor();}
+		if (PlayerCharacter->IsLocallyControlled())
+		{
+			HighlightActor();
+			if (InteractWidget) {InteractWidget->SetVisibility(true);}
+		}
 		PlayerCharacter->SetOverlappingActor(this);
 	}
 }
@@ -42,7 +51,11 @@ void ABaseItemActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 {
 	if (ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
-		if (PlayerCharacter->IsLocallyControlled()) {UnHighlightActor();}
+		if (PlayerCharacter->IsLocallyControlled())
+		{
+			UnHighlightActor();
+			if (InteractWidget) {InteractWidget->SetVisibility(false);}
+		}
 		PlayerCharacter->SetOverlappingActor(nullptr);
 	}
 }

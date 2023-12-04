@@ -7,8 +7,9 @@
 #include "Interface/InteractInterface.h"
 #include "BaseItemActor.generated.h"
 
-class ABaseInventoryItem;
 class USphereComponent;
+class ABaseInventoryItem;
+class UWidgetComponent;
 
 UCLASS()
 class HUNTERGAME_API ABaseItemActor : public AActor, public IInteractInterface
@@ -44,4 +45,9 @@ protected:
 	virtual void HighlightActor();      // Post process highlight
 	virtual void UnHighlightActor();       // Post process unhighlight
 	/** Effects **/
+
+private:
+	// Interact Widget
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	UWidgetComponent* InteractWidget;
 };
