@@ -259,6 +259,8 @@ void ABaseCharacter::ChangeCameraMode()
 {
 	if (CurrentCameraMode == ECameraMode::ECM_ThirdPerson)
 	{
+		bOrientRotationToMovement_WhenInCombat = false;
+		
 		CurrentCameraMode = ECameraMode::ECM_SemiFirstPerson;
 		CameraBoom->TargetArmLength = CAMERA_BOOM_SFP_TARGET_ARM_LENGTH;
 		CameraBoom->SocketOffset = CameraBoomSocketOffset_SFP;
@@ -267,12 +269,16 @@ void ABaseCharacter::ChangeCameraMode()
 	}
 	else if (CurrentCameraMode == ECameraMode::ECM_SemiFirstPerson)
 	{
+		bOrientRotationToMovement_WhenInCombat = false;
+		
 		CurrentCameraMode = ECameraMode::ECM_FirstPerson;
 		FP_ViewCamera->SetActive(true);
 		TP_ViewCamera->SetActive(false);
 	}
 	else if (CurrentCameraMode == ECameraMode::ECM_FirstPerson)
 	{
+		bOrientRotationToMovement_WhenInCombat = true;
+		
 		CurrentCameraMode = ECameraMode::ECM_ThirdPerson;
 		CameraBoom->TargetArmLength = CAMERA_BOOM_TP_TARGET_ARM_LENGTH;
 		CameraBoom->SocketOffset = CameraBoomSocketOffset_TP;
@@ -483,7 +489,7 @@ bool ABaseCharacter::RemoveAmmoFromInventory(int32 AmountOfAmmoToRemove)
 				// TODO: Resolve Issue -> Calling RemoveAmmoFromInventory creates a infinite loop (Creates a infinite loop only if inventory is full)
 				//RemoveAmmoFromInventory(AmountOfAmmoToRemove - ElementsRemoved);
 			}
-			return true; // Return so it doesn't remove ammo from every stack of ammo in the inventory
+			return true;  // Return so it doesn't remove ammo from every stack of ammo in the inventory
 		}
 
 		Local_Index++;
@@ -556,6 +562,10 @@ void ABaseCharacter::PlayShootMontage(bool bAiming)
 void ABaseCharacter::OnRep_Health()
 {
 	UpdateHUDHealth();
+}
+
+void ABaseCharacter::OnRep_bOrientRotationToMovement_WhenInCombat()
+{
 }
 /** Rep Notifies **/
 

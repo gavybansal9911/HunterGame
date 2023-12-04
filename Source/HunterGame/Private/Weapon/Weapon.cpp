@@ -53,7 +53,7 @@ void AWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 {
 	if (const ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
-		if (PlayerCharacter->IsLocallyControlled()) {HighlightWeapon();}
+		if (PlayerCharacter->IsLocallyControlled() && WeaponState == EWeaponState::EWS_Unattached) {HighlightWeapon();}
 		if (PlayerCharacter->InteractionComponent)
 			{PlayerCharacter->InteractionComponent->SetOverlappingActor(this);}
 	}
@@ -65,7 +65,7 @@ void AWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 	
 	if (const ABaseCharacter* PlayerCharacter = Cast<ABaseCharacter>(OtherActor))
 	{
-		if (PlayerCharacter->IsLocallyControlled()) {UnHighlightWeapon();}
+		if (PlayerCharacter->IsLocallyControlled() && WeaponState == EWeaponState::EWS_Unattached) {UnHighlightWeapon();}
 		if (PlayerCharacter->InteractionComponent)
 			{PlayerCharacter->InteractionComponent->SetOverlappingActor(nullptr);}
 	}

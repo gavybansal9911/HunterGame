@@ -225,7 +225,7 @@ private:
 	/** Player Controller **/
 
 	/** Character Movement **/
-	UPROPERTY(EditAnywhere, Category = "Character Movement (Custom)")
+	UPROPERTY(ReplicatedUsing = OnRep_bOrientRotationToMovement_WhenInCombat, EditAnywhere, Category = "Character Movement (Custom)")
 	bool bOrientRotationToMovement_WhenInCombat = true;
 	/** Character Movement **/
 	
@@ -240,6 +240,9 @@ private:
 	/** Rep Notifies **/
 	UFUNCTION()
 	void OnRep_Health();
+
+	UFUNCTION()
+	void OnRep_bOrientRotationToMovement_WhenInCombat();
 	/** Rep Notifies **/
 	
 	/** Combat **/
