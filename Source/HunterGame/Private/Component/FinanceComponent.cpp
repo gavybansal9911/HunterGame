@@ -13,27 +13,13 @@ void UFinanceComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-bool UFinanceComponent::WithdrawAmount(float InAmount)
+bool UFinanceComponent::AddMoneyAmount(float InAmount)
 {
-	if (InAmount > MoneyAmountInBank)
-	{
-		return false;
-	}
-	else
-	{
-		MoneyAmountInBank = MoneyAmountInBank - InAmount;
-		MoneyAmountInPocket = MoneyAmountInPocket + InAmount;
-
-		return true;
-	}
+	MoneyAmount = MoneyAmount + InAmount;
+	return true;
 }
 
-void UFinanceComponent::SetMoneyAmountInPocket(float InAmount)
+void UFinanceComponent::SetMoneyAmount(float InAmount)
 {
-	MoneyAmountInPocket = InAmount;
-}
-
-void UFinanceComponent::SetMoneyAmountInBank(float InAmount)
-{
-	MoneyAmountInBank = InAmount;
+	MoneyAmount = InAmount;
 }

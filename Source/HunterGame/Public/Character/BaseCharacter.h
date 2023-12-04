@@ -16,6 +16,7 @@
 #define CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH 125.f
 #define CAMERA_BOOM_SFP_TARGET_ARM_LENGTH 0.f
 
+class UFinanceComponent;
 class UInventoryComponent;
 class AHunterPlayerController;
 class AWeapon;
@@ -62,6 +63,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UInventoryComponent> InventoryComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UFinanceComponent> FinanceComponent;
 	/** Components **/
 
 	/** Animation **/
@@ -263,6 +267,6 @@ public:
 	FVector GetHitTarget() const;
 	ECombatState GetCombatState() const;
 	FORCEINLINE bool ShouldOrientRotationToMovement_WhenInCombat() const {return bOrientRotationToMovement_WhenInCombat;}
-
+	
 	void SetOverlappingActor(AActor* InOverlappingActor);
 };

@@ -9,6 +9,7 @@
 #include "Actor/WeaponAmmo/WeaponAmmo.h"
 #include "Camera/CameraComponent.h"
 #include "Component/CombatComponent.h"
+#include "Component/FinanceComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Component/InventoryComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -52,6 +53,7 @@ ABaseCharacter::ABaseCharacter()
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
+	FinanceComponent = CreateDefaultSubobject<UFinanceComponent>(TEXT("Finance Component"));
 }
 
 void ABaseCharacter::BeginPlay()
