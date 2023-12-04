@@ -2,7 +2,6 @@
 
 
 #include "Actor/Finance/ValuableItem.h"
-
 #include "Character/BaseCharacter.h"
 #include "Component/FinanceComponent.h"
 
@@ -17,5 +16,7 @@ void AValuableItem::InteractWith(ABaseCharacter* PlayerCharacter)
 	if (PlayerCharacter && PlayerCharacter->FinanceComponent)
 	{
 		PlayerCharacter->FinanceComponent->AddMoneyAmount(Value_InDollar);
+		UE_LOG(LogTemp, Warning, TEXT("%f"), PlayerCharacter->FinanceComponent->GetMoneyAmount());
+		Destroy();
 	}
 }

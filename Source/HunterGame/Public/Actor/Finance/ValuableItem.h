@@ -19,7 +19,7 @@ public:
 	virtual void InteractWith(ABaseCharacter* PlayerCharacter) override;
 	
 private:
-	UPROPERTY(EditAnywhere, Catgory = "Value")
+	UPROPERTY(EditAnywhere, Category = "Value")
 	float Value_InDollar = 0.f;
 
 public:
