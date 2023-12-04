@@ -90,6 +90,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ABaseCharacter, Health);
+	DOREPLIFETIME(ABaseCharacter, bOrientRotationToMovement_WhenInCombat);
 }
 
 void ABaseCharacter::PostInitializeComponents()
@@ -562,10 +563,6 @@ void ABaseCharacter::PlayShootMontage(bool bAiming)
 void ABaseCharacter::OnRep_Health()
 {
 	UpdateHUDHealth();
-}
-
-void ABaseCharacter::OnRep_bOrientRotationToMovement_WhenInCombat()
-{
 }
 /** Rep Notifies **/
 
