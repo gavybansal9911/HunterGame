@@ -7,6 +7,7 @@
 
 AValuableItem::AValuableItem()
 {
+	SetReplicates(true);
 }
 
 void AValuableItem::InteractWith(ABaseCharacter* PlayerCharacter)
