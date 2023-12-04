@@ -8,6 +8,7 @@
 ABaseItemActor::ABaseItemActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	SetReplicates(true);
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Item Mesh"));
 	SetRootComponent(ItemMesh);
