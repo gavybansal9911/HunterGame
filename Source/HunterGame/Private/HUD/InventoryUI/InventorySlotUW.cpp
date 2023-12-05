@@ -66,6 +66,12 @@ void UInventorySlotUW::BindWidgetCallBacks()
 void UInventorySlotUW::OnSlotButtonPressed()
 {
 	if (DropDownMenuUWClass == nullptr) return;
+
+	if (DropDownMenuUW)
+	{
+		DropDownMenuUW->RemoveFromParent();
+		DropDownMenuUW = nullptr;
+	}
 	
 	DropDownMenuUW = CreateWidget<UInvItemActionDropDownMenuUW>(GetWorld(), DropDownMenuUWClass);
 
