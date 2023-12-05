@@ -80,6 +80,11 @@ public:
 	/** Interaction **/
 	int32 AddItemToInventory(FItemData ItemData);   // Returns -1 if fails or in case of any error
 	/** Interaction **/
+
+	/** UI **/
+	void RemoveCharacterOverlayUI();
+	void CreateCharacterOverlayUI();
+	/** UI **/
 	
 protected:
 	virtual void BeginPlay() override;

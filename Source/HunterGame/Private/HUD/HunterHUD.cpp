@@ -19,6 +19,8 @@ void AHunterHUD::BeginPlay()
 
 void AHunterHUD::AddCharacterOverlay()
 {
+	if (CharacterOverlay) return;
+	
 	APlayerController* PlayerController = GetOwningPlayerController();
 	if (PlayerController && CharacterOverlayClass)
 	{
@@ -96,6 +98,12 @@ void AHunterHUD::SetInputModeAsGameOnly()
 	FInputModeGameOnly InputMode;
 	GetOwningPlayerController()->SetInputMode(InputMode);
 	GetOwningPlayerController()->SetShowMouseCursor(false);
+}
+
+void AHunterHUD::RemoveCharacterOverlay()
+{
+	if (CharacterOverlay == nullptr) return;
+	CharacterOverlay->RemoveFromParent();
 }
 
 void AHunterHUD::OnCombatEnabled()

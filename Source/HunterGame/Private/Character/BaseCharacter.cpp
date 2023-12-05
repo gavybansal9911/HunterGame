@@ -546,6 +546,21 @@ int32 ABaseCharacter::AddItemToInventory(FItemData ItemData)
 }
 /** Interaction **/
 
+/** UI **/
+void ABaseCharacter::RemoveCharacterOverlayUI()
+{
+	if (HunterPlayerController == nullptr) return;
+	HunterPlayerController->RemoveCharacterOverlayUI();
+}
+
+void ABaseCharacter::CreateCharacterOverlayUI()
+{
+	if (HunterPlayerController == nullptr) return;
+	HunterPlayerController->CreateCharacterOverlayUI();
+}
+/** UI **/
+
+
 /** Animation **/
 void ABaseCharacter::PlayShootMontage(bool bAiming)
 {

@@ -7,6 +7,7 @@
 #include "Interface/InteractInterface.h"
 #include "Shop.generated.h"
 
+class UShopMenu;
 class UWidgetComponent;
 class UBoxComponent;
 
@@ -42,4 +43,10 @@ private:
 	// Interact Widget
 	UPROPERTY(VisibleAnywhere, Category = "Interaction")
 	UWidgetComponent* InteractWidget;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UShopMenu> ShopMenuUWClass;
+
+	UPROPERTY()
+	UShopMenu* ShopMenuUW;
 };

@@ -5,6 +5,7 @@
 #include "Character/BaseCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
+#include "HUD/ShopUI/ShopMenu.h"
 
 AShop::AShop()
 {
@@ -72,5 +73,15 @@ void AShop::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 
 void AShop::InteractWith(ABaseCharacter* PlayerCharacter)
 {
-	// TODO: Implement Shop Interaction System
+	if (ShopMenuUWClass != nullptr)
+	{
+		ShopMenuUW = CreateWidget<UShopMenu>(GetWorld(), ShopMenuUWClass);
+
+		if (ShopMenuUW)
+		{
+			ShopMenuUW->AddToViewport();
+			ShopMenuUW->PlayerCharacter = PlayerCharacter;
+			PlayerCharacter->RemoveCharacterOverlayUI();
+		}
+	}
 }

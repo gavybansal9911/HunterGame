@@ -42,6 +42,9 @@ public:
 
 	void SetInputModeAsUIOnly();
 	void SetInputModeAsGameOnly();
+
+	void RemoveCharacterOverlay();
+	void AddCharacterOverlay();
 	
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UUserWidget> CharacterOverlayClass;
@@ -55,7 +58,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void AddCharacterOverlay();
 	
 private:
 	// Function to draw crosshair
