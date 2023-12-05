@@ -76,6 +76,6 @@ void UInventorySlotUW::OnSlotButtonPressed()
 
 		FWidgetTransform DropDownMenuTransform;
 		DropDownMenuTransform.Translation = UWidgetLayoutLibrary::GetMousePositionOnViewport(this);
-		DropDownMenuUW->Initialize(DropDownMenuTransform);
+		DropDownMenuUW->Init_Widget(DropDownMenuTransform);
 	}
 }

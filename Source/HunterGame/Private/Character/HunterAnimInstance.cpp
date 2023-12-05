@@ -13,7 +13,6 @@
 void UHunterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-
 	HunterCharacter = Cast<ABaseCharacter>(TryGetPawnOwner());
 }
 

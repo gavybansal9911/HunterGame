@@ -23,7 +23,7 @@ public:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 
-	void Initialize(FWidgetTransform WidgetTransform);
+	void Init_Widget(FWidgetTransform WidgetTransform);
 	
 	/** Widget CallBacks **/
 	void BindWidgetCallBacks();

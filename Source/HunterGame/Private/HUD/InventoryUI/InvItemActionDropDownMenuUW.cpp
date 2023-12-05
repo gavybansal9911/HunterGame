@@ -16,7 +16,7 @@ void UInvItemActionDropDownMenuUW::NativeConstruct()
 	BindWidgetCallBacks();
 }
 
-void UInvItemActionDropDownMenuUW::Initialize(FWidgetTransform WidgetTransform)
+void UInvItemActionDropDownMenuUW::Init_Widget(FWidgetTransform WidgetTransform)
 {
 	SetRenderTransform(WidgetTransform);
 }

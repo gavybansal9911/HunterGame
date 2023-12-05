@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "AI_Types.h"
-#include "BehaviorTree/BehaviorTreeTypes.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "AIControllerBase.generated.h"
 
@@ -59,7 +58,7 @@ protected:
 	
 	UPROPERTY()
 	TObjectPtr<UBehaviorTree> BehaviorTree;
-
+	
 	/** AI Perception **/
 	UPROPERTY()
 	UAISenseConfig_Sight* SenseConfig_Sight;

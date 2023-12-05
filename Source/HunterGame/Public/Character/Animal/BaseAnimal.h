@@ -6,6 +6,10 @@
 #include "GameFramework/Character.h"
 #include "BaseAnimal.generated.h"
 
+class AAnimalAIControllerBase;
+class UBehaviorTree;
+class AAIController;
+
 UCLASS()
 class HUNTERGAME_API ABaseAnimal : public ACharacter
 {
@@ -17,4 +21,13 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+private:
+	// AI Controller reference
+	UPROPERTY()
+	AAnimalAIControllerBase* AnimalAIController;
+
+	// AI Behaviour
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
 };
