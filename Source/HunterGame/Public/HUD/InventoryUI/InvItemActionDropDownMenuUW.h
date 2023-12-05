@@ -6,6 +6,7 @@
 #include "HUD/UserWidgetBase.h"
 #include "InvItemActionDropDownMenuUW.generated.h"
 
+class UCanvasPanel;
 class USizeBox;
 class UButton;
 
@@ -21,6 +22,8 @@ public:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 
+	void Initialize(FWidgetTransform WidgetTransform);
+	
 	/** Widget CallBacks **/
 	void BindWidgetCallBacks();
 
@@ -32,6 +35,9 @@ public:
 	/** Widget CallBacks **/
 	
 	/** Widget Components **/
+	UPROPERTY(meta=(BindWidget))
+	UCanvasPanel* DropDownMenuCanvasPanel;
+	
 	UPROPERTY(meta=(BindWidget))
 	USizeBox* DropDownMenuSizeBox;
 

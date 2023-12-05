@@ -39,9 +39,7 @@ FReply UInventoryMenuUW::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 void UInventoryMenuUW::BindCallBacks()
 {
 	if (CloseInventoryMenuButton)
-	{
-		CloseInventoryMenuButton->OnClicked.AddDynamic(this, &UInventoryMenuUW::OnCloseInventoryMenuButtonClicked);
-	}
+		{CloseInventoryMenuButton->OnClicked.AddDynamic(this, &UInventoryMenuUW::OnCloseInventoryMenuButtonClicked);}
 }
 
 void UInventoryMenuUW::OnCloseInventoryMenuButtonClicked()

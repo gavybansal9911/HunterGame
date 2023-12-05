@@ -24,7 +24,7 @@ class HUNTERGAME_API UInventorySlotUW : public UUserWidgetBase
 public:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
-
+	
 	// On Slot Data Set
 	void SlotDataSet();
 

@@ -7,6 +7,7 @@
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
 #include "HUD/InventoryUI/InvItemActionDropDownMenuUW.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 
 void UInventorySlotUW::NativePreConstruct()
 {
@@ -71,6 +72,9 @@ void UInventorySlotUW::OnSlotButtonPressed()
 	if (DropDownMenuUW)
 	{
 		DropDownMenuUW->AddToViewport();
-		//DropDownMenuUW->SetPositionInViewport();
+
+		FWidgetTransform DropDownMenuTransform;
+		DropDownMenuTransform.Translation = UWidgetLayoutLibrary::GetMousePositionOnViewport(this);
+		DropDownMenuUW->Initialize(DropDownMenuTransform);
 	}
 }
