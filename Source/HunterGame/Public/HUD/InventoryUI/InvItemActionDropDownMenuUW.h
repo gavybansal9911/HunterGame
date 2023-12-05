@@ -6,6 +6,7 @@
 #include "HUD/UserWidgetBase.h"
 #include "InvItemActionDropDownMenuUW.generated.h"
 
+class UInventorySlotUW;
 class UCanvasPanel;
 class USizeBox;
 class UButton;
@@ -53,4 +54,8 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	UButton* DropButton;
 	/** Widget Components **/
+
+	// Owner Slot
+	UPROPERTY()
+	UInventorySlotUW* OwnerSlotUW;
 };

@@ -19,10 +19,12 @@ void UInventoryGridUW::NativeConstruct()
 void UInventoryGridUW::MakeSlots()
 {
 	if (InventoryComponent == nullptr || InventoryGridPanel == nullptr || InventorySlotUWClass == nullptr) return;
-
+	
 	int Local_Row = 0;
 	int Local_Column = 0;
 	const int Local_NumberOfSlots = InventoryComponent->GetNumberOfSlots();
+	InventorySlots.SetNum(Local_NumberOfSlots);
+	
 	for (int i = 0; i < Local_NumberOfSlots; i++)
 	{
 		if (Local_Column >= NumberOfColumns)
@@ -36,6 +38,7 @@ void UInventoryGridUW::MakeSlots()
 		{
 			InventorySlot->SlotData = InventoryComponent->GetContent()[i];
 			InventorySlot->SlotDataSet();
+			InventorySlots.AddUnique(InventorySlot);
 			InventoryGridPanel->AddChildToGrid(InventorySlot, Local_Row, Local_Column);
 			UE_LOG(LogTemp, Warning, TEXT("Adding slot to row %d, column %d"), Local_Row, Local_Column);
 		}

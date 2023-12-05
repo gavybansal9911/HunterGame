@@ -4,7 +4,6 @@
 #include "HUD/InventoryUI/InvItemActionDropDownMenuUW.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
-#include "HUD/InventoryUI/InventoryMenuUW.h"
 
 void UInvItemActionDropDownMenuUW::NativePreConstruct()
 {
@@ -28,13 +27,17 @@ void UInvItemActionDropDownMenuUW::BindWidgetCallBacks()
 		{UseButton->OnClicked.AddDynamic(this, &UInvItemActionDropDownMenuUW::OnUseButtonPressed);}
 	
 	if (DropButton)
-		{UseButton->OnClicked.AddDynamic(this, &UInvItemActionDropDownMenuUW::OnDropButtonPressed);}
+		{DropButton->OnClicked.AddDynamic(this, &UInvItemActionDropDownMenuUW::OnDropButtonPressed);}
 }
 
 void UInvItemActionDropDownMenuUW::OnUseButtonPressed()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Magenta, FString("Use Item"));
+	RemoveFromParent();
 }
 
 void UInvItemActionDropDownMenuUW::OnDropButtonPressed()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Magenta, FString("Drop Item"));
+	RemoveFromParent();
 }

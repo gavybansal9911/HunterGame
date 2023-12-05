@@ -23,8 +23,10 @@ class HUNTERGAME_API UInventoryMenuUW : public UUserWidgetBase
 public:
 	UInventoryMenuUW();
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 	void BindCallBacks();
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(ExposeOnSpawn))
 	UInventoryComponent* InventoryComponent;
@@ -49,6 +51,8 @@ protected:
 private:
 	UPROPERTY()
 	AHunterHUD* OwnerHUD;
+
+	void CloseItemSlotDropDownMenus();
 
 public:
 	FORCEINLINE void SetOwnerHUD(AHunterHUD* InHUD) {OwnerHUD = InHUD;}

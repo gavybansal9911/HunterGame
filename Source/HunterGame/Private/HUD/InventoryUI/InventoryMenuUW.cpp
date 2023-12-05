@@ -5,6 +5,8 @@
 #include "Components/Button.h"
 #include "HUD/HunterHUD.h"
 #include "HUD/InventoryUI/InventoryGridUW.h"
+#include "HUD/InventoryUI/InventorySlotUW.h"
+#include "HUD/InventoryUI/InvItemActionDropDownMenuUW.h"
 
 UInventoryMenuUW::UInventoryMenuUW()
 {
@@ -22,18 +24,47 @@ void UInventoryMenuUW::NativeConstruct()
 	}
 }
 
+void UInventoryMenuUW::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	if (InventoryGrid)
+	{
+		for (UInventorySlotUW* ItemSlot : InventoryGrid->InventorySlots)
+		{
+			if (ItemSlot)
+			{
+				if (ItemSlot->DropDownMenuUW)
+				{
+					ItemSlot->DropDownMenuUW = nullptr;
+				}
+				ItemSlot = nullptr;
+			}
+		}
+	}
+}
+
 FReply UInventoryMenuUW::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
 {
 	if (!OwnerHUD) return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
 	
-	if (InKeyEvent.GetKey() == EKeys::I)
+	if (InKeyEvent.GetKey() == EKeys::I || InKeyEvent.GetKey() == EKeys::BackSpace)
 	{
 		OwnerHUD->SetInputModeAsGameOnly();
 		OwnerHUD->ToggleInventory();
 	}
 
-	// Pass the event to the parent class
 	return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
+}
+
+FReply UInventoryMenuUW::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+	{
+		CloseItemSlotDropDownMenus();
+	}
+	
+	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 
 void UInventoryMenuUW::BindCallBacks()
@@ -45,6 +76,25 @@ void UInventoryMenuUW::BindCallBacks()
 void UInventoryMenuUW::OnCloseInventoryMenuButtonClicked()
 {
 	if (!OwnerHUD) return;
+	CloseItemSlotDropDownMenus();
 	OwnerHUD->SetInputModeAsGameOnly();
 	OwnerHUD->ToggleInventory();
+}
+
+void UInventoryMenuUW::CloseItemSlotDropDownMenus()
+{
+	if (InventoryGrid)
+	{
+		for (UInventorySlotUW* ItemSlot : InventoryGrid->InventorySlots)
+		{
+			if (ItemSlot)
+			{
+				if (ItemSlot->DropDownMenuUW)
+				{
+					ItemSlot->DropDownMenuUW->RemoveFromParent();
+					ItemSlot->DropDownMenuUW = nullptr;
+				}
+			}
+		}
+	}
 }

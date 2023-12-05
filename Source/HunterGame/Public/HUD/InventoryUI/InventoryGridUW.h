@@ -34,10 +34,15 @@ public:
 
 	// References
 	TSubclassOf<UInventorySlotUW> InventorySlotUWClass;
+
+	// Slots
+	TArray<UInventorySlotUW*> InventorySlots;
 	
 private:
 	/** Properties **/
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	int NumberOfRows = 3;
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	int NumberOfColumns = 5;
 	/** Properties **/
 };
