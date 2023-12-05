@@ -50,11 +50,11 @@ void AHunterPlayerController::SetHUDWeaponAmmo(int32 InWeaponAmmoAmount, int32 I
 void AHunterPlayerController::RemoveCharacterOverlayUI()
 {
 	if (HunterHUD == nullptr) return;
-	HunterHUD->AddCharacterOverlay();
+	HunterHUD->RemoveCharacterOverlay();
 }
 
 void AHunterPlayerController::CreateCharacterOverlayUI()
 {
 	if (HunterHUD == nullptr) return;
-	HunterHUD->RemoveCharacterOverlay();
+	HunterHUD->AddCharacterOverlay();
 }

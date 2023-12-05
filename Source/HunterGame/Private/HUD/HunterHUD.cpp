@@ -104,6 +104,7 @@ void AHunterHUD::RemoveCharacterOverlay()
 {
 	if (CharacterOverlay == nullptr) return;
 	CharacterOverlay->RemoveFromParent();
+	CharacterOverlay = nullptr;
 }
 
 void AHunterHUD::OnCombatEnabled()

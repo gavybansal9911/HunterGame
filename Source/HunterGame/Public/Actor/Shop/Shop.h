@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Component/InventoryTypes.h"
 #include "GameFramework/Actor.h"
 #include "Interface/InteractInterface.h"
 #include "Shop.generated.h"
@@ -49,4 +50,7 @@ private:
 
 	UPROPERTY()
 	UShopMenu* ShopMenuUW;
+
+	UPROPERTY(EditAnywhere, Category = "Content")
+	TArray<FSlotData> ShopContent;
 };
