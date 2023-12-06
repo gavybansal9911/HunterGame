@@ -2,25 +2,33 @@
 
 
 #include "Character/Animal/BaseAnimal.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Character/Animal/AnimalAIControllerBase.h"
+#include "Component/AnimalSurvivalComponent.h"
 
 ABaseAnimal::ABaseAnimal()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	SurvivalComponent = CreateDefaultSubobject<UAnimalSurvivalComponent>(TEXT("Survival Component"));
 }
 
 void ABaseAnimal::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-
-	//AnimalAIController = Cast<AAnimalAIControllerBase>(UAIBlueprintHelperLibrary::GetAIController(this));
+	
 	AnimalAIController = Cast<AAIController>(NewController);
 
 	if (AnimalAIController)
 	{
 		AnimalAIController->RunBehaviorTree(BehaviorTree);
 	}
+}
+
+void ABaseAnimal::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (SurvivalComponent) {SurvivalComponent->OwnerAnimalCharacter = this;}
 }
 
 void ABaseAnimal::BeginPlay()
