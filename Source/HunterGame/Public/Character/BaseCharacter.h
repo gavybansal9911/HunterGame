@@ -129,6 +129,8 @@ protected:
 	float WalkSpeed = 300.f;
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float RunSpeed = 600.f;
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float FastRunSpeed = 800.f;
 	/** Movement **/
 	
 	/** Combat **/

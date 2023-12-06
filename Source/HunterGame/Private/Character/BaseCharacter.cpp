@@ -321,12 +321,12 @@ void ABaseCharacter::RunButtonPressed()
 
 	if (HasAuthority())
 	{
-		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
 	}
 	else
 	{
 		ServerRunButtonPressed();
-		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
 	}
 }
 
@@ -348,12 +348,12 @@ void ABaseCharacter::RunButtonReleased()
 
 void ABaseCharacter::ServerRunButtonPressed_Implementation()
 {
-	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
 }
 
 void ABaseCharacter::ServerRunButtonReleased_Implementation()
 {
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
 }
 /** Input CallBacks **/
 
