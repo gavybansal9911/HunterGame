@@ -22,11 +22,12 @@ class HUNTERGAME_API AAnimalAIControllerBase : public AAIController
 public:
 	friend ABaseAnimal;
 	AAnimalAIControllerBase();
-
-protected:
-	bool RunBT(UBehaviorTree* InBT);        // Return Value => (bool) -> Running Behavioural Tree was successful ?
-
+	
 private:
+	// Behaviour
+	UPROPERTY()
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+	
 	/** AI Perception **/
 	UPROPERTY()
 	UAISenseConfig_Sight* SenseConfig_Sight;

@@ -7,6 +7,7 @@
 #include "AnimalAnimInstance.generated.h"
 
 class ABaseAnimal;
+class UCharacterMovementComponent;
 
 /**
  * 

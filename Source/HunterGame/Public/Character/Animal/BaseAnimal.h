@@ -17,6 +17,7 @@ class HUNTERGAME_API ABaseAnimal : public ACharacter
 
 public:
 	ABaseAnimal();
+	virtual void PossessedBy(AController* NewController) override;
 	virtual void Tick(float DeltaTime) override;
 
 protected:
@@ -25,7 +26,7 @@ protected:
 private:
 	// AI Controller reference
 	UPROPERTY()
-	AAnimalAIControllerBase* AnimalAIController;
+	AAIController* AnimalAIController;
 
 	// AI Behaviour
 	UPROPERTY(EditAnywhere, Category = "AI")

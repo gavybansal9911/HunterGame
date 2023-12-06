@@ -10,16 +10,22 @@ ABaseAnimal::ABaseAnimal()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void ABaseAnimal::BeginPlay()
+void ABaseAnimal::PossessedBy(AController* NewController)
 {
-	Super::BeginPlay();
-	
-	AnimalAIController = Cast<AAnimalAIControllerBase>(UAIBlueprintHelperLibrary::GetAIController(this));
+	Super::PossessedBy(NewController);
+
+	//AnimalAIController = Cast<AAnimalAIControllerBase>(UAIBlueprintHelperLibrary::GetAIController(this));
+	AnimalAIController = Cast<AAIController>(NewController);
 
 	if (AnimalAIController)
 	{
-		AnimalAIController->RunBT(BehaviorTree);
+		AnimalAIController->RunBehaviorTree(BehaviorTree);
 	}
+}
+
+void ABaseAnimal::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 void ABaseAnimal::Tick(float DeltaTime)

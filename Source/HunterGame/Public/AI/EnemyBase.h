@@ -38,7 +38,7 @@ protected:
 	TObjectPtr<AAIControllerBase> AIController;
 
 	/** Enemy States **/
-	EAIState AIState = EAIState::EAIS_None;
+	EAIState AIState = EAIState::EAIS_Passive;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	EEquippedWeaponType EquippedWeaponType = EEquippedWeaponType::EEWT_None;
 	/** Enemy States **/
