@@ -29,8 +29,11 @@ void AEnemyBase::PossessedBy(AController* NewController)
 	
 	AIController = Cast<AAIControllerBase>(NewController);
 
-	AIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-	AIController->RunBehaviorTree(BehaviorTree);
+	if (BehaviorTree)
+	{
+		AIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		AIController->RunBehaviorTree(BehaviorTree);
+	}
 }
 
 /** Interface **/
