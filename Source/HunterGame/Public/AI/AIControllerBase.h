@@ -8,6 +8,8 @@
 #include "Perception/AIPerceptionTypes.h"
 #include "AIControllerBase.generated.h"
 
+class AEnemyBase;
+
 struct CanSenseActorData
 {
 	bool Sensed;
@@ -43,15 +45,9 @@ public:
 	void HandleHearingSense(FVector SoundOrigin_Loc);
 	void HandleDamageSense();
 
-	void SetStateAsAttacking(AActor* AttackTarget);
 	void SetStateAsPassive();
-	
-	/** State and Properties **/
-	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EAIState AIState = EAIState::EAIS_Passive;
-	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
-	EEquippedWeaponType EquippedWeaponType = EEquippedWeaponType::EEWT_None;
-	/** State and Properties **/
+	void SetStateAsChasing(AActor* TargetActor);
+	void SetStateAsAttacking(AActor* TargetActor);
 
 protected:
 	virtual void BeginPlay() override;
@@ -69,4 +65,18 @@ protected:
 	UPROPERTY()
 	UAISenseConfig_Damage* SenseConfig_Damage;
 	/** AI Perception **/
+
+private:
+	UPROPERTY()
+	AEnemyBase* OwnerAIEnemy;
+
+	/** State and Properties **/
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess="true"))   // This UPROPERTY is temporary
+	EAIState AIState = EAIState::EAIS_Passive;
+	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
+	EEquippedWeaponType EquippedWeaponType = EEquippedWeaponType::EEWT_None;
+	/** State and Properties **/
+
+public:
+	FORCEINLINE EAIState GetEnemyAIState() const {return AIState;}
 };

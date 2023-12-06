@@ -3,6 +3,7 @@
 
 #include "AI/Task/BTTChaseActor.h"
 #include "AIController.h"
+#include "AI/NavigationSystemBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 EBTNodeResult::Type UBTTChaseActor::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -21,4 +22,15 @@ EBTNodeResult::Type UBTTChaseActor::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	}
 	
 	return Super::ExecuteTask(OwnerComp, NodeMemory);
+}
+
+EBTNodeResult::Type UBTTChaseActor::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	if (AController* OwnerController = Cast<AController>(OwnerComp.GetAIOwner()))
+	{
+		FNavigationSystem::StopMovement(*OwnerController);
+		return EBTNodeResult::Aborted;
+	}	
+	
+	return Super::AbortTask(OwnerComp, NodeMemory);
 }

@@ -36,6 +36,7 @@ void AEnemyBase::PossessedBy(AController* NewController)
 /** Interface **/
 EAIState AEnemyBase::GetEnemyState() const
 {
-	return AIState;
+	if (AIController == nullptr) return AIState;
+	return AIController->GetEnemyAIState();
 }
 /** Interface **/

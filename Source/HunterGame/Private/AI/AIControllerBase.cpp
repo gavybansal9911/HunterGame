@@ -9,6 +9,8 @@
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AIPerceptionSystem.h"
+#include "AI/EnemyBase.h"
+#include "Character/BaseCharacter.h"
 
 AAIControllerBase::AAIControllerBase()
 {
@@ -53,6 +55,7 @@ void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
 	EquippedWeaponType = EEquippedWeaponType::EEWT_Melee;
+	OwnerAIEnemy = Cast<AEnemyBase>(GetPawn());
 }
 
 void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
@@ -65,8 +68,8 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Sight);
 		if (SenseActorData.Sensed)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Sight Triggered"));
 			HandleSightSense(Actor);
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Sight Triggered"));
 		}
 
 		// Sensed Hearing?
@@ -134,7 +137,10 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAIPerceptionS
 void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 {
 	Blackboard->SetValueAsObject(FName("TargetActor"), SensedActor);
-	SetStateAsAttacking(SensedActor);
+	if (Cast<ABaseCharacter>(SensedActor))
+	{
+		SetStateAsChasing(SensedActor);
+	}
 }
 
 void AAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)
@@ -145,12 +151,20 @@ void AAIControllerBase::HandleDamageSense()
 {
 }
 
-void AAIControllerBase::SetStateAsAttacking(AActor* AttackTarget)
-{
-	AIState = EAIState::EAIS_Attacking;
-}
-
 void AAIControllerBase::SetStateAsPassive()
 {
 	AIState = EAIState::EAIS_Passive;
+	ClearFocus(EAIFocusPriority::Default);
+}
+
+void AAIControllerBase::SetStateAsChasing(AActor* TargetActor)
+{
+	AIState = EAIState::EAIS_Chasing;
+	ClearFocus(EAIFocusPriority::Default);
+}
+
+void AAIControllerBase::SetStateAsAttacking(AActor* TargetActor)
+{
+	AIState = EAIState::EAIS_Attacking;
+	SetFocus(TargetActor);
 }
