@@ -37,7 +37,7 @@ void AEnemyBase::Init_Weapon()
 			Weapon->SetOwner(this);
 			FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget,
 				EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, false);
-			Weapon->AttachToActor(this, AttachmentTransformRules, Weapon->GetOutHandAttachSocketName());
+			Weapon->AttachToComponent(GetMesh(), AttachmentTransformRules, Weapon->GetOutHandAttachSocketName());
 		}
 	}
 }
