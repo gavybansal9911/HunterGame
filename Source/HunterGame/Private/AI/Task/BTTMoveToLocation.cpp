@@ -34,8 +34,8 @@ EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerC
 		FNavigationSystem::StopMovement(*OwnerAIController);
 		return EBTNodeResult::Aborted;
 	}	
-	
-	return Super::AbortTask(OwnerComp, NodeMemory);
+
+	return EBTNodeResult::Aborted;
 }
 
 void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)
