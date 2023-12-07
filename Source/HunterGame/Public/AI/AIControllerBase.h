@@ -74,7 +74,6 @@ private:
 	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess="true"))   // This UPROPERTY is temporary
 	EAIState AIState = EAIState::EAIS_Passive;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
-	EEquippedWeaponType EquippedWeaponType = EEquippedWeaponType::EEWT_None;
 	/** State and Properties **/
 
 public:

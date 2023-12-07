@@ -6,6 +6,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "TimerManager.h"
+#include "Weapon/Weapon.h"
 
 AEnemyBase::AEnemyBase()
 {
@@ -15,6 +16,30 @@ AEnemyBase::AEnemyBase()
 void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
+	Init_Weapon();
+}
+
+void AEnemyBase::Init_Weapon()
+{
+	if (!GetWorld()) return;
+	
+	if (WeaponClass)
+	{
+		FActorSpawnParameters ActorSpawnParameters;
+		ActorSpawnParameters.Owner = this;
+		ActorSpawnParameters.Instigator = this;
+		//AActor* Weapon_Actor = GetWorld()->SpawnActor(WeaponClass, GetActorTransform(), ActorSpawnParameters);
+		AActor* Weapon_Actor = GetWorld()->SpawnActor(WeaponClass);
+
+		Weapon = Cast<AWeapon>(Weapon_Actor);
+		if (Weapon)
+		{
+			Weapon->SetOwner(this);
+			FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget,
+				EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, false);
+			Weapon->AttachToActor(this, AttachmentTransformRules, Weapon->GetOutHandAttachSocketName());
+		}
+	}
 }
 
 void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -54,7 +54,6 @@ void AAIControllerBase::PostInitializeComponents()
 void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
-	EquippedWeaponType = EEquippedWeaponType::EEWT_Melee;
 	OwnerAIEnemy = Cast<AEnemyBase>(GetPawn());
 }
 

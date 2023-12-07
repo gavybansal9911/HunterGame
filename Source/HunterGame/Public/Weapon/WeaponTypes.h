@@ -10,6 +10,15 @@ enum class EWeaponClass : uint8
 };
 
 UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	EWC_Melee UMETA(DisplayName = "Melee"),
+	EWC_Ranged UMETA(DisplayName = "Ranged"),
+	
+	EWC_Max UMETA(DisplayName = "Max")
+};
+
+UENUM(BlueprintType)
 enum class EWeaponState : uint8
 {
 	EWS_Attached UMETA(DisplayName = "Attached"),

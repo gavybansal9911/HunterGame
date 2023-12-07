@@ -121,7 +121,11 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	EWeaponName WeaponName = EWeaponName::EWN_Rifle;
+	
 	EAttachmentStatus AttachmentStatus = EAttachmentStatus::EAS_Max;
+
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	EWeaponType WeaponType = EWeaponType::EWC_Ranged;
 	/** Weapon Properties && Status **/
 
 	/** Weapon Properties **/
@@ -166,6 +170,7 @@ public:
 	FORCEINLINE EWeaponState GetWeaponState() const {return WeaponState;}
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const {return WeaponMesh;}
 	FORCEINLINE EWeaponClass GetWeaponClass() const {return WeaponClass;}
+	FORCEINLINE EWeaponType GetWeaponType() const {return WeaponType;}
 	FORCEINLINE float GetAutoFireDelay() const {return AutoFireDelay;}
 	FORCEINLINE bool IsWeaponAutomatic() const {return bAutomatic;}
 	FORCEINLINE int32 GetAmmoInWeapon() const {return Ammo;}

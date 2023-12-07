@@ -4,6 +4,7 @@
 #include "AI/AIEnemyAnimInstance.h"
 #include "AI/EnemyBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Weapon/Weapon.h"
 
 void UAIEnemyAnimInstance::NativeInitializeAnimation()
 {
@@ -27,5 +28,12 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		
 		bIsAccelerating = OwnerAIEnemyCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
 		/** Basic Movement **/
+
+		/** Combat **/
+		EquippedWeapon = OwnerAIEnemyCharacter->GetOwnedWeapon();
+		bHaveWeapon = OwnerAIEnemyCharacter->GetOwnedWeapon() ? true : false;
+		EquippedWeaponType = EquippedWeapon ? EquippedWeapon->GetWeaponType() : EWeaponType::EWC_Max;
+		EquippedWeaponName = EquippedWeapon ? EquippedWeapon->GetWeaponName() : EWeaponName::EWN_Max;
+		/** Combat **/
 	}
 }

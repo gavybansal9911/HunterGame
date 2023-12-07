@@ -8,6 +8,7 @@
 #include "Interface/EnemyInterface.h"
 #include "EnemyBase.generated.h"
 
+class AWeapon;
 class USphereComponent;
 class UBehaviorTree;
 class AAIControllerBase;
@@ -30,6 +31,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void Init_Weapon();
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
@@ -37,14 +39,23 @@ protected:
 	UPROPERTY()
 	TObjectPtr<AAIControllerBase> AIController;
 
+	// Weapon
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TSubclassOf<AWeapon> WeaponClass;
+
+	UPROPERTY()
+	AWeapon* Weapon;
+	
 	/** Enemy States **/
 	EAIState AIState = EAIState::EAIS_Passive;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
-	EEquippedWeaponType EquippedWeaponType = EEquippedWeaponType::EEWT_None;
 	/** Enemy States **/
 
 	/** Animation **/
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* DaggerAttackMontage = nullptr;
 	/** Animation **/
+
+public:
+	FORCEINLINE AWeapon* GetOwnedWeapon() const {return Weapon;}
 };

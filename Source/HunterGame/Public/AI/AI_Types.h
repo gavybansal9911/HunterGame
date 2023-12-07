@@ -10,15 +10,6 @@ enum class EAIMovementMode : uint8
 	EMM_Running UMETA(DisplayName = "Running")
 };
 
-UENUM(BlueprintType)
-enum class EEquippedWeaponType : uint8
-{
-	EEWT_None UMETA(DisplayName = "None"),
-	EEWT_Melee UMETA(DisplayName = "Melee"),
-	EEWT_Ranged UMETA(DisplayName = "Ranged"),
-	EEWT_Both UMETA(DisplayName = "Both")
-};
-
 UENUM(Blueprintable)
 enum class EAIState : uint8
 {
