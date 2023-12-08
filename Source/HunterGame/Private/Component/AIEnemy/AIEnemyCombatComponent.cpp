@@ -43,7 +43,10 @@ void UAIEnemyCombatComponent::Init_Weapon()
 
 void UAIEnemyCombatComponent::ToggleWeapon()
 {
+	if (OwnerAIEnemy == nullptr) return;
+	if (OwnerAIEnemy->GetEnemyActionState() != EAIEnemyActionState::EAIAS_None) return;
 	PlayToggleWeaponAnimMontage();
+	OwnerAIEnemy->SetEnemyActionState(EAIEnemyActionState::EAIAS_TogglingWeapon);
 }
 
 void UAIEnemyCombatComponent::PlayToggleWeaponAnimMontage()
@@ -69,6 +72,8 @@ void UAIEnemyCombatComponent::PlayToggleWeaponAnimMontage()
 void UAIEnemyCombatComponent::ToggleWeaponAnimNotifyCallBack()
 {
 	if (!Weapon) return;
+
+	if (OwnerAIEnemy) {OwnerAIEnemy->SetEnemyActionState(EAIEnemyActionState::EAIAS_None);}
 	
 	if (Weapon->GetWeaponAttachmentStatus() == EAttachmentStatus::EAS_OutHand)
 	{

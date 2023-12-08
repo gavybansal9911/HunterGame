@@ -2,7 +2,6 @@
 
 
 #include "AI/Task/BTTToggleWeapon.h"
-
 #include "AIController.h"
 #include "AI/EnemyBase.h"
 
@@ -11,7 +10,8 @@ EBTNodeResult::Type UBTTToggleWeapon::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	if (AEnemyBase* AIEnemyBaseCharacter = Cast<AEnemyBase>(OwnerComp.GetAIOwner()->GetPawn()))
 	{
 		AIEnemyBaseCharacter->ToggleWeapon();
+		return EBTNodeResult::Succeeded;
 	}
 	
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	return EBTNodeResult::Failed;
 }

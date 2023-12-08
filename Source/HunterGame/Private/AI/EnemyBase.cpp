@@ -84,4 +84,9 @@ bool AEnemyBase::HaveWeaponInHand() const
 		return false;
 	}
 }
+
+void AEnemyBase::SetEnemyActionState(EAIEnemyActionState InActionState)
+{
+	AIActionState = InActionState;
+}
 /** Getter / Setter **/

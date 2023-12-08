@@ -52,9 +52,13 @@ protected:
 	/** Enemy States **/
 	EAIState AIState = EAIState::EAIS_Passive;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
+	EAIEnemyActionState AIActionState = EAIEnemyActionState::EAIAS_None;
 	/** Enemy States **/
-
+	
 public:
 	AWeapon* GetOwnedWeapon() const;
 	bool HaveWeaponInHand() const;
+	FORCEINLINE EAIEnemyActionState GetEnemyActionState() const {return AIActionState;}
+
+	void SetEnemyActionState(EAIEnemyActionState InActionState);
 };

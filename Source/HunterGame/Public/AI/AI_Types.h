@@ -22,7 +22,6 @@ enum class EAIState : uint8
 	EAIS_Investigating UMETA(DisplayName = "Investigating")
 };
 
-// Use ScriptName metadata to provide a unique name for the enum in Python
 UENUM(BlueprintType)
 enum class EAIPerceptionSense : uint8
 {
@@ -30,4 +29,13 @@ enum class EAIPerceptionSense : uint8
 	EAIS_Sight UMETA(DisplayName = "Sight"),
 	EAIS_Hearing UMETA(DisplayName = "Hearing"),
 	EAIS_Damage UMETA(DisplayName = "Damage")
+};
+
+UENUM(BlueprintType)
+enum class EAIEnemyActionState : uint8
+{
+	EAIAS_None UMETA(DisplayName = "None"),
+	EAIAS_TogglingWeapon UMETA(DisplayName = "Toggling Weapon"),
+	
+	EAIAS_Max UMETA(DisplayName = "Max")
 };
