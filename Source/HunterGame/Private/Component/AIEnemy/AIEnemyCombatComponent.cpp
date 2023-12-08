@@ -37,6 +37,7 @@ void UAIEnemyCombatComponent::Init_Weapon()
 				EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, false);
 			Weapon->AttachToComponent(OwnerAIEnemy->GetMesh(), AttachmentTransformRules, Weapon->GetOutHandAttachSocketName());
 			Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+			Weapon->SetWeaponState(EWeaponState::EWS_Attached);
 		}
 	}
 }
