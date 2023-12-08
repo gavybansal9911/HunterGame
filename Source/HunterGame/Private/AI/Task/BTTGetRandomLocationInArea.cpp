@@ -20,5 +20,5 @@ EBTNodeResult::Type UBTTGetRandomLocationInArea::ExecuteTask(UBehaviorTreeCompon
 		return EBTNodeResult::Succeeded;
 	}
 	
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	return EBTNodeResult::Failed;
 }
