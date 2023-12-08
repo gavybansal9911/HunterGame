@@ -8,6 +8,7 @@
 #include "Interface/EnemyInterface.h"
 #include "EnemyBase.generated.h"
 
+class UAIEnemyCombatComponent;
 class AWeapon;
 class USphereComponent;
 class UBehaviorTree;
@@ -28,34 +29,32 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual EAIState GetEnemyState() const override;
 	/** Interface **/
+
+	/** Combat **/
+	UFUNCTION(BlueprintCallable)    // TODO: remove this temporary UFUNCTION
+	void ToggleWeapon();
+	UFUNCTION(BlueprintCallable)
+	void ToggleWeaponAnimNotifyCallBack();
+	/** Combat **/
 	
 protected:
 	virtual void BeginPlay() override;
-	virtual void Init_Weapon();
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UAIEnemyCombatComponent> CombatComponent;
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 	
 	UPROPERTY()
 	TObjectPtr<AAIControllerBase> AIController;
-
-	// Weapon
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	TSubclassOf<AWeapon> WeaponClass;
-
-	UPROPERTY()
-	AWeapon* Weapon;
 	
 	/** Enemy States **/
 	EAIState AIState = EAIState::EAIS_Passive;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	/** Enemy States **/
 
-	/** Animation **/
-	UPROPERTY(EditAnywhere, Category = "Animation")
-	UAnimMontage* DaggerAttackMontage = nullptr;
-	/** Animation **/
-
 public:
-	FORCEINLINE AWeapon* GetOwnedWeapon() const {return Weapon;}
+	AWeapon* GetOwnedWeapon() const;
+	bool HaveWeaponInHand() const;
 };

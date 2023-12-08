@@ -50,7 +50,10 @@ protected:
 	/** Combat **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool bHaveWeapon;
-
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool bWeaponIsInHand;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	EWeaponType EquippedWeaponType;
 

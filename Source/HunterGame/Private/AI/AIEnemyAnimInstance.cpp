@@ -31,7 +31,14 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		/** Combat **/
 		EquippedWeapon = OwnerAIEnemyCharacter->GetOwnedWeapon();
+
+		// Have any weapon (in or our hand)
 		bHaveWeapon = OwnerAIEnemyCharacter->GetOwnedWeapon() ? true : false;
+
+		// Equipped weapon is in hand ?
+		bWeaponIsInHand = OwnerAIEnemyCharacter->GetOwnedWeapon() &&
+			OwnerAIEnemyCharacter->GetOwnedWeapon()->GetWeaponAttachmentStatus() == EAttachmentStatus::EAS_InHand ? true : false;
+
 		EquippedWeaponType = EquippedWeapon ? EquippedWeapon->GetWeaponType() : EWeaponType::EWC_Max;
 		EquippedWeaponName = EquippedWeapon ? EquippedWeapon->GetWeaponName() : EWeaponName::EWN_Max;
 		/** Combat **/

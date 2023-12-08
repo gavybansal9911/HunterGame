@@ -6,39 +6,23 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "TimerManager.h"
+#include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "Weapon/Weapon.h"
 
 AEnemyBase::AEnemyBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	CombatComponent = CreateDefaultSubobject<UAIEnemyCombatComponent>(TEXT("Enemy Combat Component"));
 }
 
 void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
-	Init_Weapon();
-}
-
-void AEnemyBase::Init_Weapon()
-{
-	if (!GetWorld()) return;
-	
-	if (WeaponClass)
+	if (CombatComponent)
 	{
-		FActorSpawnParameters ActorSpawnParameters;
-		ActorSpawnParameters.Owner = this;
-		ActorSpawnParameters.Instigator = this;
-		//AActor* Weapon_Actor = GetWorld()->SpawnActor(WeaponClass, GetActorTransform(), ActorSpawnParameters);
-		AActor* Weapon_Actor = GetWorld()->SpawnActor(WeaponClass);
-
-		Weapon = Cast<AWeapon>(Weapon_Actor);
-		if (Weapon)
-		{
-			Weapon->SetOwner(this);
-			FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget,
-				EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, false);
-			Weapon->AttachToComponent(GetMesh(), AttachmentTransformRules, Weapon->GetOutHandAttachSocketName());
-		}
+		CombatComponent->OwnerAIEnemy = this;
+		CombatComponent->Init_Weapon();
 	}
 }
 
@@ -68,3 +52,36 @@ EAIState AEnemyBase::GetEnemyState() const
 	return AIController->GetEnemyAIState();
 }
 /** Interface **/
+
+/** Combat **/
+void AEnemyBase::ToggleWeapon()
+{
+	if (CombatComponent == nullptr) return;
+	CombatComponent->ToggleWeapon();
+}
+
+void AEnemyBase::ToggleWeaponAnimNotifyCallBack()
+{
+	if (CombatComponent == nullptr) return;
+	CombatComponent->ToggleWeaponAnimNotifyCallBack();
+}
+/** Combat **/
+
+/** Getter / Setter **/
+AWeapon* AEnemyBase::GetOwnedWeapon() const
+{
+	return CombatComponent->Weapon;
+}
+
+bool AEnemyBase::HaveWeaponInHand() const
+{
+	if (GetOwnedWeapon() && GetOwnedWeapon()->GetWeaponAttachmentStatus() == EAttachmentStatus::EAS_InHand)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+/** Getter / Setter **/
