@@ -353,7 +353,7 @@ void ABaseCharacter::ServerRunButtonPressed_Implementation()
 
 void ABaseCharacter::ServerRunButtonReleased_Implementation()
 {
-	GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 /** Input CallBacks **/
 
