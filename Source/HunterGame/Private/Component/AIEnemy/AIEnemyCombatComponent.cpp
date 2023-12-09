@@ -16,6 +16,21 @@ void UAIEnemyCombatComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
+void UAIEnemyCombatComponent::PlayAnimMontage(UAnimMontage* AnimMontage, FName SectionName, bool bJumpToSection)
+{
+	if (OwnerAIEnemy == nullptr || OwnerAIEnemy->GetMesh() == nullptr) return;
+	
+	if (UAnimInstance* AnimInstance = OwnerAIEnemy->GetMesh()->GetAnimInstance())
+	{
+		AnimInstance->Montage_Play(AnimMontage);
+
+		if (bJumpToSection)
+		{
+			AnimInstance->Montage_JumpToSection(SectionName, AnimMontage);
+		}
+	}
+}
+
 void UAIEnemyCombatComponent::Init_Weapon()
 {
 	if (OwnerAIEnemy == nullptr) return;
@@ -115,4 +130,17 @@ void UAIEnemyCombatComponent::UpdateAttackRadius()
 	{
 		OwnerAIEnemy->UpdateAttackRadius();
 	}
+}
+
+void UAIEnemyCombatComponent::Aim()
+{
+	bIsAiming = true;
+}
+
+void UAIEnemyCombatComponent::Attack()
+{
+	if (OwnerAIEnemy == nullptr || Weapon == nullptr) return;
+
+	Aim();
+	PlayAnimMontage();
 }

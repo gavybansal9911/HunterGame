@@ -224,9 +224,6 @@ protected:
 	/** Animation **/
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* ShootWeaponMontage;
-	
-	UPROPERTY(EditAnywhere, Category = "Animation")
-	UAnimMontage* HitReactMontage;
 	/** Animation **/
 	
 private:

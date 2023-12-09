@@ -19,6 +19,10 @@ public:
 	friend AEnemyBase;
 	UAIEnemyCombatComponent();
 
+	/** Generic **/
+	void PlayAnimMontage(UAnimMontage* AnimMontage, FName SectionName, bool bJumpToSection);
+	/** Generic **/
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -31,6 +35,10 @@ protected:
 	virtual void DisableCombat();
 
 	void UpdateAttackRadius();
+
+	void Aim();
+	
+	void Attack();
 	
 private:
 	// Owner
@@ -43,4 +51,8 @@ private:
 	
 	UPROPERTY()
 	AWeapon* Weapon;
+
+	/** Combat **/
+	bool bIsAiming;
+	/** Combat **/
 };
