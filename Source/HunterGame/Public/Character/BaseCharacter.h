@@ -10,12 +10,14 @@
 #include "Component/CombatTypes.h"
 #include "Component/InventoryTypes.h"
 #include "Interface/HitInterface.h"
+#include "Interface/HumanInterface.h"
 #include "BaseCharacter.generated.h"
 
 #define CAMERA_BOOM_TP_TARGET_ARM_LENGTH 300.f
 #define CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH 125.f
 #define CAMERA_BOOM_SFP_TARGET_ARM_LENGTH 0.f
 
+class UStatsComponent;
 class UFinanceComponent;
 class UInventoryComponent;
 class AHunterPlayerController;
@@ -29,7 +31,7 @@ class UInputAction;
 class UAnimMontage;
 
 UCLASS()
-class HUNTERGAME_API ABaseCharacter : public ACharacter, public IHitInterface
+class HUNTERGAME_API ABaseCharacter : public ACharacter, public IHitInterface, public IHumanInterface
 {
 	GENERATED_BODY()
 
@@ -42,6 +44,7 @@ public:
 	
 	/** Interface **/
 	virtual void GetHit() override;
+	virtual void UpdateUIHealth() override;
 	/** Interface **/
 
 	/** Generic Functions **/
@@ -66,6 +69,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UFinanceComponent> FinanceComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UStatsComponent> StatsComponent;
 	/** Components **/
 
 	/** Animation **/
@@ -238,19 +244,6 @@ private:
 	UPROPERTY(Replicated, EditAnywhere, Category = "Character Movement (Custom)")
 	bool bOrientRotationToMovement_WhenInCombat = true;
 	/** Character Movement **/
-	
-	/** Stats **/
-	UPROPERTY(EditAnywhere, Category = "Player Stats")
-	float MaxHealth = 100.f;
-	
-	UPROPERTY(ReplicatedUsing = OnRep_Health, VisibleAnywhere, Category = "Player Stats")
-	float Health = 100.f;
-	/** Stats **/
-
-	/** Rep Notifies **/
-	UFUNCTION()
-	void OnRep_Health();
-	/** Rep Notifies **/
 	
 	/** Combat **/
 	float AO_Yaw;

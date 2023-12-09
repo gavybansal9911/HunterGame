@@ -12,6 +12,7 @@
 #include "Component/FinanceComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Component/InventoryComponent.h"
+#include "Component/StatsComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -54,6 +55,7 @@ ABaseCharacter::ABaseCharacter()
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
 	FinanceComponent = CreateDefaultSubobject<UFinanceComponent>(TEXT("Finance Component"));
+	StatsComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -90,8 +92,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(ABaseCharacter, Health);
+	
 	DOREPLIFETIME(ABaseCharacter, bOrientRotationToMovement_WhenInCombat);
 }
 
@@ -105,6 +106,11 @@ void ABaseCharacter::PostInitializeComponents()
 	{
 		InventoryComponent->InitInventory();
 		InventoryComponent->OnInventoryUpdated.AddDynamic(this, &ABaseCharacter::OnInventoryUpdated);
+	}
+	if (StatsComponent)
+	{
+		StatsComponent->OwnerHuman = this;
+		StatsComponent->Init_Attributes();
 	}
 }
 
@@ -137,6 +143,11 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ABaseCharacter::GetHit()
 {
 	if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Hit"));}
+}
+
+void ABaseCharacter::UpdateUIHealth()
+{
+	UpdateHUDHealth();
 }
 /** Interface **/
 
@@ -369,7 +380,8 @@ void ABaseCharacter::UpdateHUDHealth()
 {
 	if (HunterPlayerController)
 	{
-		HunterPlayerController->SetHUDHealth(Health, MaxHealth);
+		HunterPlayerController->SetHUDHealth(StatsComponent->Health_Data.CurrentValue,
+			StatsComponent->MaxHealth_Data.CurrentValue);
 	}
 }
 /** Stats **/
@@ -378,11 +390,15 @@ void ABaseCharacter::UpdateHUDHealth()
 void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 	AController* InstigatorController, AActor* DamageCauser)
 {
-	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
-	UpdateHUDHealth();
-	if (Health <= 0)
+	if (StatsComponent)
 	{
-		Death();
+		StatsComponent->Health_Data.CurrentValue = FMath::Clamp(
+			StatsComponent->Health_Data.CurrentValue - Damage, 0.f, StatsComponent->MaxHealth_Data.CurrentValue);
+		UpdateUIHealth();
+		if (StatsComponent->Health_Data.CurrentValue <= 0)
+		{
+			Death();
+		}
 	}
 }
 
@@ -586,13 +602,6 @@ void ABaseCharacter::PlayShootMontage(bool bAiming)
 	}
 }
 /** Animation **/
-
-/** Rep Notifies **/
-void ABaseCharacter::OnRep_Health()
-{
-	UpdateHUDHealth();
-}
-/** Rep Notifies **/
 
 /** Getter / Setter **/
 AWeapon* ABaseCharacter::GetEquippedWeapon() const

@@ -7,8 +7,10 @@
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "GameFramework/Character.h"
 #include "Interface/EnemyInterface.h"
+#include "Interface/HumanInterface.h"
 #include "EnemyBase.generated.h"
 
+class UStatsComponent;
 class UAIEnemyCombatComponent;
 class AWeapon;
 class USphereComponent;
@@ -17,14 +19,14 @@ class AAIControllerBase;
 class UAnimMontage;
 
 UCLASS()
-class HUNTERGAME_API AEnemyBase : public ACharacter, public IEnemyInterface
+class HUNTERGAME_API AEnemyBase : public ACharacter, public IEnemyInterface, public IHumanInterface
 {
 	GENERATED_BODY()
 
 public:
 	AEnemyBase();
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;  // Called when the this character is possessed
+	virtual void PostInitializeComponents() override;
 
 	/** Interface **/
 	UFUNCTION(BlueprintCallable)
@@ -46,6 +48,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UAIEnemyCombatComponent> CombatComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UStatsComponent> StatsComponent;
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;

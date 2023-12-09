@@ -6,6 +6,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "TimerManager.h"
+#include "Component/StatsComponent.h"
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "Weapon/Weapon.h"
 
@@ -14,6 +15,7 @@ AEnemyBase::AEnemyBase()
 	PrimaryActorTick.bCanEverTick = false;
 
 	CombatComponent = CreateDefaultSubobject<UAIEnemyCombatComponent>(TEXT("Enemy Combat Component"));
+	StatsComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
 }
 
 void AEnemyBase::BeginPlay()
@@ -24,11 +26,6 @@ void AEnemyBase::BeginPlay()
 		CombatComponent->OwnerAIEnemy = this;
 		CombatComponent->Init_Weapon();
 	}
-}
-
-void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 void AEnemyBase::PossessedBy(AController* NewController)
@@ -42,6 +39,16 @@ void AEnemyBase::PossessedBy(AController* NewController)
 	{
 		AIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 		AIController->RunBehaviorTree(BehaviorTree);
+	}
+}
+
+void AEnemyBase::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (StatsComponent)
+	{
+		StatsComponent->OwnerHuman = this;
 	}
 }
 
