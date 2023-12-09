@@ -26,9 +26,11 @@ protected:
 	virtual void ToggleWeapon();
 	virtual void PlayToggleWeaponAnimMontage();
 	virtual void ToggleWeaponAnimNotifyCallBack();
-
+	
 	virtual void EnableCombat();
 	virtual void DisableCombat();
+
+	void UpdateAttackRadius();
 	
 private:
 	// Owner

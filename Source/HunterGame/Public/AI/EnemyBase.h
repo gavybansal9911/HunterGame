@@ -34,6 +34,8 @@ public:
 	void ToggleWeapon();
 	UFUNCTION(BlueprintCallable)
 	void ToggleWeaponAnimNotifyCallBack();
+
+	void UpdateAttackRadius();
 	/** Combat **/
 	
 protected:

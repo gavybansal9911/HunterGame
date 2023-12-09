@@ -11,6 +11,7 @@
 #include "Perception/AIPerceptionSystem.h"
 #include "AI/EnemyBase.h"
 #include "Character/BaseCharacter.h"
+#include "Weapon/Weapon.h"
 
 AAIControllerBase::AAIControllerBase()
 {
@@ -58,6 +59,10 @@ void AAIControllerBase::BeginPlay()
 	if (Blackboard)
 	{
 		Blackboard->SetValueAsEnum(BB_AIState_KeyName, 1);
+		if (OwnerAIEnemy && OwnerAIEnemy->GetOwnedWeapon())
+		{
+			Blackboard->SetValueAsFloat(BB_AttackRadius_KeyName, OwnerAIEnemy->GetOwnedWeapon()->GetWeaponRange());
+		}
 	}
 	
 }
@@ -177,4 +182,12 @@ void AAIControllerBase::SetStateAsAttacking(AActor* TargetActor)
 	AIState = EAIState::EAIS_Attacking;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 5);
 	SetFocus(TargetActor);
+}
+
+void AAIControllerBase::UpdateAttackRadius(AWeapon* Weapon)
+{
+	if (Weapon)
+	{
+		Blackboard->SetValueAsFloat(BB_AttackRadius_KeyName, Weapon->GetWeaponRange());
+	}
 }

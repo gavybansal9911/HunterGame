@@ -8,6 +8,7 @@
 #include "Perception/AIPerceptionTypes.h"
 #include "AIControllerBase.generated.h"
 
+class AWeapon;
 class AEnemyBase;
 
 struct CanSenseActorData
@@ -49,6 +50,9 @@ public:
 	void SetStateAsChasing(AActor* TargetActor);
 	void SetStateAsAttacking(AActor* TargetActor);
 
+	// BB
+	void UpdateAttackRadius(AWeapon* Weapon);
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -78,6 +82,7 @@ private:
 
 	// Blackboard keys
 	FName BB_AIState_KeyName = "AIState";
+	FName BB_AttackRadius_KeyName = "AttackRadius";
 
 public:
 	FORCEINLINE EAIState GetEnemyAIState() const {return AIState;}

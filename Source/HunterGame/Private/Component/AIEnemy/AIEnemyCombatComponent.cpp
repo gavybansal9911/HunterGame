@@ -3,7 +3,6 @@
 
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "AI/EnemyBase.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Weapon/Weapon.h"
 #include "Weapon/WeaponTypes.h"
 
@@ -97,6 +96,7 @@ void UAIEnemyCombatComponent::EnableCombat()
 		EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, false);
 	Weapon->AttachToComponent(OwnerAIEnemy->GetMesh(), AttachmentTransformRules, Weapon->GetInHandAttachSocketName());
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
+	UpdateAttackRadius();
 }
 
 void UAIEnemyCombatComponent::DisableCombat()
@@ -107,4 +107,12 @@ void UAIEnemyCombatComponent::DisableCombat()
 		EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, false);
 	Weapon->AttachToComponent(OwnerAIEnemy->GetMesh(), AttachmentTransformRules, Weapon->GetOutHandAttachSocketName());
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_OutHand);
+}
+
+void UAIEnemyCombatComponent::UpdateAttackRadius()
+{
+	if (OwnerAIEnemy)
+	{
+		OwnerAIEnemy->UpdateAttackRadius();
+	}
 }

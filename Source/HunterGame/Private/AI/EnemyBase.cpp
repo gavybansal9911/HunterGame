@@ -65,6 +65,11 @@ void AEnemyBase::ToggleWeaponAnimNotifyCallBack()
 	if (CombatComponent == nullptr) return;
 	CombatComponent->ToggleWeaponAnimNotifyCallBack();
 }
+
+void AEnemyBase::UpdateAttackRadius()
+{
+	AIController->UpdateAttackRadius(GetOwnedWeapon());
+}
 /** Combat **/
 
 /** Getter / Setter **/
