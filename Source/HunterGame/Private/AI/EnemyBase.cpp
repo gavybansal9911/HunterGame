@@ -90,6 +90,16 @@ bool AEnemyBase::HaveWeaponInHand() const
 	}
 }
 
+AActor* AEnemyBase::Get_TargetActor_BB() const
+{
+	if (AIController)
+	{
+		return AIController->GetTargetActorBB();
+	}
+	
+	return nullptr;
+}
+
 void AEnemyBase::SetEnemyActionState(EAIEnemyActionState InActionState)
 {
 	AIActionState = InActionState;

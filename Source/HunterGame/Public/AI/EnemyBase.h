@@ -59,6 +59,10 @@ protected:
 public:
 	AWeapon* GetOwnedWeapon() const;
 	bool HaveWeaponInHand() const;
+	
+	UFUNCTION(BlueprintCallable)
+	AActor* Get_TargetActor_BB() const;
+	
 	FORCEINLINE EAIEnemyActionState GetEnemyActionState() const {return AIActionState;}
 
 	void SetEnemyActionState(EAIEnemyActionState InActionState);

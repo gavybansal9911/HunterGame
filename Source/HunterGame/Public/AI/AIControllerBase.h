@@ -81,10 +81,12 @@ private:
 	/** State and Properties **/
 
 	// Blackboard keys
+	FName BB_TargetActor_KeyName = "TargetActor";
 	FName BB_AIState_KeyName = "AIState";
 	FName BB_AttackRadius_KeyName = "AttackRadius";
 
 public:
+	AActor* GetTargetActorBB() const;
 	FORCEINLINE EAIState GetEnemyAIState() const {return AIState;}
 	FORCEINLINE AEnemyBase* GetAIEnemyCharacter() const {return OwnerAIEnemy;}
 };

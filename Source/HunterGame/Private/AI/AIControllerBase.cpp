@@ -67,6 +67,19 @@ void AAIControllerBase::BeginPlay()
 	
 }
 
+AActor* AAIControllerBase::GetTargetActorBB() const
+{
+	if (Blackboard)
+	{
+		if (AActor* TargetActor = Cast<AActor>(Blackboard->GetValueAsObject(BB_TargetActor_KeyName)))
+		{
+			return TargetActor;
+		}
+	}
+	
+	return nullptr;
+}
+
 void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
 	CanSenseActorData SenseActorData;
