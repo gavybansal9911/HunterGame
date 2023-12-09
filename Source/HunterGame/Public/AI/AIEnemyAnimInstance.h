@@ -44,7 +44,8 @@ protected:
 	FRotator CharacterRotationThisFrame;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Lean;
-	
+
+	FRotator DeltaRotation; // For smooth strafing
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float YawOffset;
 	/** Basic Movement **/

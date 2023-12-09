@@ -42,7 +42,7 @@ void UHunterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		/** Strafing **/
 		// AimRotation is Global (Points according the world direction axis)
 		const FRotator AimRotation = HunterCharacter->GetBaseAimRotation();
-		// MovementRotation is local to the player (This function returns a FRotator in the direction of FVector passed in as a argument, In this case the HunterCharacter velocity)
+		// MovementRotation is local to the character (This function returns a FRotator in the direction of FVector passed in as a argument, In this case the HunterCharacter velocity)
 		const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(HunterCharacter->GetVelocity());
 		const FRotator DeltaRot = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation);
 		DeltaRotation = FMath::RInterpTo(DeltaRotation, DeltaRot, DeltaSeconds, 6.f);
