@@ -70,6 +70,12 @@ void AEnemyBase::UpdateAttackRadius()
 {
 	AIController->UpdateAttackRadius(GetOwnedWeapon());
 }
+
+void AEnemyBase::Attack()
+{
+	if (!CombatComponent) return;
+	CombatComponent->Attack();
+}
 /** Combat **/
 
 /** Getter / Setter **/

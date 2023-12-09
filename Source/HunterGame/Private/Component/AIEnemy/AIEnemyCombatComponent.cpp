@@ -16,9 +16,9 @@ void UAIEnemyCombatComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UAIEnemyCombatComponent::PlayAnimMontage(UAnimMontage* AnimMontage, FName SectionName, bool bJumpToSection)
+void UAIEnemyCombatComponent::PlayAnimationMontage(UAnimMontage* AnimMontage, FName SectionName, bool bJumpToSection)
 {
-	if (OwnerAIEnemy == nullptr || OwnerAIEnemy->GetMesh() == nullptr) return;
+	if (OwnerAIEnemy == nullptr || OwnerAIEnemy->GetMesh() == nullptr || AnimMontage == nullptr) return;
 	
 	if (UAnimInstance* AnimInstance = OwnerAIEnemy->GetMesh()->GetAnimInstance())
 	{
@@ -142,5 +142,10 @@ void UAIEnemyCombatComponent::Attack()
 	if (OwnerAIEnemy == nullptr || Weapon == nullptr) return;
 
 	Aim();
-	PlayAnimMontage();
+	const FName SectionName = bIsAiming ? FName("Aim") : FName("Hip");
+	PlayAnimationMontage(Weapon->WeaponShootMontage, SectionName, true);
+	FTransform MuzzleTipTransform = Weapon->GetWeaponMesh()->GetSocketTransform(FName("MuzzleFlash"));
+	FVector MuzzleX(FRotationMatrix(MuzzleTipTransform.GetRotation().Rotator()).GetUnitAxis(EAxis::X));
+	FVector HitTarget = MuzzleX;
+	Weapon->Shoot(HitTarget);
 }

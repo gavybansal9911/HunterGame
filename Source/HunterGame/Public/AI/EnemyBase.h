@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AI_Types.h"
+#include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "GameFramework/Character.h"
 #include "Interface/EnemyInterface.h"
 #include "EnemyBase.generated.h"
@@ -36,6 +37,8 @@ public:
 	void ToggleWeaponAnimNotifyCallBack();
 
 	void UpdateAttackRadius();
+
+	void Attack();
 	/** Combat **/
 	
 protected:
@@ -64,6 +67,7 @@ public:
 	AActor* Get_TargetActor_BB() const;
 	
 	FORCEINLINE EAIEnemyActionState GetEnemyActionState() const {return AIActionState;}
+	FORCEINLINE bool IsAiming() const {return CombatComponent && CombatComponent->bIsAiming;}
 
 	void SetEnemyActionState(EAIEnemyActionState InActionState);
 };

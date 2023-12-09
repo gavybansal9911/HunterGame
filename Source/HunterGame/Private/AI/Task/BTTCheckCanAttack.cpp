@@ -12,6 +12,7 @@ EBTNodeResult::Type UBTTCheckCanAttack::ExecuteTask(UBehaviorTreeComponent& Owne
 {
     if (AAIControllerBase* AIControllerBase = Cast<AAIControllerBase>(OwnerComp.GetAIOwner()))
     {
+        if (AIControllerBase->GetAIEnemyCharacter() == nullptr) return EBTNodeResult::Succeeded;
         if (AIControllerBase->GetAIEnemyCharacter()->GetOwnedWeapon() == nullptr) return EBTNodeResult::Succeeded;
         
         if (AActor* TargetActor = Cast<AActor>(OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsObject(BB_TargetActor_KeyName)))

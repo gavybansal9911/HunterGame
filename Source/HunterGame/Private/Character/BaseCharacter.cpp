@@ -564,14 +564,15 @@ void ABaseCharacter::CreateCharacterOverlayUI()
 /** Animation **/
 void ABaseCharacter::PlayShootMontage(bool bAiming)
 {
-	if (CombatComponent == nullptr || CombatComponent->GetWeaponInHand() == nullptr) return;
+	if (CombatComponent == nullptr || CombatComponent->GetWeaponInHand() == nullptr || GetEquippedWeapon() == nullptr) return;
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && ShootWeaponMontage)
 	{
-		AnimInstance->Montage_Play(ShootWeaponMontage);
-		const FName SectionName = bAiming ? FName("RifleHip") : FName("RifleAim");  // Choose section name based on bAiming;
-		AnimInstance->Montage_JumpToSection(SectionName, ShootWeaponMontage);
+		AnimInstance->Montage_Play(GetEquippedWeapon()->WeaponShootMontage);
+		FName SectionName = bAiming ? FName("Aim") : FName("Hip");  // Choose section name based on bAiming;
+		AnimInstance->Montage_JumpToSection(SectionName, GetEquippedWeapon()->WeaponShootMontage);
+		//PlayAnimationMontage(GetEquippedWeapon()->WeaponShootMontage, SectionName, true);
 	}
 }
 /** Animation **/

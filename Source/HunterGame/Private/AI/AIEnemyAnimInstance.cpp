@@ -60,6 +60,8 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		EquippedWeaponType = EquippedWeapon ? EquippedWeapon->GetWeaponType() : EWeaponType::EWC_Max;
 		EquippedWeaponName = EquippedWeapon ? EquippedWeapon->GetWeaponName() : EWeaponName::EWN_Max;
+
+		bIsAiming = OwnerAIEnemyCharacter->IsAiming();
 		/** Combat **/
 	}
 }

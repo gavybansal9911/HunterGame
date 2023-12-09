@@ -74,6 +74,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* ReloadMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* WeaponShootMontage;
 	/** Animation **/
 
 protected:

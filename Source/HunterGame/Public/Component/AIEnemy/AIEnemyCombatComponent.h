@@ -20,7 +20,7 @@ public:
 	UAIEnemyCombatComponent();
 
 	/** Generic **/
-	void PlayAnimMontage(UAnimMontage* AnimMontage, FName SectionName, bool bJumpToSection);
+	void PlayAnimationMontage(UAnimMontage* AnimMontage, FName SectionName, bool bJumpToSection);
 	/** Generic **/
 
 protected:
