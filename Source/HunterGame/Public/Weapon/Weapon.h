@@ -137,6 +137,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	bool bApplyFABRIKOnlyWhenAiming = false;
+
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	float WeaponRange = 2000.f;
 	/** Weapon Properties **/
 
 	/** Weapon Animation **/

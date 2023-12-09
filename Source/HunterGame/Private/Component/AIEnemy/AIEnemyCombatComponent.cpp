@@ -3,6 +3,7 @@
 
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "AI/EnemyBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Weapon/Weapon.h"
 #include "Weapon/WeaponTypes.h"
 
