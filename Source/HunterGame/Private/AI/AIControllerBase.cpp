@@ -157,7 +157,7 @@ void AAIControllerBase::HandleDamageSense()
 
 void AAIControllerBase::SetStateAsPassive()
 {
-	if (Blackboard == nullptr) return;
+	if (Blackboard == nullptr || AIState > EAIState::EAIS_Passive) return;
 	AIState = EAIState::EAIS_Passive;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 1);
 	ClearFocus(EAIFocusPriority::Default);
@@ -165,16 +165,16 @@ void AAIControllerBase::SetStateAsPassive()
 
 void AAIControllerBase::SetStateAsChasing(AActor* TargetActor)
 {
-	if (Blackboard == nullptr) return;
+	if (Blackboard == nullptr || AIState > EAIState::EAIS_Chasing) return;
 	AIState = EAIState::EAIS_Chasing;
-	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 3);
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 4);
 	ClearFocus(EAIFocusPriority::Default);
 }
 
 void AAIControllerBase::SetStateAsAttacking(AActor* TargetActor)
 {
-	if (Blackboard == nullptr) return;
+	if (Blackboard == nullptr || AIState > EAIState::EAIS_Attacking) return;
 	AIState = EAIState::EAIS_Attacking;
-	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 4);
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 5);
 	SetFocus(TargetActor);
 }

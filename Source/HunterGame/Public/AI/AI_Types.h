@@ -15,11 +15,11 @@ enum class EAIState : uint8
 {
 	EAIS_None = 0 UMETA(DisplayName = "None"),
 	EAIS_Passive = 1 UMETA(DisplayName = "Passive"),
-	EAIS_Hunting = 2 UMETA(DisplayName = "Hunting"),
-	EAIS_Chasing = 3 UMETA(DisplayName = "Chasing"),
-	EAIS_Attacking = 4 UMETA(DisplayName = "Attacking"),
-	EAIS_Retreating = 5 UMETA(DisplayName = "Retreating"),
-	EAIS_Investigating = 6 UMETA(DisplayName = "Investigating")
+	EAIS_Investigating = 2 UMETA(DisplayName = "Investigating"),
+	EAIS_Hunting = 3 UMETA(DisplayName = "Hunting"),
+	EAIS_Chasing = 4 UMETA(DisplayName = "Chasing"),
+	EAIS_Attacking = 5 UMETA(DisplayName = "Attacking"),
+	EAIS_Retreating = 6 UMETA(DisplayName = "Retreating")
 };
 
 UENUM(BlueprintType)
