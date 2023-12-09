@@ -58,3 +58,11 @@ void AHunterPlayerController::CreateCharacterOverlayUI()
 	if (HunterHUD == nullptr) return;
 	HunterHUD->AddCharacterOverlay();
 }
+
+void AHunterPlayerController::OnDeath()
+{
+	if (HunterHUD)
+	{
+		HunterHUD->SetInputModeAsUIOnly();
+	}
+}

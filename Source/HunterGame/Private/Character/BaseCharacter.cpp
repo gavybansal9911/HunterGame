@@ -380,6 +380,10 @@ void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDa
 {
 	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
 	UpdateHUDHealth();
+	if (Health <= 0)
+	{
+		Death();
+	}
 }
 
 void ABaseCharacter::AimOffset(float DeltaTime)
@@ -536,6 +540,12 @@ void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
 }
 /** Combat **/
 
+void ABaseCharacter::Death()
+{
+	PlayAnimationMontage(DeathMontage, FName(), false);
+	HunterPlayerController->OnDeath();
+}
+
 /** Interaction **/
 int32 ABaseCharacter::AddItemToInventory(FItemData ItemData)
 {
@@ -567,7 +577,7 @@ void ABaseCharacter::PlayShootMontage(bool bAiming)
 	if (CombatComponent == nullptr || CombatComponent->GetWeaponInHand() == nullptr || GetEquippedWeapon() == nullptr) return;
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && ShootWeaponMontage)
+	if (AnimInstance && GetEquippedWeapon()->WeaponShootMontage)
 	{
 		AnimInstance->Montage_Play(GetEquippedWeapon()->WeaponShootMontage);
 		FName SectionName = bAiming ? FName("Aim") : FName("Hip");  // Choose section name based on bAiming;

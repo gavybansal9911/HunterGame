@@ -150,6 +150,8 @@ protected:
 	void ToggleSecondaryWeapon_AnimNotifyCallBack();
 	/** Combat **/
 
+	void Death();
+
 	/** Stats **/
 	void UpdateHUDHealth();
 	/** Stats **/
@@ -204,7 +206,7 @@ protected:
 	ETurningInPlace TurningInPlace = ETurningInPlace::ETIP_Max;
 	ECameraMode CurrentCameraMode = ECameraMode::ECM_ThirdPerson;
 	/** Character States **
-	
+
 	/** Camera **/
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	TObjectPtr<USpringArmComponent> CameraBoom;
@@ -223,7 +225,7 @@ protected:
 
 	/** Animation **/
 	UPROPERTY(EditAnywhere, Category = "Animation")
-	UAnimMontage* ShootWeaponMontage;
+	UAnimMontage* DeathMontage;
 	/** Animation **/
 	
 private:

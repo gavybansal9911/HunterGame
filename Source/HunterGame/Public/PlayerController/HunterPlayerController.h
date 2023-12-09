@@ -25,6 +25,8 @@ public:
 	void RemoveCharacterOverlayUI();
 	void CreateCharacterOverlayUI();
 
+	void OnDeath();
+
 protected:
 	virtual void BeginPlay() override;
     
