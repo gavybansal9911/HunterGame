@@ -76,6 +76,9 @@ private:
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	/** State and Properties **/
 
+	// Blackboard keys
+	FName BB_AIState_KeyName = "AIState";
+
 public:
 	FORCEINLINE EAIState GetEnemyAIState() const {return AIState;}
 };

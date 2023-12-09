@@ -55,6 +55,11 @@ void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
 	OwnerAIEnemy = Cast<AEnemyBase>(GetPawn());
+	if (Blackboard)
+	{
+		Blackboard->SetValueAsEnum(BB_AIState_KeyName, 1);
+	}
+	
 }
 
 void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
@@ -152,18 +157,24 @@ void AAIControllerBase::HandleDamageSense()
 
 void AAIControllerBase::SetStateAsPassive()
 {
+	if (Blackboard == nullptr) return;
 	AIState = EAIState::EAIS_Passive;
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 1);
 	ClearFocus(EAIFocusPriority::Default);
 }
 
 void AAIControllerBase::SetStateAsChasing(AActor* TargetActor)
 {
+	if (Blackboard == nullptr) return;
 	AIState = EAIState::EAIS_Chasing;
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 3);
 	ClearFocus(EAIFocusPriority::Default);
 }
 
 void AAIControllerBase::SetStateAsAttacking(AActor* TargetActor)
 {
+	if (Blackboard == nullptr) return;
 	AIState = EAIState::EAIS_Attacking;
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 4);
 	SetFocus(TargetActor);
 }
