@@ -35,7 +35,7 @@ EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerC
 		return EBTNodeResult::Aborted;
 	}	
 
-	return EBTNodeResult::Aborted;
+	return EBTNodeResult::Succeeded;  // TODO: /____/
 }
 
 void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)

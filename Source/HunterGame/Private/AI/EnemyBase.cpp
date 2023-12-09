@@ -21,10 +21,10 @@ AEnemyBase::AEnemyBase()
 void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
-	if (CombatComponent)
+	
+	if (HasAuthority())   // Bind Receive Damage to OnTakeAnyDamage only on the server
 	{
-		CombatComponent->OwnerAIEnemy = this;
-		CombatComponent->Init_Weapon();
+		OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::ReceiveDamage);
 	}
 }
 
@@ -46,9 +46,36 @@ void AEnemyBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	if (CombatComponent)
+	{
+		CombatComponent->OwnerAIEnemy = this;
+		CombatComponent->Init_Weapon();
+	}
+	
 	if (StatsComponent)
 	{
 		StatsComponent->OwnerHuman = this;
+		StatsComponent->Init_Attributes();
+	}
+}
+
+void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigatorController, AActor* DamageCauser)
+{
+	if (StatsComponent)
+	{
+		StatsComponent->Health_Data.CurrentValue = FMath::Clamp(
+			StatsComponent->Health_Data.CurrentValue - Damage, 0.f, StatsComponent->MaxHealth_Data.CurrentValue);
+		if (StatsComponent->Health_Data.CurrentValue <= 0)
+		{
+			// TODO: Temporary
+			if (CombatComponent->Weapon)
+			{
+				CombatComponent->Weapon->Destroy();
+			}
+			Destroy();
+			// Death
+		}
 	}
 }
 

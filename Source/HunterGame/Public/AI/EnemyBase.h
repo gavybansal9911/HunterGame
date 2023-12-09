@@ -46,6 +46,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
+	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UAIEnemyCombatComponent> CombatComponent;
 
