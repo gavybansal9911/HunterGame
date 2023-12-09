@@ -31,7 +31,6 @@ public:
 	/** Interface **/
 
 	/** Combat **/
-	UFUNCTION(BlueprintCallable)    // TODO: remove this temporary UFUNCTION
 	void ToggleWeapon();
 	UFUNCTION(BlueprintCallable)
 	void ToggleWeaponAnimNotifyCallBack();

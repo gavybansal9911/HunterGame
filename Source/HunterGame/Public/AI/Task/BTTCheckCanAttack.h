@@ -9,13 +9,13 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class HUNTERGAME_API UBTTCheckCanAttack : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-    EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 	UPROPERTY(EditAnywhere, Category = "BB")
 	FName BB_TargetActor_KeyName;

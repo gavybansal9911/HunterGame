@@ -175,6 +175,7 @@ public:
 	FORCEINLINE EWeaponClass GetWeaponClass() const {return WeaponClass;}
 	FORCEINLINE EWeaponType GetWeaponType() const {return WeaponType;}
 	FORCEINLINE EAttachmentStatus GetWeaponAttachmentStatus() const {return AttachmentStatus;}
+	FORCEINLINE float GetWeaponRange() const {return WeaponRange;}
 	FORCEINLINE float GetAutoFireDelay() const {return AutoFireDelay;}
 	FORCEINLINE bool IsWeaponAutomatic() const {return bAutomatic;}
 	FORCEINLINE int32 GetAmmoInWeapon() const {return Ammo;}

@@ -140,9 +140,9 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAIPerceptionS
 
 void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 {
-	Blackboard->SetValueAsObject(FName("TargetActor"), SensedActor);
 	if (Cast<ABaseCharacter>(SensedActor))
 	{
+		Blackboard->SetValueAsObject(FName("TargetActor"), SensedActor);
 		SetStateAsChasing(SensedActor);
 	}
 }
