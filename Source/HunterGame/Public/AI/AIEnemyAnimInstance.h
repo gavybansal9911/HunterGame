@@ -40,6 +40,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsCrouched;
 
+	FRotator CharacterRotationLastFrame;
+	FRotator CharacterRotationThisFrame;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Lean;
 	
