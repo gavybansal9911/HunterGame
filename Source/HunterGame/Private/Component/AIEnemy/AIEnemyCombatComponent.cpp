@@ -146,6 +146,6 @@ void UAIEnemyCombatComponent::Attack()
 	PlayAnimationMontage(Weapon->WeaponShootMontage, SectionName, true);
 	FTransform MuzzleTipTransform = Weapon->GetWeaponMesh()->GetSocketTransform(FName("MuzzleFlash"));
 	FVector MuzzleX(FRotationMatrix(MuzzleTipTransform.GetRotation().Rotator()).GetUnitAxis(EAxis::X));
-	FVector HitTarget = MuzzleX;
+	FVector HitTarget = MuzzleTipTransform.GetLocation() + (MuzzleX * 1000.f);
 	Weapon->Shoot(HitTarget);
 }
