@@ -44,9 +44,10 @@ public:
 	// Handle Sense
 	void HandleSightSense(AActor* SensedActor);
 	void HandleHearingSense(FVector SoundOrigin_Loc);
-	void HandleDamageSense();
+	void HandleDamageSense(AActor* SensedActor);
 
 	void SetStateAsPassive();
+	void SetStateAsInvestigating();
 	void SetStateAsChasing(AActor* TargetActor);
 	void SetStateAsAttacking(AActor* TargetActor);
 
@@ -82,6 +83,7 @@ private:
 
 	// Blackboard keys
 	FName BB_TargetActor_KeyName = "TargetActor";
+	FName BB_PointOfInterest_KeyName = "PointOfInterest";
 	FName BB_AIState_KeyName = "AIState";
 	FName BB_AttackRadius_KeyName = "AttackRadius";
 

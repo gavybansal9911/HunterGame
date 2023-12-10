@@ -94,20 +94,20 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Sight Triggered"));
 		}
 
+		// Sensed Damage?
+		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Damage);
+		if (SenseActorData.Sensed)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Damage Triggered"));
+			HandleDamageSense(Actor);
+		}
+		
 		// Sensed Hearing?
 		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Hearing);
 		if (SenseActorData.Sensed)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Hearing Triggered"));
 			HandleHearingSense(SenseActorData.Stimulus.StimulusLocation);
-		}
-
-		// Sensed Damage?
-		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Damage);
-		if (SenseActorData.Sensed)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Damage Triggered"));
-			HandleDamageSense();
 		}
 	}
 }
@@ -160,24 +160,42 @@ void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 {
 	if (Cast<ABaseCharacter>(SensedActor))
 	{
-		Blackboard->SetValueAsObject(FName("TargetActor"), SensedActor);
+		Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
 		SetStateAsChasing(SensedActor);
 	}
 }
 
 void AAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)
 {
+	if (EAIState::EAIS_Investigating >= AIState)
+	{
+		Blackboard->SetValueAsVector(BB_PointOfInterest_KeyName, SoundOrigin_Loc);
+		SetStateAsInvestigating();
+	}
 }
 
-void AAIControllerBase::HandleDamageSense()
+void AAIControllerBase::HandleDamageSense(AActor* SensedActor)
 {
+	if (Cast<ABaseCharacter>(SensedActor))
+	{
+		Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
+		SetStateAsChasing(SensedActor);
+	}
 }
 
 void AAIControllerBase::SetStateAsPassive()
 {
-	if (Blackboard == nullptr || AIState > EAIState::EAIS_Passive) return;
+	if (Blackboard == nullptr || AIState > EAIState::EAIS_Investigating) return;
 	AIState = EAIState::EAIS_Passive;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 1);
+	ClearFocus(EAIFocusPriority::Default);
+}
+
+void AAIControllerBase::SetStateAsInvestigating()
+{
+	if (Blackboard == nullptr || AIState > EAIState::EAIS_Investigating) return;
+	AIState = EAIState::EAIS_Investigating;
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 2);
 	ClearFocus(EAIFocusPriority::Default);
 }
 
