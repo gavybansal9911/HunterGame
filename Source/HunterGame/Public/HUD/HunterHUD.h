@@ -43,8 +43,9 @@ public:
 	void SetInputModeAsUIOnly();
 	void SetInputModeAsGameOnly();
 
-	void RemoveCharacterOverlay();
 	void AddCharacterOverlay();
+	void HideCharacterOverlay();
+	void ShowCharacterOverlay();
 	
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UUserWidget> CharacterOverlayClass;

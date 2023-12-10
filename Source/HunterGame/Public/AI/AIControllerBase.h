@@ -91,4 +91,6 @@ public:
 	AActor* GetTargetActorBB() const;
 	FORCEINLINE EAIState GetEnemyAIState() const {return AIState;}
 	FORCEINLINE AEnemyBase* GetAIEnemyCharacter() const {return OwnerAIEnemy;}
+
+	void SetBBTargetActor(AActor* TargetActor);
 };

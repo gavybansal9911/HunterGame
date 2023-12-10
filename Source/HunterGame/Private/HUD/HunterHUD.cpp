@@ -100,11 +100,18 @@ void AHunterHUD::SetInputModeAsGameOnly()
 	GetOwningPlayerController()->SetShowMouseCursor(false);
 }
 
-void AHunterHUD::RemoveCharacterOverlay()
+void AHunterHUD::HideCharacterOverlay()
 {
 	if (CharacterOverlay == nullptr) return;
-	CharacterOverlay->RemoveFromParent();
-	CharacterOverlay = nullptr;
+	//CharacterOverlay->RemoveFromParent();
+	CharacterOverlay->SetVisibility(ESlateVisibility::Hidden);
+	//CharacterOverlay = nullptr;
+}
+
+void AHunterHUD::ShowCharacterOverlay()
+{
+	if (CharacterOverlay == nullptr) return;
+	CharacterOverlay->SetVisibility(ESlateVisibility::Visible);
 }
 
 void AHunterHUD::OnCombatEnabled()
@@ -125,8 +132,7 @@ void AHunterHUD::ToggleInventory()
 	
 	if (CharacterOverlay)
 	{
-		CharacterOverlay->RemoveFromParent();
-		CharacterOverlay = nullptr;
+		HideCharacterOverlay();
 		InventoryMenu = CreateWidget<UInventoryMenuUW>(GetOwningPlayerController(), InventoryMenuClass);
 		if (InventoryMenu)
 		{
@@ -144,8 +150,7 @@ void AHunterHUD::ToggleInventory()
 		InventoryMenu->RemoveFromParent();
 		InventoryMenu->SetOwnerHUD(nullptr);
 		InventoryMenu = nullptr;
-		CharacterOverlay = CreateWidget<UCharacterOverlay>(GetOwningPlayerController(), CharacterOverlayClass);
-		if (CharacterOverlay) {CharacterOverlay->AddToViewport();}
+		ShowCharacterOverlay();
 		SetInputModeAsGameOnly();
 	}
 }

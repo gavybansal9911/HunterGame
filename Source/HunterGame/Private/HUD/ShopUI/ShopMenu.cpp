@@ -38,7 +38,7 @@ void UShopMenu::OnCloseShopMenuButtonClicked()
 {
 	if (PlayerCharacter == nullptr) return;
 
-	PlayerCharacter->CreateCharacterOverlayUI();
+	PlayerCharacter->ShowCharacterOverlayUI();
 	if (PlayerCharacter->GetCustomPlayerController() && PlayerCharacter->GetCustomPlayerController()->GetHUDReference())
 	{
 		PlayerCharacter->GetCustomPlayerController()->GetHUDReference()->SetInputModeAsGameOnly();

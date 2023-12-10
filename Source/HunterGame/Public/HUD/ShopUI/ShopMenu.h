@@ -6,6 +6,7 @@
 #include "HUD/UserWidgetBase.h"
 #include "ShopMenu.generated.h"
 
+class UScrollBox;
 class UHorizontalBox;
 class UVerticalBox;
 class UCanvasPanel;
@@ -58,5 +59,11 @@ public:
 	
 	UPROPERTY(meta=(BindWidget))
 	UButton* CloseShopMenuButton;
+
+	UPROPERTY(meta=(BindWidget))
+	UScrollBox* SellTabScrollBox;
+
+	UPROPERTY(meta=(BindWidget))
+	UScrollBox* PurchaseTabScrollBox;
 	/** Widget Components **/
 };

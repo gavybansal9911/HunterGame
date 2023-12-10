@@ -7,6 +7,7 @@
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "GameFramework/Character.h"
 #include "Interface/EnemyInterface.h"
+#include "Interface/HitInterface.h"
 #include "Interface/HumanInterface.h"
 #include "EnemyBase.generated.h"
 
@@ -19,7 +20,7 @@ class AAIControllerBase;
 class UAnimMontage;
 
 UCLASS()
-class HUNTERGAME_API AEnemyBase : public ACharacter, public IEnemyInterface, public IHumanInterface
+class HUNTERGAME_API AEnemyBase : public ACharacter, public IEnemyInterface, public IHumanInterface, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -27,8 +28,11 @@ public:
 	AEnemyBase();
 	virtual void PossessedBy(AController* NewController) override;  // Called when the this character is possessed
 	virtual void PostInitializeComponents() override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	/** Interface **/
+	virtual void GetHit() override;
+	
 	UFUNCTION(BlueprintCallable)
 	virtual EAIState GetEnemyState() const override;
 	/** Interface **/
@@ -76,6 +80,6 @@ public:
 	
 	FORCEINLINE EAIEnemyActionState GetEnemyActionState() const {return AIActionState;}
 	FORCEINLINE bool IsAiming() const {return CombatComponent && CombatComponent->bIsAiming;}
-
+	
 	void SetEnemyActionState(EAIEnemyActionState InActionState);
 };

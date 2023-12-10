@@ -80,6 +80,14 @@ AActor* AAIControllerBase::GetTargetActorBB() const
 	return nullptr;
 }
 
+void AAIControllerBase::SetBBTargetActor(AActor* TargetActor)
+{
+	if (Blackboard)
+	{
+		Blackboard->SetValueAsObject(BB_TargetActor_KeyName, TargetActor);
+	}
+}
+
 void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
 	CanSenseActorData SenseActorData;

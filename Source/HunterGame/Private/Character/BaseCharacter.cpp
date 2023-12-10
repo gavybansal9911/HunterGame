@@ -573,16 +573,16 @@ int32 ABaseCharacter::AddItemToInventory(FItemData ItemData)
 /** Interaction **/
 
 /** UI **/
-void ABaseCharacter::RemoveCharacterOverlayUI()
+void ABaseCharacter::HideCharacterOverlayUI()
 {
 	if (HunterPlayerController == nullptr) return;
-	HunterPlayerController->RemoveCharacterOverlayUI();
+	HunterPlayerController->HideCharacterOverlayUI();
 }
 
-void ABaseCharacter::CreateCharacterOverlayUI()
+void ABaseCharacter::ShowCharacterOverlayUI()
 {
 	if (HunterPlayerController == nullptr) return;
-	HunterPlayerController->CreateCharacterOverlayUI();
+	HunterPlayerController->ShowCharacterOverlayUI();
 }
 /** UI **/
 

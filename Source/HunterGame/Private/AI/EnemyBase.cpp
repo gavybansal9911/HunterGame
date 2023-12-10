@@ -8,6 +8,7 @@
 #include "TimerManager.h"
 #include "Component/StatsComponent.h"
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
+#include "Engine/DamageEvents.h"
 #include "Weapon/Weapon.h"
 
 AEnemyBase::AEnemyBase()
@@ -59,13 +60,35 @@ void AEnemyBase::PostInitializeComponents()
 	}
 }
 
+float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	if (AIController)
+	{
+		if (AIController->GetEnemyAIState() < EAIState::EAIS_Chasing)
+		{
+			AIController->SetBBTargetActor(DamageCauser);
+			AIController->SetStateAsChasing(DamageCauser);
+		}
+	}
+
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+}
+
+void AEnemyBase::GetHit()
+{
+	IHitInterface::GetHit();
+
+	if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Enemy Hit"));}
+}
+
 void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
-	AController* InstigatorController, AActor* DamageCauser)
+                               AController* InstigatorController, AActor* DamageCauser)
 {
 	if (StatsComponent)
 	{
 		StatsComponent->Health_Data.CurrentValue = FMath::Clamp(
-			StatsComponent->Health_Data.CurrentValue - Damage, 0.f, StatsComponent->MaxHealth_Data.CurrentValue);
+		StatsComponent->Health_Data.CurrentValue - Damage, 0.f, StatsComponent->MaxHealth_Data.CurrentValue);
 		if (StatsComponent->Health_Data.CurrentValue <= 0)
 		{
 			// TODO: Temporary
@@ -73,8 +96,8 @@ void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamage
 			{
 				CombatComponent->Weapon->Destroy();
 			}
-			Destroy();
 			// Death
+			Destroy();
 		}
 	}
 }

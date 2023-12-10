@@ -22,8 +22,8 @@ public:
 	void SetHUDHealth(float Health, float MaxHealth);
 	void SetHUDWeaponAmmo(int32 InWeaponAmmoAmount, int32 InInventoryAmmoAmount);
 	
-	void RemoveCharacterOverlayUI();
-	void CreateCharacterOverlayUI();
+	void HideCharacterOverlayUI();
+	void ShowCharacterOverlayUI();
 
 	void OnDeath();
 

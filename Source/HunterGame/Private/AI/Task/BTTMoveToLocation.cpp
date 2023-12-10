@@ -40,21 +40,24 @@ EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerC
 
 void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)
 {
-	UBehaviorTreeComponent* OwnerComp = Cast<UBehaviorTreeComponent>(OwnerAIController->BrainComponent);
-	if (OwnerComp == nullptr)
+	if (OwnerAIController && OwnerAIController->BrainComponent)
 	{
-		FinishLatentTask(*OwnerComp, EBTNodeResult::Failed);
-		return;
-	}
+		UBehaviorTreeComponent* OwnerComp = Cast<UBehaviorTreeComponent>(OwnerAIController->BrainComponent);
+		if (OwnerComp == nullptr)
+		{
+			FinishLatentTask(*OwnerComp, EBTNodeResult::Failed);
+			return;
+		}
 	
-	if (Result == EPathFollowingResult::Success)
-	{
-		FinishLatentTask(*OwnerComp, EBTNodeResult::Succeeded);
-		return;
-	}
-	else
-	{
-		FinishLatentTask(*OwnerComp, EBTNodeResult::Failed);
-		return;
+		if (Result == EPathFollowingResult::Success)
+		{
+			FinishLatentTask(*OwnerComp, EBTNodeResult::Succeeded);
+			return;
+		}
+		else
+		{
+			FinishLatentTask(*OwnerComp, EBTNodeResult::Failed);
+			return;
+		}
 	}
 }

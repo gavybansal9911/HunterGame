@@ -89,8 +89,8 @@ public:
 	/** Interaction **/
 
 	/** UI **/
-	void RemoveCharacterOverlayUI();
-	void CreateCharacterOverlayUI();
+	void HideCharacterOverlayUI();
+	void ShowCharacterOverlayUI();
 	/** UI **/
 	
 protected:

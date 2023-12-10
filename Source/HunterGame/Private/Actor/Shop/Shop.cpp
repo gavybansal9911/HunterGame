@@ -83,8 +83,7 @@ void AShop::InteractWith(ABaseCharacter* PlayerCharacter)
 		{
 			ShopMenuUW->AddToViewport();
 			ShopMenuUW->PlayerCharacter = PlayerCharacter;
-			PlayerCharacter->RemoveCharacterOverlayUI();
-			PlayerCharacter->RemoveCharacterOverlayUI();
+			if (PlayerCharacter) {PlayerCharacter->HideCharacterOverlayUI();}
 			if (PlayerCharacter->GetCustomPlayerController() && PlayerCharacter->GetCustomPlayerController()->GetHUDReference())
 			{
 				PlayerCharacter->GetCustomPlayerController()->GetHUDReference()->SetInputModeAsUIOnly();
