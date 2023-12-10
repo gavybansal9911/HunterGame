@@ -397,7 +397,7 @@ void ABaseCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDa
 		UpdateUIHealth();
 		if (StatsComponent->Health_Data.CurrentValue <= 0)
 		{
-			Death();
+			//Death();
 		}
 	}
 }

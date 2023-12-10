@@ -29,13 +29,13 @@ EBTNodeResult::Type UBTTMoveToLocation::ExecuteTask(UBehaviorTreeComponent& Owne
 EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	//if (AController* OwnerController = Cast<AController>(OwnerComp.GetAIOwner()))
-	if (OwnerAIController)
-	{
-		FNavigationSystem::StopMovement(*OwnerAIController);
-		return EBTNodeResult::Aborted;   // TODO: /____/
-	}	
+	//if (OwnerAIController)
+	//{
+		//FNavigationSystem::StopMovement(*OwnerAIController);
+		//return EBTNodeResult::Aborted;   // TODO: /____/
+	//}	
 
-	return EBTNodeResult::Aborted;
+	return EBTNodeResult::Succeeded;
 }
 
 void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)
