@@ -6,6 +6,9 @@
 #include "HUD/UserWidgetBase.h"
 #include "ShopMenu.generated.h"
 
+class UHorizontalBox;
+class UVerticalBox;
+class UCanvasPanel;
 class ABaseCharacter;
 class UButton;
 /**
@@ -29,9 +32,30 @@ public:
 	
 	UFUNCTION()
 	void OnCloseShopMenuButtonClicked();
+	
+	UFUNCTION()
+	void OnOpenSellTabButtonClicked();
+	
+	UFUNCTION()
+	void OnOpenPurchaseTabButtonClicked();
 	/** Widget CallBacks **/
 	
 	/** Widget Components **/
+	UPROPERTY(meta=(BindWidget))
+	UCanvasPanel* ShopMenuCanvasPanel;
+
+	UPROPERTY(meta=(BindWidget))
+	UVerticalBox* ShopMenuVerticalBox;
+
+	UPROPERTY(meta=(BindWidget))
+	UHorizontalBox* SwitchTabHorizontalBox;
+
+	UPROPERTY(meta=(BindWidget))
+	UButton* OpenSellTabButton;
+
+	UPROPERTY(meta=(BindWidget))
+	UButton* OpenPurchaseTabButton;
+	
 	UPROPERTY(meta=(BindWidget))
 	UButton* CloseShopMenuButton;
 	/** Widget Components **/

@@ -39,4 +39,5 @@ private:
 	
 public:
 	FORCEINLINE float GetLookSensitivity() const {return LookSensitivity;}
+	FORCEINLINE AHunterHUD* GetHUDReference() const {return HunterHUD;}
 };

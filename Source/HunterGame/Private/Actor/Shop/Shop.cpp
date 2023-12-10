@@ -5,7 +5,9 @@
 #include "Character/BaseCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
+#include "HUD/HunterHUD.h"
 #include "HUD/ShopUI/ShopMenu.h"
+#include "PlayerController/HunterPlayerController.h"
 
 AShop::AShop()
 {
@@ -82,6 +84,11 @@ void AShop::InteractWith(ABaseCharacter* PlayerCharacter)
 			ShopMenuUW->AddToViewport();
 			ShopMenuUW->PlayerCharacter = PlayerCharacter;
 			PlayerCharacter->RemoveCharacterOverlayUI();
+			PlayerCharacter->RemoveCharacterOverlayUI();
+			if (PlayerCharacter->GetCustomPlayerController() && PlayerCharacter->GetCustomPlayerController()->GetHUDReference())
+			{
+				PlayerCharacter->GetCustomPlayerController()->GetHUDReference()->SetInputModeAsUIOnly();
+			}
 		}
 	}
 }

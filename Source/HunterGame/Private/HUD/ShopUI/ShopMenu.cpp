@@ -4,6 +4,8 @@
 #include "HUD/ShopUI/ShopMenu.h"
 #include "Character/BaseCharacter.h"
 #include "Components/Button.h"
+#include "HUD/HunterHUD.h"
+#include "PlayerController/HunterPlayerController.h"
 
 void UShopMenu::NativePreConstruct()
 {
@@ -22,6 +24,14 @@ void UShopMenu::BindCallBacks()
 	{
 		CloseShopMenuButton->OnClicked.AddDynamic(this, &UShopMenu::OnCloseShopMenuButtonClicked);
 	}
+	if (OpenSellTabButton)
+	{
+		OpenSellTabButton->OnClicked.AddDynamic(this, &UShopMenu::OnOpenSellTabButtonClicked);
+	}
+	if (OpenPurchaseTabButton)
+	{
+		OpenPurchaseTabButton->OnClicked.AddDynamic(this, &UShopMenu::OnOpenPurchaseTabButtonClicked);
+	}
 }
 
 void UShopMenu::OnCloseShopMenuButtonClicked()
@@ -29,5 +39,17 @@ void UShopMenu::OnCloseShopMenuButtonClicked()
 	if (PlayerCharacter == nullptr) return;
 
 	PlayerCharacter->CreateCharacterOverlayUI();
+	if (PlayerCharacter->GetCustomPlayerController() && PlayerCharacter->GetCustomPlayerController()->GetHUDReference())
+	{
+		PlayerCharacter->GetCustomPlayerController()->GetHUDReference()->SetInputModeAsGameOnly();
+	}
 	RemoveFromParent();
+}
+
+void UShopMenu::OnOpenSellTabButtonClicked()
+{
+}
+
+void UShopMenu::OnOpenPurchaseTabButtonClicked()
+{
 }

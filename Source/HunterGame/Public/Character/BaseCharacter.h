@@ -267,6 +267,7 @@ public:
 	FVector GetHitTarget() const;
 	ECombatState GetCombatState() const;
 	FORCEINLINE bool ShouldOrientRotationToMovement_WhenInCombat() const {return bOrientRotationToMovement_WhenInCombat;}
+	FORCEINLINE AHunterPlayerController* GetCustomPlayerController() const {return HunterPlayerController;}
 	
 	void SetOverlappingActor(AActor* InOverlappingActor);
 
