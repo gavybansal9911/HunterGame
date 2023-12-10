@@ -223,6 +223,16 @@ void AAIControllerBase::SetStateAsAttacking(AActor* TargetActor)
 	SetFocus(TargetActor);
 }
 
+void AAIControllerBase::SetStateAsRetreating()
+{
+	if (Blackboard == nullptr || AIState > EAIState::EAIS_Retreating) return;
+	AIState = EAIState::EAIS_Retreating;
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 6);
+
+	// *
+	// TODO: Clear focus in run away task (run away task will be executed when the enemy will be far enough from the player character)
+}
+
 void AAIControllerBase::UpdateAttackRadius(AWeapon* Weapon)
 {
 	if (Weapon)

@@ -50,6 +50,7 @@ public:
 	void SetStateAsInvestigating();
 	void SetStateAsChasing(AActor* TargetActor);
 	void SetStateAsAttacking(AActor* TargetActor);
+	void SetStateAsRetreating();
 
 	// BB
 	void UpdateAttackRadius(AWeapon* Weapon);
