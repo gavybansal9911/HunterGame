@@ -19,7 +19,8 @@ enum class EAIState : uint8
 	EAIS_Hunting = 3 UMETA(DisplayName = "Hunting"),
 	EAIS_Chasing = 4 UMETA(DisplayName = "Chasing"),
 	EAIS_Attacking = 5 UMETA(DisplayName = "Attacking"),
-	EAIS_Retreating = 6 UMETA(DisplayName = "Retreating")
+	EAIS_Retreating = 6 UMETA(DisplayName = "Retreating"),
+	EAIS_RunningAway = 7 UMETA(DisplayName = "Running Away")
 };
 
 UENUM(BlueprintType)
