@@ -51,6 +51,7 @@ public:
 	void SetStateAsChasing(AActor* TargetActor);
 	void SetStateAsAttacking(AActor* TargetActor);
 	void SetStateAsRetreating();
+	void SetStateAsRunningAway();
 
 	// BB
 	void UpdateAttackRadius(AWeapon* Weapon);
