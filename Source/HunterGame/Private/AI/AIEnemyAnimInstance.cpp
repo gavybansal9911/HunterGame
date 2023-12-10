@@ -43,7 +43,7 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		// MovementRotation is local to the character (This function returns a FRotator in the direction of FVector passed in as a argument, In this case the HunterCharacter velocity)
 		const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(OwnerAIEnemyCharacter->GetVelocity());
 		const FRotator DeltaRot = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation);
-		DeltaRotation = FMath::RInterpTo(DeltaRotation, DeltaRot, DeltaSeconds, 6.f);
+		DeltaRotation = FMath::RInterpTo(DeltaRotation, DeltaRot, DeltaSeconds, 30.f);   // Play with the InterpSpeed if the blending is too wacky ot too slow.
 		YawOffset = DeltaRotation.Yaw;
 		/** Basic Movement **/
 
@@ -62,6 +62,46 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		EquippedWeaponName = EquippedWeapon ? EquippedWeapon->GetWeaponName() : EWeaponName::EWN_Max;
 
 		bIsAiming = OwnerAIEnemyCharacter->IsAiming();
+
+		if (OwnerAIEnemyCharacter->GetEnemyState() == EAIState::EAIS_Attacking ||
+			OwnerAIEnemyCharacter->GetEnemyState() == EAIState::EAIS_Retreating ||
+			OwnerAIEnemyCharacter->GetEnemyState() == EAIState::EAIS_Hunting)
+		{
+			// Fix right hand rotation
+			FTransform RightHandTransform = OwnerAIEnemyCharacter->GetMesh()->GetSocketTransform(FName("hand_r"), RTS_World);
+			FRotator Local_RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(), RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - OwnerAIEnemyCharacter->GetHitTarget()));
+			RightHandRotationOverride = FMath::RInterpTo(RightHandRotationOverride, Local_RightHandRotation, DeltaSeconds, 40.f);
+
+			/** Debug **/
+			if (EquippedWeapon)
+			{
+				FTransform MuzzleTipTransform = EquippedWeapon->GetWeaponMesh()->GetSocketTransform(FName("MuzzleFlash"));
+				FVector MuzzleX(FRotationMatrix(MuzzleTipTransform.GetRotation().Rotator()).GetUnitAxis(EAxis::X));
+				DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), MuzzleTipTransform.GetLocation() + MuzzleX * 1000.f, FColor::Yellow);
+				DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), OwnerAIEnemyCharacter->GetHitTarget(), FColor::Red);
+				/** Debug **/
+			}
+			
+			// FABRIK   (Apply only if the hit target is close enough to see the enemy clearly)
+			bApplyFABRIK = OwnerAIEnemyCharacter->GetActorLocation().Size() -
+				OwnerAIEnemyCharacter->GetHitTarget().Size() > 1200.f ? false : true;  // Here, 5000 is the range in which FABRIK should be applied.
+			if (bApplyFABRIK && EquippedWeapon)
+			{
+				// Get the transform of the socket on the WeaponMesh named as LeftHandSocket (Socket Transform is adjusted in the Skeletal Mesh in the editor)
+				LeftHandTransform = EquippedWeapon->GetWeaponMesh()->GetSocketTransform(FName("LeftHandSocket"), RTS_World);
+				
+				/** Input Parameters for converting LeftHandTransform from WorldSpace to BoneSpace **/
+				FVector OutPosition;   // Will be passed by reference.
+				FRotator OutRotation;   // Will be passed by reference.
+				/** Input Parameters for converting LeftHandTransform from WorldSpace to BoneSpace **/
+				// Transforming the LeftHandTransform from WorldSpace to BoneSpace.
+				// Here, "hand_r" is for a reference for the Transform. The LeftHandTransform will be relative to the Right Hand or "hand_r"
+				OwnerAIEnemyCharacter->GetMesh()->TransformToBoneSpace(FName("hand_r"), LeftHandTransform.GetLocation(), FRotator::ZeroRotator, OutPosition, OutRotation);
+				// Now, after Transforming to BoneSpace, OutPosition and OutRotation have valid data because they were passed by reference.
+				LeftHandTransform.SetLocation(OutPosition);
+				LeftHandTransform.SetRotation(FQuat(OutRotation));
+			}
+		}
 		/** Combat **/
 	}
 }

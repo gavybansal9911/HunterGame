@@ -68,5 +68,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool bIsAiming;
+
+	// Fix right hand rotation
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	FRotator RightHandRotationOverride;
+
+	// FABRIK
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool bApplyFABRIK;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	FTransform LeftHandTransform;
 	/** Combat **/
 };

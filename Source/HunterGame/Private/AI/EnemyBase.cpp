@@ -153,6 +153,15 @@ bool AEnemyBase::HaveWeaponInHand() const
 	}
 }
 
+FVector AEnemyBase::GetHitTarget()
+{
+	if (AIController->GetTargetActorBB())
+	{
+		return AIController->GetTargetActorBB()->GetActorLocation();
+	}
+	return FVector();
+}
+
 AActor* AEnemyBase::Get_TargetActor_BB() const
 {
 	if (AIController)

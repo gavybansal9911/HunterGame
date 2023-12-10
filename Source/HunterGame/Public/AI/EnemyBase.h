@@ -74,6 +74,8 @@ protected:
 public:
 	AWeapon* GetOwnedWeapon() const;
 	bool HaveWeaponInHand() const;
+
+	FORCEINLINE FVector GetHitTarget();
 	
 	UFUNCTION(BlueprintCallable)
 	AActor* Get_TargetActor_BB() const;
