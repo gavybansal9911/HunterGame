@@ -70,7 +70,7 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			// Fix right hand rotation
 			FTransform RightHandTransform = OwnerAIEnemyCharacter->GetMesh()->GetSocketTransform(FName("hand_r"), RTS_World);
 			FRotator Local_RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(), RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - OwnerAIEnemyCharacter->GetHitTarget()));
-			RightHandRotationOverride = FMath::RInterpTo(RightHandRotationOverride, Local_RightHandRotation, DeltaSeconds, 40.f);
+			RightHandRotationOverride = FMath::RInterpTo(RightHandRotationOverride, Local_RightHandRotation, DeltaSeconds, 15.f);
 
 			/** Debug **/
 			if (EquippedWeapon)
@@ -84,7 +84,8 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			
 			// FABRIK   (Apply only if the hit target is close enough to see the enemy clearly)
 			bApplyFABRIK = OwnerAIEnemyCharacter->GetActorLocation().Size() -
-				OwnerAIEnemyCharacter->GetHitTarget().Size() > 1200.f ? false : true;  // Here, 5000 is the range in which FABRIK should be applied.
+				OwnerAIEnemyCharacter->GetHitTarget().Size() > 500.f ? false : true;  // Here, 500 is the range in which FABRIK should be applied.
+				// Try to keep this range small for better performance
 			if (bApplyFABRIK && EquippedWeapon)
 			{
 				// Get the transform of the socket on the WeaponMesh named as LeftHandSocket (Socket Transform is adjusted in the Skeletal Mesh in the editor)

@@ -157,7 +157,24 @@ FVector AEnemyBase::GetHitTarget()
 {
 	if (AIController->GetTargetActorBB())
 	{
-		return AIController->GetTargetActorBB()->GetActorLocation();
+		// TODO: Calculate random deviation vector based on the distance between the AI enemy and the hit target
+		float DistanceBetween = GetActorLocation().Size() - AIController->GetTargetActorBB()->GetActorLocation().Size();
+
+		FVector RandomDeviationVector = FVector(FMath::FRandRange(-1.f, 1.f),
+			FMath::FRandRange(-1.f, 1.f), FMath::FRandRange(-1.f, 1.f));
+		
+		// Aim at head (expensive operation(Cast))  // TODO: Find a way to optimize this
+		if (ACharacter* Character = Cast<ACharacter>(AIController->GetTargetActorBB()))
+		{
+			FTransform TargetCharacterHeadTransform = Character->GetMesh()->GetSocketTransform(FName("head"), RTS_World);
+			FVector TargetCharacterHeadLocation = TargetCharacterHeadTransform.GetLocation();
+			return  TargetCharacterHeadLocation + RandomDeviationVector;
+			//return TargetCharacterHeadLocation;
+		}
+		else
+		{
+			return AIController->GetTargetActorBB()->GetActorLocation() + RandomDeviationVector;
+		}
 	}
 	return FVector();
 }
