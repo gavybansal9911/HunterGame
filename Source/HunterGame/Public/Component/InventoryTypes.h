@@ -13,16 +13,16 @@ struct FItemData
 	FItemData() {}
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FString ItemID = FString();
+	FString ItemID;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FName ItemName = FName();
+	FName ItemName;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UTexture2D* Icon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FString Description = FString();
+	FString Description;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int32 NumberOfElements = 0;
@@ -32,6 +32,9 @@ struct FItemData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<ABaseInventoryItem> ItemClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	bool bUsable = true;
 };
 
 USTRUCT(BlueprintType)

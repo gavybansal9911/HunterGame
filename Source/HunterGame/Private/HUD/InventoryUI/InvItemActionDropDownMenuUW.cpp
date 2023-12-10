@@ -4,6 +4,8 @@
 #include "HUD/InventoryUI/InvItemActionDropDownMenuUW.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+#include "Components/SizeBox.h"
+#include "HUD/InventoryUI/InventorySlotUW.h"
 
 void UInvItemActionDropDownMenuUW::NativePreConstruct()
 {
@@ -14,6 +16,17 @@ void UInvItemActionDropDownMenuUW::NativeConstruct()
 {
 	Super::NativeConstruct();
 	BindWidgetCallBacks();
+
+	if (OwnerSlotUW)
+	{
+		if (OwnerSlotUW->SlotData.Quantity > 0)
+		{
+			if (OwnerSlotUW->SlotData.ItemData.bUsable == false && UseSizeBox)
+			{
+				UseSizeBox->SetVisibility(ESlateVisibility::Collapsed);
+			}
+		}
+	}
 }
 
 void UInvItemActionDropDownMenuUW::Init_Widget(FWidgetTransform WidgetTransform)

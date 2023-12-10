@@ -32,10 +32,10 @@ EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerC
 	if (OwnerAIController)
 	{
 		FNavigationSystem::StopMovement(*OwnerAIController);
-		return EBTNodeResult::Aborted;
+		return EBTNodeResult::Aborted;   // TODO: /____/
 	}	
 
-	return EBTNodeResult::Succeeded;  // TODO: /____/
+	return EBTNodeResult::Aborted;
 }
 
 void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)
