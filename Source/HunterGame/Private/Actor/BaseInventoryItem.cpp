@@ -4,7 +4,7 @@
 #include "Actor/BaseInventoryItem.h"
 #include "Character/BaseCharacter.h"
 
-ABaseInventoryItem::ABaseInventoryItem(): ItemData()
+ABaseInventoryItem::ABaseInventoryItem()
 {
 }
 
@@ -22,7 +22,7 @@ void ABaseInventoryItem::InteractWith(ABaseCharacter* PlayerCharacter)
 	ItemData.NumberOfElements = Local_Remaining;
 	if (Local_Remaining == -1)
 	{
-		// TODO: Notify Player that we no space is available
+		// TODO: Notify Player that no space is available.
 	}
 	else
 	{

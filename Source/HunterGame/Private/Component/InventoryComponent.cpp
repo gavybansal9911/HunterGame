@@ -19,14 +19,6 @@ void UInventoryComponent::InitInventory()
 	Content.SetNum(NumberOfSlots);
 }
 
-void UInventoryComponent::PrintContent()
-{
-	for (FSlotData Slot : Content)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 4.f, FColor::Blue, FString::Printf(TEXT("%d"), Slot.Quantity));
-	}
-}
-
 int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 {
 	int32 ExistingSlotIndex;
@@ -56,11 +48,9 @@ int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 		
 		else
 		{
-			PrintContent();
 			return -1;
 		}
 	}
-	PrintContent();
 	OnInventoryUpdated.Broadcast();  // Trigger OnInventoryUpdated delegate
 	return 0;
 }
@@ -157,13 +147,27 @@ int32 UInventoryComponent::RemoveItemFromSlot(int32 SlotIndex, int32 NumberOfEle
 	{
 		Local_NumberOfElementsToBeRemoved = Content[SlotIndex].Quantity;
 		Content[SlotIndex].Quantity = 0;
+		CleanSlot(SlotIndex);
 		OnInventoryUpdated.Broadcast();
 		return Local_NumberOfElementsToBeRemoved;
 	}
 	else
 	{
 		Content[SlotIndex].Quantity = Content[SlotIndex].Quantity - NumberOfElementsToRemove;
+		if (Content[SlotIndex].Quantity == 0)
+		{
+			CleanSlot(SlotIndex);
+		}
 		OnInventoryUpdated.Broadcast();
 		return Local_NumberOfElementsToBeRemoved;
 	}
+}
+
+void UInventoryComponent::CleanSlot(int32 SlotIndex)
+{
+	Content[SlotIndex].ItemID = FString();
+	Content[SlotIndex].ItemID = FString();
+	Content[SlotIndex].ItemData.ItemID = FString();
+	Content[SlotIndex].ItemData.ItemName = FName();
+	Content[SlotIndex].ItemData.ItemClass = nullptr;
 }

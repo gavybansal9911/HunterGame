@@ -8,6 +8,7 @@
 #include "CharacterTypes.h"
 #include "Component/CombatComponent.h"
 #include "Component/CombatTypes.h"
+#include "Component/InventoryComponent.h"
 #include "Component/InventoryTypes.h"
 #include "Interface/HitInterface.h"
 #include "Interface/HumanInterface.h"
@@ -268,4 +269,8 @@ public:
 	FORCEINLINE bool ShouldOrientRotationToMovement_WhenInCombat() const {return bOrientRotationToMovement_WhenInCombat;}
 	
 	void SetOverlappingActor(AActor* InOverlappingActor);
+
+	// TEMPORARY
+	UFUNCTION(BlueprintCallable)
+	TArray<FSlotData> GetContentArray() const {return InventoryComponent->Content;}
 };

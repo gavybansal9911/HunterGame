@@ -37,12 +37,6 @@ void UStatsComponent::Init_Attribute(FAttributeData& AttributeData, float BaseVa
 {
 	AttributeData.BaseValue = BaseValue;
 	AttributeData.CurrentValue = CurrentValue;
-
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 345.f, FColor::Orange,
-			FString::Printf(TEXT("Health: %f and Max-Health: %f"), Health_Data.CurrentValue, MaxHealth_Data.CurrentValue));
-	}
 }
 
 void UStatsComponent::AddToCurrentHealth(float Amount)
