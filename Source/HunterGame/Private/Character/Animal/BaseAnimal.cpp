@@ -22,13 +22,7 @@ ABaseAnimal::ABaseAnimal()
 void ABaseAnimal::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	
-	AnimalAIController = Cast<AAIController>(NewController);
-
-	if (AnimalAIController)
-	{
-		AnimalAIController->RunBehaviorTree(BehaviorTree);
-	}
+	Init_AnimalAI(NewController);
 }
 
 void ABaseAnimal::PostInitializeComponents()
@@ -55,6 +49,13 @@ void ABaseAnimal::Tick(float DeltaTime)
 {
 	// bCanEverTick is set to false.
 	Super::Tick(DeltaTime);
+}
+
+void ABaseAnimal::Init_AnimalAI(AController* NewController)
+{
+	AnimalAIController = Cast<AAIController>(NewController);
+	if (AnimalAIController)
+	{AnimalAIController->RunBehaviorTree(BehaviorTree);}
 }
 
 void ABaseAnimal::OnInteractCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

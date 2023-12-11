@@ -55,8 +55,19 @@ enum class EAnimalActionState : uint8
 	EAAS_Max = 1 UMETA(DisplayName = "Max")
 };
 
+UENUM(BlueprintType) // Animal mood will be calculated based on the behavior factors defined in the animal survival component
+enum class EAnimalMood : uint8
+{
+	EAM_Normal = 0 UMETA(DisplayName = "Normal"),
+	EAM_Sleepy = 1 UMETA(DisplayName = "Sleepy"),
+	EAM_Tired = 2 UMETA(DisplayName = "Tired"),
+	EAM_Hungry = 3 UMETA(DisplayName = "Hungry"),
+	EAM_Scared = 4 UMETA(DisplayName = "Scared"),
+	EAM_Aggressive = 5 UMETA(DisplayName = "Aggressive"),
+	
+	EAM_Max = 6 UMETA(DisplayName = "Max")
+};
 
-// TODO: Enum for animal mood (animal mood will be calculated based on the behavior factors defined in the animal survival component)
 
 // TODO: Enum for family systems like wolfs lives in packs, lions make prides, elephants lives in groups
 
