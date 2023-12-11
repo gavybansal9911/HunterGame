@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AnimalTypes.h"
 #include "GameFramework/Character.h"
+#include "Interface/InteractInterface.h"
 #include "BaseAnimal.generated.h"
 
 class UAnimalInteractionComponent;
@@ -14,7 +15,7 @@ class UBehaviorTree;
 class AAIController;
 
 UCLASS()
-class HUNTERGAME_API ABaseAnimal : public ACharacter
+class HUNTERGAME_API ABaseAnimal : public ACharacter, public IInteractInterface
 {
 	GENERATED_BODY()
 
@@ -24,8 +25,20 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaTime) override;
 
+	// Interface
+	virtual void InteractWith(ABaseCharacter* PlayerCharacter) override;
+
 protected:
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	virtual void OnInteractCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	virtual void OnInteractionCapsuleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCapsuleComponent> InteractionAreaCapsule;
 
 	/** Components **/
 	UPROPERTY(VisibleAnywhere, Category = "Components")

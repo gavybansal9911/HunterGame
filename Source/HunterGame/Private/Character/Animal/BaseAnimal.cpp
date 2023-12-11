@@ -2,14 +2,19 @@
 
 
 #include "Character/Animal/BaseAnimal.h"
+#include "Character/BaseCharacter.h"
 #include "Character/Animal/AnimalAIControllerBase.h"
 #include "Component/AnimalInteractionComponent.h"
 #include "Component/AnimalSurvivalComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ABaseAnimal::ABaseAnimal()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	InteractionAreaCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Interact Area Capsule"));
+	InteractionAreaCapsule->SetupAttachment(GetMesh());
+	
 	SurvivalComponent = CreateDefaultSubobject<UAnimalSurvivalComponent>(TEXT("Survival Component"));
 	InteractionComponent = CreateDefaultSubobject<UAnimalInteractionComponent>(TEXT("Interaction Component"));
 }
@@ -30,6 +35,11 @@ void ABaseAnimal::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	if (InteractionAreaCapsule)
+	{
+		InteractionAreaCapsule->OnComponentBeginOverlap.AddDynamic(this, &ABaseAnimal::OnInteractCapsuleOverlap);
+		InteractionAreaCapsule->OnComponentEndOverlap.AddDynamic(this, &ABaseAnimal::OnInteractionCapsuleEndOverlap);
+	}
 	if (SurvivalComponent)
 		{SurvivalComponent->OwnerAnimalCharacter = this;}
 	if (InteractionComponent)
@@ -45,4 +55,27 @@ void ABaseAnimal::Tick(float DeltaTime)
 {
 	// bCanEverTick is set to false.
 	Super::Tick(DeltaTime);
+}
+
+void ABaseAnimal::OnInteractCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(OtherActor))
+	{
+		BaseCharacter->SetOverlappingActor(this);
+	}
+}
+
+void ABaseAnimal::OnInteractionCapsuleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(OtherActor))
+	{
+		BaseCharacter->SetOverlappingActor(nullptr);
+	}
+}
+
+void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
+{
+	// TODO: Player <-> Animal interaction
 }
