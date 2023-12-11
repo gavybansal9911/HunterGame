@@ -59,3 +59,5 @@ enum class EAnimalActionState : uint8
 // TODO: Enum for animal mood (animal mood will be calculated based on the behavior factors defined in the animal survival component)
 
 // TODO: Enum for family systems like wolfs lives in packs, lions make prides, elephants lives in groups
+
+// TODO: Enum for general behavior -> like wolfs are never friendly, elephants are friendly (Player can interact with elephants)
