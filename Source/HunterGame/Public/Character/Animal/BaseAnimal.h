@@ -54,8 +54,9 @@ protected:
 	EAnimalName AnimalName = EAnimalName::EAN_Max;
 	EAnimalModeOfFeeding AnimalModeOfFeeding = EAnimalModeOfFeeding::EAMF_Max;
 	EAgeStatus AnimalAgeStatus = EAgeStatus::EAS_Max;
-	EAnimalState AnimalState = EAnimalState::EAS_Max;
+	EAnimalState AnimalState = EAnimalState::EAS_Passive;
 	EAnimalActionState AnimalActionState  = EAnimalActionState::EAAS_Max;
+	EAnimalMood AnimalMood = EAnimalMood::EAM_Normal;
 
 private:
 	// AI Controller reference
