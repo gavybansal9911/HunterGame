@@ -21,6 +21,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = "Properties")
-	TObjectPtr<USkeletalMeshComponent> ElephantToothMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USkeletalMeshComponent> ElephantTusksMesh;
 };

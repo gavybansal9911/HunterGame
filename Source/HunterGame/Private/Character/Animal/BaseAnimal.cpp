@@ -78,4 +78,8 @@ void ABaseAnimal::OnInteractionCapsuleEndOverlap(UPrimitiveComponent* Overlapped
 void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
 {
 	// TODO: Player <-> Animal interaction
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Purple, FString("Interact with animal"));
+	}
 }

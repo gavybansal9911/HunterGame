@@ -6,6 +6,9 @@
 AElephant::AElephant()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	ElephantTusksMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Elephant Tusks Mesh"));
+	ElephantTusksMesh->SetupAttachment(GetMesh());
 }
 
 void AElephant::BeginPlay()

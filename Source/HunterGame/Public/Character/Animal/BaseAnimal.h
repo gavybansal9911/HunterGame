@@ -51,7 +51,7 @@ protected:
 	// States and properties
 	EAnimalName AnimalName = EAnimalName::EAN_Max;
 	EAnimalModeOfFeeding AnimalModeOfFeeding = EAnimalModeOfFeeding::EAMF_Max;
-	EAgeStatus AnimalAgeAgeStatus = EAgeStatus::EAS_Max;
+	EAgeStatus AnimalAgeStatus = EAgeStatus::EAS_Max;
 	EAnimalState AnimalState = EAnimalState::EAS_Max;
 	EAnimalActionState AnimalActionState  = EAnimalActionState::EAAS_Max;
 
@@ -63,4 +63,8 @@ private:
 	// AI Behaviour
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	inline EAgeStatus GetAnimalAgeStatus() const {return AnimalAgeStatus;}
 };
