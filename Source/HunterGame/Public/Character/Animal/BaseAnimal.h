@@ -35,10 +35,12 @@ protected:
 	TObjectPtr<UAnimalInteractionComponent> InteractionComponent;
 	/** Components **/
 
-	// Properties
+	// States and properties
 	EAnimalName AnimalName = EAnimalName::EAN_Max;
 	EAnimalModeOfFeeding AnimalModeOfFeeding = EAnimalModeOfFeeding::EAMF_Max;
 	EAgeStatus AnimalAgeAgeStatus = EAgeStatus::EAS_Max;
+	EAnimalState AnimalState = EAnimalState::EAS_Max;
+	EAnimalActionState AnimalActionState  = EAnimalActionState::EAAS_Max;
 
 private:
 	// AI Controller reference
