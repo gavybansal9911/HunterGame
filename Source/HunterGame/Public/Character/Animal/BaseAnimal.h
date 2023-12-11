@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AnimalTypes.h"
 #include "GameFramework/Character.h"
 #include "BaseAnimal.generated.h"
 
+class UAnimalInteractionComponent;
 class UAnimalSurvivalComponent;
 class AAnimalAIControllerBase;
 class UBehaviorTree;
@@ -28,7 +30,15 @@ protected:
 	/** Components **/
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UAnimalSurvivalComponent> SurvivalComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UAnimalInteractionComponent> InteractionComponent;
 	/** Components **/
+
+	// Properties
+	EAnimalName AnimalName = EAnimalName::EAN_Max;
+	EAnimalModeOfFeeding AnimalModeOfFeeding = EAnimalModeOfFeeding::EAMF_Max;
+	EAgeStatus AnimalAgeAgeStatus = EAgeStatus::EAS_Max;
 
 private:
 	// AI Controller reference

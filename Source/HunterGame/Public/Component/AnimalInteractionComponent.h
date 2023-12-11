@@ -4,31 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "AnimalSurvivalComponent.generated.h"
+#include "AnimalInteractionComponent.generated.h"
 
 
 class ABaseAnimal;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HUNTERGAME_API UAnimalSurvivalComponent : public UActorComponent
+class HUNTERGAME_API UAnimalInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	friend ABaseAnimal;
-	UAnimalSurvivalComponent();
+	UAnimalInteractionComponent();
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
-	// Owner Reference
-	UPROPERTY()
+	// Owner reference
 	TObjectPtr<ABaseAnimal> OwnerAnimalCharacter;
-
-	// Behavior factors  =>  All values will be in a mapped range of [0, 1];
-	float AggressionFactor;
-	float FearFactor;
-	float HungerFactor;
-	float FriendlyFactor;
 };
