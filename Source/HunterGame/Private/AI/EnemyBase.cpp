@@ -130,10 +130,15 @@ void AEnemyBase::UpdateAttackRadius()
 
 void AEnemyBase::Attack()
 {
-	if (!CombatComponent) return;
+	if (!CombatComponent || AIActionState != EAIEnemyActionState::EAIAS_None) return;
 	CombatComponent->Attack();
 }
 /** Combat **/
+
+void AEnemyBase::OnAttackCompletedAnimNotifyCallBack()
+{
+	AIActionState = EAIEnemyActionState::EAIAS_None;
+}
 
 /** Getter / Setter **/
 AWeapon* AEnemyBase::GetOwnedWeapon() const

@@ -24,6 +24,15 @@ enum class EAIState : uint8
 };
 
 UENUM(BlueprintType)
+enum class EAIAttackingState : uint8
+{
+	EAIAS_EyeToEyeCombat = 0 UMETA(DisplayName = "Eye To Eye Combat"),
+	EAIAS_Assassinating = 1 UMETA(DisplayName = "Assassinating"),
+	
+	EAIAS_Max = 2 UMETA(DisplayName = "Max")
+};
+
+UENUM(BlueprintType)
 enum class EAIPerceptionSense : uint8
 {
 	EAIS_None UMETA(DisplayName = "None"),
@@ -37,6 +46,7 @@ enum class EAIEnemyActionState : uint8
 {
 	EAIAS_None UMETA(DisplayName = "None"),
 	EAIAS_TogglingWeapon UMETA(DisplayName = "Toggling Weapon"),
+	EAIAS_Shooting UMETA(DisplayName = "Shooting"),
 	
 	EAIAS_Max UMETA(DisplayName = "Max")
 };

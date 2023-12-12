@@ -148,4 +148,5 @@ void UAIEnemyCombatComponent::Attack()
 	FVector MuzzleX(FRotationMatrix(MuzzleTipTransform.GetRotation().Rotator()).GetUnitAxis(EAxis::X));
 	FVector HitTarget = MuzzleTipTransform.GetLocation() + (MuzzleX * 1000.f);
 	Weapon->Shoot(HitTarget);
+	OwnerAIEnemy->SetEnemyActionState(EAIEnemyActionState::EAIAS_Shooting);
 }

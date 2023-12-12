@@ -70,6 +70,9 @@ protected:
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	EAIEnemyActionState AIActionState = EAIEnemyActionState::EAIAS_None;
 	/** Enemy States **/
+
+	UFUNCTION(BlueprintCallable)
+	void OnAttackCompletedAnimNotifyCallBack();
 	
 public:
 	AWeapon* GetOwnedWeapon() const;
