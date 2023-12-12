@@ -236,6 +236,7 @@ void AAIControllerBase::SetStateAsRunningAway()
 	AIState = EAIState::EAIS_RunningAway;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 7);
 	ClearFocus(EAIFocusPriority::Default);   // Clear focus
+	OwnerAIEnemy->OnAIStateSetAsRunningAway();
 }
 
 void AAIControllerBase::UpdateAttackRadius(AWeapon* Weapon)

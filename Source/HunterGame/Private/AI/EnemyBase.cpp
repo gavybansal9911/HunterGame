@@ -140,6 +140,12 @@ void AEnemyBase::OnAttackCompletedAnimNotifyCallBack()
 	AIActionState = EAIEnemyActionState::EAIAS_None;
 }
 
+void AEnemyBase::OnAIStateSetAsRunningAway()
+{
+	if (CombatComponent == nullptr) return;
+	CombatComponent->OnAIStateSetAsRunningAway();
+}
+
 /** Getter / Setter **/
 AWeapon* AEnemyBase::GetOwnedWeapon() const
 {
@@ -165,8 +171,8 @@ FVector AEnemyBase::GetHitTarget()
 		// TODO: Calculate random deviation vector based on the distance between the AI enemy and the hit target
 		float DistanceBetween = GetActorLocation().Size() - AIController->GetTargetActorBB()->GetActorLocation().Size();
 
-		FVector RandomDeviationVector = FVector(FMath::FRandRange(-1.f, 1.f),
-			FMath::FRandRange(-1.f, 1.f), FMath::FRandRange(-1.f, 1.f));
+		FVector RandomDeviationVector = FVector(FMath::FRandRange(-4.f, 4.f),
+			FMath::FRandRange(-4.f, 4.f), FMath::FRandRange(-4.f, 4.f));
 		
 		// Aim at head (expensive operation(Cast))  // TODO: Find a way to optimize this
 		if (ACharacter* Character = Cast<ACharacter>(AIController->GetTargetActorBB()))

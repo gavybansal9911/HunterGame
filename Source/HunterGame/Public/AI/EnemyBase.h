@@ -46,6 +46,8 @@ public:
 
 	void Attack();
 	/** Combat **/
+
+	void OnAIStateSetAsRunningAway();
 	
 protected:
 	virtual void BeginPlay() override;

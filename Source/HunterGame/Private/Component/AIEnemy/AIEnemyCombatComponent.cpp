@@ -137,6 +137,11 @@ void UAIEnemyCombatComponent::Aim()
 	bIsAiming = true;
 }
 
+void UAIEnemyCombatComponent::UnAim()
+{
+	bIsAiming = false;
+}
+
 void UAIEnemyCombatComponent::Attack()
 {
 	if (OwnerAIEnemy == nullptr || Weapon == nullptr) return;
@@ -149,4 +154,9 @@ void UAIEnemyCombatComponent::Attack()
 	FVector HitTarget = MuzzleTipTransform.GetLocation() + (MuzzleX * 1000.f);
 	Weapon->Shoot(HitTarget);
 	OwnerAIEnemy->SetEnemyActionState(EAIEnemyActionState::EAIAS_Shooting);
+}
+
+void UAIEnemyCombatComponent::OnAIStateSetAsRunningAway()
+{
+	UnAim();
 }

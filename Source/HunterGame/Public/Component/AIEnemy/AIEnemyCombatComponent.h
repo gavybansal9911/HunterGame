@@ -37,8 +37,11 @@ protected:
 	void UpdateAttackRadius();
 
 	void Aim();
+	void UnAim();
 	
 	void Attack();
+
+	void OnAIStateSetAsRunningAway();
 	
 private:
 	// Owner
