@@ -43,4 +43,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "IK")
 	bool bShouldDoIK = false;
 	/** IK **/
+
+	/** Combat **/
+	/** Combat **/
 };

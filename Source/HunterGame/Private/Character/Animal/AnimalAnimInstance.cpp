@@ -38,7 +38,7 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 				PlayerCharacter->GetActorLocation().Size() < MinDoIKRange)
 					{if (bIsInAir == false)
 						{bShouldDoIK = true;}} else {bShouldDoIK = false;}
-		}
+		} else {bShouldDoIK = false;}
 		/** IK **/
 	}
 }
