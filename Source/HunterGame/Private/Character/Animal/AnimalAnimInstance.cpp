@@ -4,6 +4,7 @@
 #include "Character/Animal/AnimalAnimInstance.h"
 #include "Character/Animal/BaseAnimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 void UAnimalAnimInstance::NativeInitializeAnimation()
 {
@@ -28,5 +29,16 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		
 		bIsAccelerating = OwnerAnimalCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
 		/** Basic Movement **/
+
+		/** IK **/
+		// TODO: Find another approach to access to player character location
+		if (ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+		{
+			if (OwnerAnimalCharacter->GetActorLocation().Size() -
+				PlayerCharacter->GetActorLocation().Size() < MinDoIKRange)
+					{if (bIsInAir == false)
+						{bShouldDoIK = true;}} else {bShouldDoIK = false;}
+		}
+		/** IK **/
 	}
 }

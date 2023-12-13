@@ -35,4 +35,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsAccelerating;
 	/** Basic Movement **/
+
+	/** IK **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "IK")
+	float MinDoIKRange = 20000.f;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "IK")
+	bool bShouldDoIK = false;
+	/** IK **/
 };
