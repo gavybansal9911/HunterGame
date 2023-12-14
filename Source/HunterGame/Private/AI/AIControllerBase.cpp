@@ -186,6 +186,7 @@ void AAIControllerBase::HandleDamageSense(AActor* SensedActor)
 {
 	if (Cast<ABaseCharacter>(SensedActor))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange, FString("Chasing Player now"));
 		Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
 		SetStateAsChasing(SensedActor);
 	}
@@ -212,6 +213,7 @@ void AAIControllerBase::SetStateAsChasing(AActor* TargetActor)
 	if (Blackboard == nullptr || AIState > EAIState::EAIS_Chasing) return;
 	AIState = EAIState::EAIS_Chasing;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 4);
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("State is chasing now"));
 	ClearFocus(EAIFocusPriority::Default);
 }
 

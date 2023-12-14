@@ -72,7 +72,7 @@ protected:
 	UPROPERTY()
 	UAISenseConfig_Damage* SenseConfig_Damage;
 	/** AI Perception **/
-
+	
 private:
 	UPROPERTY()
 	AEnemyBase* OwnerAIEnemy;
@@ -84,10 +84,10 @@ private:
 	/** State and Properties **/
 
 	// Blackboard keys
-	FName BB_TargetActor_KeyName = "TargetActor";
-	FName BB_PointOfInterest_KeyName = "PointOfInterest";
-	FName BB_AIState_KeyName = "AIState";
-	FName BB_AttackRadius_KeyName = "AttackRadius";
+	FName BB_TargetActor_KeyName = FName("TargetActor");
+	FName BB_PointOfInterest_KeyName = FName("PointOfInterest");
+	FName BB_AIState_KeyName = FName("AIState");
+	FName BB_AttackRadius_KeyName = FName("AttackRadius");
 
 public:
 	AActor* GetTargetActorBB() const;

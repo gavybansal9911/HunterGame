@@ -9,6 +9,8 @@
 #include "Component/StatsComponent.h"
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "Engine/DamageEvents.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISense_Damage.h"
 #include "Weapon/Weapon.h"
 
 AEnemyBase::AEnemyBase()
@@ -23,10 +25,7 @@ void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (HasAuthority())   // Bind Receive Damage to OnTakeAnyDamage only on the server
-	{
-		OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::ReceiveDamage);
-	}
+	OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::ReceiveDamage);
 }
 
 void AEnemyBase::PossessedBy(AController* NewController)
@@ -71,15 +70,15 @@ float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent
 			AIController->SetStateAsChasing(DamageCauser);
 		}
 	}
-
+	// Report Damage Event
+	ReportDamageEvent(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
 
 void AEnemyBase::GetHit()
 {
 	IHitInterface::GetHit();
-
-	if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Enemy Hit"));}
 }
 
 void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
@@ -99,6 +98,17 @@ void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamage
 			// Death
 			Destroy();
 		}
+	}
+}
+
+void AEnemyBase::ReportDamageEvent(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	UAIPerceptionSystem* PerceptionSystem = UAIPerceptionSystem::GetCurrent(this);
+	if (PerceptionSystem)
+	{
+		FAIDamageEvent Event(this, DamageCauser, DamageAmount, GetActorLocation(), GetActorLocation());
+		PerceptionSystem->OnEvent(Event);
 	}
 }
 

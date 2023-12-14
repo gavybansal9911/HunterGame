@@ -54,6 +54,8 @@ protected:
 
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
+
+	void ReportDamageEvent(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UAIEnemyCombatComponent> CombatComponent;
