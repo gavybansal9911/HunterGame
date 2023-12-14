@@ -36,3 +36,14 @@ void UAnimalSurvivalComponent::Init_Stamina()
 void UAnimalSurvivalComponent::OnAttributesSet()
 {
 }
+
+void UAnimalSurvivalComponent::ApplyDamage(float InDamageAmount)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 34.f, FColor::Yellow, FString::Printf(TEXT("%f - %f"), Health, InDamageAmount));
+	Health = FMath::Clamp(Health - InDamageAmount, 0.f, MaxHealth);
+	if (Health == 0)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 34.f, FColor::Yellow, FString("Animal is dead"));
+		// Death
+	}
+}

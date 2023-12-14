@@ -47,7 +47,10 @@ void ABaseAnimal::PostInitializeComponents()
 		InteractionAreaCapsule->OnComponentEndOverlap.AddDynamic(this, &ABaseAnimal::OnInteractionCapsuleEndOverlap);
 	}
 	if (SurvivalComponent)
-		{SurvivalComponent->OwnerAnimalCharacter = this;}
+	{
+		SurvivalComponent->OwnerAnimalCharacter = this;
+		SurvivalComponent->Init_Attributes();
+	}
 	if (InteractionComponent)
 		{InteractionComponent->OwnerAnimalCharacter = this;}
 }
@@ -61,6 +64,18 @@ void ABaseAnimal::Tick(float DeltaTime)
 {
 	// bCanEverTick is set to false.
 	Super::Tick(DeltaTime);
+}
+
+float ABaseAnimal::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	if (SurvivalComponent)
+	{
+		SurvivalComponent->ApplyDamage(DamageAmount);
+		RunAwayFromPoacher(DamageCauser);
+	}
+	
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
 
 void ABaseAnimal::Init_AnimalAI(AController* NewController)
@@ -103,6 +118,11 @@ void ABaseAnimal::PlayAnimationMontage(UAnimMontage* Montage, FName SectionName,
 	}
 }
 
+void ABaseAnimal::RunAwayFromPoacher(AActor* Poacher)
+{
+	// TODO: Implementation
+}
+
 void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
 {
 	if (GetVelocity().Size() != 0.f) return;
@@ -111,4 +131,10 @@ void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
 	PlayerCharacter->SetInteractionTargetActor(this);
 	PlayerCharacter->OnPlayerInteractWithAnimal(Player_InteractWithAnimalMontage);
 	PlayAnimationMontage(InteractWithPlayerAnimMontage, FName(), false);
+}
+
+void ABaseAnimal::GetHit()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 34.f, FColor::Yellow, FString("Animal hit"));
+	IHitInterface::GetHit();
 }

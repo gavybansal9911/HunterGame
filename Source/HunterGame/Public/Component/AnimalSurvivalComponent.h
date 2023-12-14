@@ -41,4 +41,7 @@ private:
 	float FearFactor;
 	float HungerFactor;
 	float FriendlyFactor;
+
+public:
+	void ApplyDamage(float InDamageAmount);
 };
