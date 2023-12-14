@@ -48,5 +48,7 @@ protected:
 	/** IK **/
 
 	/** Combat **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool bIsInCombat;
 	/** Combat **/
 };
