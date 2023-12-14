@@ -5,6 +5,7 @@
 #include "Character/Animal/BaseAnimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UAnimalAnimInstance::NativeInitializeAnimation()
 {
@@ -20,7 +21,7 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (OwnerAnimalCharacter && OwnerAnimalCharacter->GetCharacterMovement())
 	{
-		/** Basic Movement **/
+		/** Movement **/
 		FVector Local_Velocity = OwnerAnimalCharacter->GetVelocity();
 		Local_Velocity.Z = 0;
 		Speed = Local_Velocity.Size();
@@ -28,7 +29,13 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsInAir = OwnerAnimalCharacter->GetCharacterMovement()->IsFalling();
 		
 		bIsAccelerating = OwnerAnimalCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
-		/** Basic Movement **/
+
+		// Animal rotation
+		YawOffset = CalculateDirection(OwnerAnimalCharacter->GetVelocity(), OwnerAnimalCharacter->GetActorRotation());
+		FRotator NewRotation = OwnerAnimalCharacter->GetActorRotation();
+		NewRotation.Yaw = FMath::FInterpTo(NewRotation.Yaw, NewRotation.Yaw + YawOffset, DeltaSeconds, 2.f);
+		OwnerAnimalCharacter->SetActorRotation(NewRotation);
+		/** Movement **/
 
 		/** IK **/
 		// TODO: Find another approach to access to player character location

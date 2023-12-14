@@ -57,11 +57,15 @@ protected:
 	EAnimalState AnimalState = EAnimalState::EAS_Passive;
 	EAnimalActionState AnimalActionState  = EAnimalActionState::EAAS_Max;
 	EAnimalMood AnimalMood = EAnimalMood::EAM_Normal;
+	// Speed
+	float WalkSpeed = 300.f;
+	float RunSpeed = 650.f;
+	float FastRunSpeed = 1000.f;
 
 private:
 	// AI Controller reference
 	UPROPERTY()
-	AAIController* AnimalAIController;
+	AAnimalAIControllerBase* AnimalAIController;
 
 	// AI Behaviour
 	UPROPERTY(EditAnywhere, Category = "AI")

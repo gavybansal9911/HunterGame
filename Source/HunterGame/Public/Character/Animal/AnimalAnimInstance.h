@@ -25,7 +25,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Owner")
 	TObjectPtr<ABaseAnimal> OwnerAnimalCharacter;
 
-	/** Basic Movement **/
+	/** Movement **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Speed;
 
@@ -34,7 +34,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsAccelerating;
-	/** Basic Movement **/
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	float YawOffset;
+	/** Movement **/
 
 	/** IK **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "IK")

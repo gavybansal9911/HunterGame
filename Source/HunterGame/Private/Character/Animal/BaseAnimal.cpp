@@ -7,11 +7,18 @@
 #include "Component/AnimalInteractionComponent.h"
 #include "Component/AnimalSurvivalComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ABaseAnimal::ABaseAnimal()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	
 	InteractionAreaCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Interact Area Capsule"));
 	InteractionAreaCapsule->SetupAttachment(GetMesh());
 	
@@ -53,9 +60,11 @@ void ABaseAnimal::Tick(float DeltaTime)
 
 void ABaseAnimal::Init_AnimalAI(AController* NewController)
 {
-	AnimalAIController = Cast<AAIController>(NewController);
-	if (AnimalAIController)
-	{AnimalAIController->RunBehaviorTree(BehaviorTree);}
+	AnimalAIController = Cast<AAnimalAIControllerBase>(NewController);
+	if (AAIController* AIController = Cast<AAIController>(NewController))
+	{
+		AIController->RunBehaviorTree(BehaviorTree);
+	}
 }
 
 void ABaseAnimal::OnInteractCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

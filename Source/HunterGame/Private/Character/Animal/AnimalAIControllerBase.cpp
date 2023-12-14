@@ -38,3 +38,12 @@ AAnimalAIControllerBase::AAnimalAIControllerBase()
 
 	PerceptionComponent->SetDominantSense(SenseConfig_Damage->GetSenseImplementation());  // Dominant Sense
 }
+
+FVector AAnimalAIControllerBase::GetPointOfInterest() const
+{
+	if (Blackboard)
+	{
+		return Blackboard->GetValueAsVector(FName("PointOfInterest"));
+	}
+	return FVector();
+}

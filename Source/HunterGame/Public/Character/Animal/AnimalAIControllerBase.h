@@ -38,4 +38,7 @@ private:
 	UPROPERTY()
 	UAISenseConfig_Damage* SenseConfig_Damage;
 	/** AI Perception **/
+
+public:
+	FVector GetPointOfInterest() const;
 };
