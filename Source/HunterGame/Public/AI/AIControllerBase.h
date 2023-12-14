@@ -48,6 +48,7 @@ public:
 
 	void SetStateAsPassive();
 	void SetStateAsInvestigating();
+	void SetStateAsHunting(AActor* TargetActor);
 	void SetStateAsChasing(AActor* TargetActor);
 	void SetStateAsAttacking(AActor* TargetActor);
 	void SetStateAsRetreating();

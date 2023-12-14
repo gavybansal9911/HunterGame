@@ -70,7 +70,7 @@ protected:
 	TObjectPtr<AAIControllerBase> AIController;
 	
 	/** Enemy States **/
-	EAIState AIState = EAIState::EAIS_Passive;
+	EAIState AIState = EAIState::EAIS_Hunting;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	EAIEnemyActionState AIActionState = EAIEnemyActionState::EAIAS_None;
 	/** Enemy States **/

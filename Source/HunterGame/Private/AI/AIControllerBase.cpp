@@ -11,6 +11,7 @@
 #include "Perception/AIPerceptionSystem.h"
 #include "AI/EnemyBase.h"
 #include "Character/BaseCharacter.h"
+#include "Interface/PoachedAnimal.h"
 #include "Weapon/Weapon.h"
 
 AAIControllerBase::AAIControllerBase()
@@ -171,6 +172,14 @@ void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 		Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
 		SetStateAsChasing(SensedActor);
 	}
+	else
+	{
+		if (Cast<IPoachedAnimal>(SensedActor))
+		{
+			Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
+			SetStateAsHunting(SensedActor);
+		}
+	}
 }
 
 void AAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)
@@ -184,12 +193,9 @@ void AAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)
 
 void AAIControllerBase::HandleDamageSense(AActor* SensedActor)
 {
-	if (Cast<ABaseCharacter>(SensedActor))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange, FString("Chasing Player now"));
-		Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
-		SetStateAsChasing(SensedActor);
-	}
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Orange, FString("Chasing Player now"));
+	Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
+	SetStateAsChasing(SensedActor);
 }
 
 void AAIControllerBase::SetStateAsPassive()
@@ -206,6 +212,14 @@ void AAIControllerBase::SetStateAsInvestigating()
 	AIState = EAIState::EAIS_Investigating;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 2);
 	ClearFocus(EAIFocusPriority::Default);
+}
+
+void AAIControllerBase::SetStateAsHunting(AActor* TargetActor)
+{
+	if (Blackboard == nullptr || AIState > EAIState::EAIS_Hunting) return;
+	AIState = EAIState::EAIS_Hunting;
+	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 3);
+	SetFocus(TargetActor);
 }
 
 void AAIControllerBase::SetStateAsChasing(AActor* TargetActor)

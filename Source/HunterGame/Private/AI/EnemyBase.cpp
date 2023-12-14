@@ -176,6 +176,7 @@ bool AEnemyBase::HaveWeaponInHand() const
 
 FVector AEnemyBase::GetHitTarget()
 {
+	if (!AIController) return FVector();
 	if (AIController->GetTargetActorBB())
 	{
 		// TODO: Calculate random deviation vector based on the distance between the AI enemy and the hit target
