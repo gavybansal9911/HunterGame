@@ -18,9 +18,14 @@ ABaseAnimal::ABaseAnimal()
 	bUseControllerRotationRoll = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	
 	InteractionAreaCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Interact Area Capsule"));
 	InteractionAreaCapsule->SetupAttachment(GetMesh());
+
+	AnimalHead_SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Animal Head Scene Component"));
+	AnimalHead_SceneComponent->SetupAttachment(GetMesh());
 	
 	SurvivalComponent = CreateDefaultSubobject<UAnimalSurvivalComponent>(TEXT("Survival Component"));
 	InteractionComponent = CreateDefaultSubobject<UAnimalInteractionComponent>(TEXT("Interaction Component"));
@@ -85,11 +90,25 @@ void ABaseAnimal::OnInteractionCapsuleEndOverlap(UPrimitiveComponent* Overlapped
 	}
 }
 
+void ABaseAnimal::PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
+{
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		AnimInstance->Montage_Play(Montage);
+
+		if (bJumpToSection)
+		{
+			AnimInstance->Montage_JumpToSection(SectionName, Montage);
+		}
+	}
+}
+
 void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
 {
-	// TODO: Player <-> Animal interaction
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Purple, FString("Interact with animal"));
-	}
+	if (GetVelocity().Size() != 0.f) return;
+	if (!PlayerCharacter) return;
+	
+	PlayerCharacter->SetInteractionTargetActor(this);
+	PlayerCharacter->OnPlayerInteractWithAnimal(Player_InteractWithAnimalMontage);
+	PlayAnimationMontage(InteractWithPlayerAnimMontage, FName(), false);
 }

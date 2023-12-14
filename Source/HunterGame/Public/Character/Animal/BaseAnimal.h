@@ -38,11 +38,16 @@ protected:
 
 	UFUNCTION()
 	virtual void OnInteractionCapsuleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	void PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCapsuleComponent> InteractionAreaCapsule;
 
 	/** Components **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USceneComponent> AnimalHead_SceneComponent;
+	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UAnimalSurvivalComponent> SurvivalComponent;
 
@@ -70,6 +75,13 @@ private:
 	// AI Behaviour
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	// Interaction
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* InteractWithPlayerAnimMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* Player_InteractWithAnimalMontage;   // Montage for player
 
 public:
 	UFUNCTION(BlueprintCallable)

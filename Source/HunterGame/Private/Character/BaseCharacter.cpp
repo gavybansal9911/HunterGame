@@ -570,6 +570,14 @@ int32 ABaseCharacter::AddItemToInventory(FItemData ItemData)
 	int32 Local_Remaining = InventoryComponent->AddItemToInventory(ItemData);
 	return Local_Remaining;
 }
+
+void ABaseCharacter::OnPlayerInteractWithAnimal(UAnimMontage* PlayerInteractAnimMontage)
+{
+	if (InteractionComponent)
+	{
+		InteractionComponent->OnPlayerInteractWithAnimal(PlayerInteractAnimMontage);;
+	}
+}
 /** Interaction **/
 
 /** UI **/
@@ -632,9 +640,26 @@ ECombatState ABaseCharacter::GetCombatState() const
 	return CombatComponent->CombatState;
 }
 
+AActor* ABaseCharacter::GetInteractionTargetActor() const
+{
+	if (InteractionComponent)
+	{
+		return InteractionComponent->GetInteractionTargetActor();
+	}
+	return nullptr;
+}
+
 void ABaseCharacter::SetOverlappingActor(AActor* InOverlappingActor)
 {
 	if (!InteractionComponent) return;
 	InteractionComponent->SetOverlappingActor(InOverlappingActor);
+}
+
+void ABaseCharacter::SetInteractionTargetActor(AActor* InTargetActor)
+{
+	if (InteractionComponent)
+	{
+		InteractionComponent->SetInteractionTargetActor(InTargetActor);
+	}
 }
 /** Getter / Setter **/

@@ -26,12 +26,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	void Interact();
+	void OnPlayerInteractWithAnimal(UAnimMontage* PlayerInteractWithAnimalAnimMontage);
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Overlapping")
 	TObjectPtr<AActor> OverlappingActor;
+
+	UPROPERTY(VisibleAnywhere, Category = "Interaction Target")
+	TObjectPtr<AActor> InteractionTargetActor;
 	
 public:
 	FORCEINLINE AActor* GetOverlappingActor() const {return OverlappingActor;}
 	FORCEINLINE void SetOverlappingActor(AActor* InActor) {OverlappingActor = InActor;}
+	
+	FORCEINLINE AActor* GetInteractionTargetActor() const {return InteractionTargetActor;}
+	FORCEINLINE void SetInteractionTargetActor(AActor* InActor) {InteractionTargetActor = InActor;}
 };

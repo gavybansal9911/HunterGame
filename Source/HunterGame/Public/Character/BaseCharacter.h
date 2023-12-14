@@ -86,6 +86,7 @@ public:
 	
 	/** Interaction **/
 	int32 AddItemToInventory(FItemData ItemData);   // Returns -1 if fails or in case of any error
+	void OnPlayerInteractWithAnimal(UAnimMontage* PlayerInteractAnimMontage);
 	/** Interaction **/
 
 	/** UI **/
@@ -268,8 +269,13 @@ public:
 	ECombatState GetCombatState() const;
 	FORCEINLINE bool ShouldOrientRotationToMovement_WhenInCombat() const {return bOrientRotationToMovement_WhenInCombat;}
 	FORCEINLINE AHunterPlayerController* GetCustomPlayerController() const {return HunterPlayerController;}
+
+	UFUNCTION(BlueprintCallable)
+	AActor* GetInteractionTargetActor() const;
 	
 	void SetOverlappingActor(AActor* InOverlappingActor);
+
+	void SetInteractionTargetActor(AActor* InTargetActor);
 
 	// TEMPORARY
 	UFUNCTION(BlueprintCallable)
