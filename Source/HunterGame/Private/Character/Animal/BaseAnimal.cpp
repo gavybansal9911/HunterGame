@@ -123,6 +123,37 @@ void ABaseAnimal::RunAwayFromPoacher(AActor* Poacher)
 	// TODO: Implementation
 }
 
+void ABaseAnimal::InitializeGroup(int GroupSizeToInitialize)
+{
+	if (AnimalClass == nullptr) return;
+	if (GroupSize - 1 <= 0) return;
+	GEngine->AddOnScreenDebugMessage(-1, 34.f, FColor::Red, FString("Spawner called"));
+	
+	for (int Local_NumberOfAnimalsToSpawn = GroupSize - 1; Local_NumberOfAnimalsToSpawn > 0; Local_NumberOfAnimalsToSpawn--)
+	{
+		FVector Center = GetActorLocation();
+
+		float RandomAngle = FMath::FRandRange(0.0f, 2.0f * PI);
+		float RandomRadius = FMath::RandRange(0.0f, 1000.f);
+
+		float RandomX = RandomRadius * FMath::Cos(RandomAngle);
+		float RandomY = RandomRadius * FMath::Sin(RandomAngle);
+
+		FVector RandomLocation = Center + FVector(RandomX, RandomY, 0.0f);
+		RandomLocation.Z = GetActorLocation().Z;
+
+		FRotator RandomRotation = FRotator(GetActorRotation().Pitch, FMath::RandRange(0, 360), GetActorRotation().Roll);
+
+		FActorSpawnParameters ActorSpawnParameters;
+		ActorSpawnParameters.Owner = this;
+		GEngine->AddOnScreenDebugMessage(-1, 34.f, FColor::Red, FString("Sdsdgdgfdsgdfhcalled"));
+		if (GetWorld())
+		{
+			GetWorld()->SpawnActor<ABaseAnimal>(AnimalClass, RandomLocation, RandomRotation, ActorSpawnParameters);
+		}
+	}
+}
+
 void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
 {
 	if (GetVelocity().Size() != 0.f) return;

@@ -45,6 +45,8 @@ protected:
 	void PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
 	
 	void RunAwayFromPoacher(AActor* Poacher);
+
+	virtual void InitializeGroup(int GroupSizeToInitialize);
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCapsuleComponent> InteractionAreaCapsule;
@@ -61,6 +63,12 @@ protected:
 	/** Components **/
 
 	// States and properties
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	bool bIsLeader = false;
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	bool bLiveInGroups = false;
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	int GroupSize = 1;  // 1 <-> this
 	EAnimalName AnimalName = EAnimalName::EAN_Max;
 	EAnimalModeOfFeeding AnimalModeOfFeeding = EAnimalModeOfFeeding::EAMF_Max;
 	EAgeStatus AnimalAgeStatus = EAgeStatus::EAS_Max;
@@ -71,6 +79,10 @@ protected:
 	float WalkSpeed = 300.f;
 	float RunSpeed = 650.f;
 	float FastRunSpeed = 1000.f;
+
+	// Animal class
+	UPROPERTY(EditAnywhere, Category = "Group System")
+	TSubclassOf<ABaseAnimal> AnimalClass;
 
 private:
 	// AI Controller reference
