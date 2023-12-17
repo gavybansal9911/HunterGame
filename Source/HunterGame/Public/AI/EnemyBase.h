@@ -82,7 +82,7 @@ public:
 	AWeapon* GetOwnedWeapon() const;
 	bool HaveWeaponInHand() const;
 
-	FORCEINLINE FVector GetHitTarget();
+	FVector GetHitTarget() const;
 	
 	UFUNCTION(BlueprintCallable)
 	AActor* Get_TargetActor_BB() const;

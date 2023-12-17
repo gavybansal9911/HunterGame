@@ -51,6 +51,9 @@ protected:
 	/** Basic Movement **/
 
 	/** Combat **/
+	UPROPERTY(VisibleAnywhere, Category = "Combat")
+	FVector HitTarget;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	bool bHaveWeapon;
 	

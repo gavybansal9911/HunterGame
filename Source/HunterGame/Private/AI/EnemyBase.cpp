@@ -16,6 +16,9 @@
 AEnemyBase::AEnemyBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	Tags.AddUnique(FName("EnemyBase"));
+	Tags.AddUnique(FName("Enemy"));
+	Tags.AddUnique(FName("AIEnemy"));
 
 	CombatComponent = CreateDefaultSubobject<UAIEnemyCombatComponent>(TEXT("Enemy Combat Component"));
 	StatsComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
@@ -174,19 +177,19 @@ bool AEnemyBase::HaveWeaponInHand() const
 	}
 }
 
-FVector AEnemyBase::GetHitTarget()
+FVector AEnemyBase::GetHitTarget() const
 {
 	if (!AIController) return FVector();
-	if (AIController->GetTargetActorBB())
+	if (AActor* TargetActorBB = Get_TargetActor_BB())
 	{
 		// TODO: Calculate random deviation vector based on the distance between the AI enemy and the hit target
-		float DistanceBetween = GetActorLocation().Size() - AIController->GetTargetActorBB()->GetActorLocation().Size();
+		//float DistanceBetween = GetActorLocation().Size() - TargetActorBB->GetActorLocation().Size();
 
 		FVector RandomDeviationVector = FVector(FMath::FRandRange(-4.f, 4.f),
 			FMath::FRandRange(-4.f, 4.f), FMath::FRandRange(-4.f, 4.f));
 		
 		// Aim at head (expensive operation(Cast))  // TODO: Find a way to optimize this
-		if (ACharacter* Character = Cast<ACharacter>(AIController->GetTargetActorBB()))
+		if (ACharacter* Character = Cast<ACharacter>(TargetActorBB))
 		{
 			FTransform TargetCharacterHeadTransform = Character->GetMesh()->GetSocketTransform(FName("head"), RTS_World);
 			FVector TargetCharacterHeadLocation = TargetCharacterHeadTransform.GetLocation();
@@ -195,7 +198,7 @@ FVector AEnemyBase::GetHitTarget()
 		}
 		else
 		{
-			return AIController->GetTargetActorBB()->GetActorLocation() + RandomDeviationVector;
+			return TargetActorBB->GetActorLocation() + RandomDeviationVector;
 		}
 	}
 	return FVector();

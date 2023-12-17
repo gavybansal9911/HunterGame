@@ -67,9 +67,11 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			OwnerAIEnemyCharacter->GetEnemyState() == EAIState::EAIS_Retreating ||
 			OwnerAIEnemyCharacter->GetEnemyState() == EAIState::EAIS_Hunting)
 		{
+			HitTarget = OwnerAIEnemyCharacter->GetHitTarget();
+			
 			// Fix right hand rotation
 			FTransform RightHandTransform = OwnerAIEnemyCharacter->GetMesh()->GetSocketTransform(FName("hand_r"), RTS_World);
-			FRotator Local_RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(), RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - OwnerAIEnemyCharacter->GetHitTarget()));
+			FRotator Local_RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(), RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - HitTarget));
 			RightHandRotationOverride = FMath::RInterpTo(RightHandRotationOverride, Local_RightHandRotation, DeltaSeconds, 15.f);
 
 			/** Debug **/
@@ -78,13 +80,13 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 				FTransform MuzzleTipTransform = EquippedWeapon->GetWeaponMesh()->GetSocketTransform(FName("MuzzleFlash"));
 				FVector MuzzleX(FRotationMatrix(MuzzleTipTransform.GetRotation().Rotator()).GetUnitAxis(EAxis::X));
 				DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), MuzzleTipTransform.GetLocation() + MuzzleX * 1000.f, FColor::Yellow);
-				DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), OwnerAIEnemyCharacter->GetHitTarget(), FColor::Red);
+				DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), HitTarget, FColor::Red);
 				/** Debug **/
 			}
 			
 			// FABRIK   (Apply only if the hit target is close enough to see the enemy clearly)
 			bApplyFABRIK = OwnerAIEnemyCharacter->GetActorLocation().Size() -
-				OwnerAIEnemyCharacter->GetHitTarget().Size() > 500.f ? false : true;  // Here, 500 is the range in which FABRIK should be applied.
+				HitTarget.Size() > 500.f ? false : true;  // Here, 500 is the range in which FABRIK should be applied.
 				// Try to keep this range small for better performance
 			if (bApplyFABRIK && EquippedWeapon)
 			{

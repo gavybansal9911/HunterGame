@@ -12,6 +12,8 @@
 ABaseAnimal::ABaseAnimal()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	Tags.AddUnique(FName("Animal"));
+	Tags.AddUnique(FName("AIAnimal"));
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;

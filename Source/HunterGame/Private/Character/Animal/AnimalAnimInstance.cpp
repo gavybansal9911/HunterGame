@@ -2,10 +2,10 @@
 
 
 #include "Character/Animal/AnimalAnimInstance.h"
+#include "KismetAnimationLibrary.h"
 #include "Character/Animal/BaseAnimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 
 void UAnimalAnimInstance::NativeInitializeAnimation()
 {
@@ -31,7 +31,7 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsAccelerating = OwnerAnimalCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
 
 		// Animal rotation
-		YawOffset = CalculateDirection(OwnerAnimalCharacter->GetVelocity(), OwnerAnimalCharacter->GetActorRotation());
+		YawOffset = UKismetAnimationLibrary::CalculateDirection(OwnerAnimalCharacter->GetVelocity(), OwnerAnimalCharacter->GetActorRotation());
 		FRotator NewRotation = OwnerAnimalCharacter->GetActorRotation();
 		NewRotation.Yaw = FMath::FInterpTo(NewRotation.Yaw, NewRotation.Yaw + YawOffset, DeltaSeconds, 2.f);
 		OwnerAnimalCharacter->SetActorRotation(NewRotation);

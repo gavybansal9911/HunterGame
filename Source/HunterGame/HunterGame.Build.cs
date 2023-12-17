@@ -10,7 +10,7 @@ public class HunterGame : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "AIModule" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "NavigationSystem", "Niagara" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "NavigationSystem", "Niagara", "AnimGraphRuntime", "AnimGraphRuntime", "AnimGraphRuntime" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

@@ -10,7 +10,6 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "AI/EnemyBase.h"
-#include "Character/BaseCharacter.h"
 #include "Interface/PoachedAnimal.h"
 #include "Weapon/Weapon.h"
 
@@ -167,7 +166,8 @@ CanSenseActorData AAIControllerBase::CanSenseActor(AActor* Actor, EAIPerceptionS
 
 void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 {
-	if (Cast<ABaseCharacter>(SensedActor))
+	//if (Cast<ABaseCharacter>(SensedActor))
+	if (SensedActor->ActorHasTag("BaseCharacter"))
 	{
 		Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
 		SetStateAsChasing(SensedActor);
