@@ -50,12 +50,6 @@ public:
 
 	/** Generic Functions **/
 	void PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
-
-	UFUNCTION(Server, Reliable)
-	void ServerPlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
-
-	UFUNCTION(NetMulticast, Reliable)
-	void MulticastPlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection);
 	/** Generic Functions **/
 	
 	/** Components **/
@@ -115,17 +109,6 @@ protected:
 	void RunButtonPressed();
 	void RunButtonReleased();
 	/** Input CallBacks **/
-
-	/** Input CallBacks RPCs **/
-	UFUNCTION(Server, Reliable)
-	void ServerInteractButtonPressed();
-
-	UFUNCTION(Server, Reliable)
-	void ServerRunButtonPressed();
-	
-	UFUNCTION(Server, Reliable)
-	void ServerRunButtonReleased();
-	/** Input CallBacks RPCs **/
 
 	/** Event Trigger CallBacks **/
 	UFUNCTION()

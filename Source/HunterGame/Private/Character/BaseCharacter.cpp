@@ -155,16 +155,6 @@ void ABaseCharacter::UpdateUIHealth()
 /** Generic **/
 void ABaseCharacter::PlayAnimationMontage(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
 {
-	ServerPlayAnimationMontage(Montage, SectionName, bJumpToSection);
-}
-
-void ABaseCharacter::ServerPlayAnimationMontage_Implementation(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
-{
-	MulticastPlayAnimationMontage(Montage, SectionName, bJumpToSection);
-}
-
-void ABaseCharacter::MulticastPlayAnimationMontage_Implementation(UAnimMontage* Montage, FName SectionName, bool bJumpToSection)
-{
 	if (Montage == nullptr) return;
 
 	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
@@ -222,20 +212,6 @@ void ABaseCharacter::CrouchButtonPressed()
 }
 
 void ABaseCharacter::InteractButtonPressed()
-{
-	if (!InteractionComponent) return;
-
-	if (HasAuthority())
-	{
-		InteractionComponent->Interact();
-	}
-	else
-	{
-		ServerInteractButtonPressed();
-	}
-}
-
-void ABaseCharacter::ServerInteractButtonPressed_Implementation()
 {
 	if (!InteractionComponent) return;
 	InteractionComponent->Interact();
@@ -331,15 +307,7 @@ void ABaseCharacter::RunButtonPressed()
 	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
 	if (CombatComponent->bIsAiming) return;
 
-	if (HasAuthority())
-	{
-		GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
-	}
-	else
-	{
-		ServerRunButtonPressed();
-		GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
-	}
+	GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
 }
 
 void ABaseCharacter::RunButtonReleased()
@@ -347,24 +315,6 @@ void ABaseCharacter::RunButtonReleased()
 	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
 	if (CombatComponent->bIsAiming) return;
 
-	if (HasAuthority())
-	{
-		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	}
-	else
-	{
-		ServerRunButtonReleased();
-		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	}
-}
-
-void ABaseCharacter::ServerRunButtonPressed_Implementation()
-{
-	GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
-}
-
-void ABaseCharacter::ServerRunButtonReleased_Implementation()
-{
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 /** Input CallBacks **/
@@ -531,29 +481,13 @@ void ABaseCharacter::OnReloadEnd_AnimNotifyCallBack()
 void ABaseCharacter::TogglePrimaryWeapon_AnimNotifyCallBack()
 {
 	if (!CombatComponent) return;
-	
-	if (HasAuthority())
-	{
-		CombatComponent->TogglePrimaryWeaponAttachment();
-	}
-	if (!HasAuthority() && IsLocallyControlled())
-	{
-		CombatComponent->ServerTogglePrimaryWeaponAttachment();
-	}
+	CombatComponent->TogglePrimaryWeaponAttachment();
 }
 
 void ABaseCharacter::ToggleSecondaryWeapon_AnimNotifyCallBack()
 {
 	if (!CombatComponent) return;
-
-	if (HasAuthority())
-	{
-		CombatComponent->ToggleSecondaryWeaponAttachment();
-	}
-	if (!HasAuthority() && IsLocallyControlled())
-	{
-		CombatComponent->ServerToggleSecondaryWeaponAttachment();
-	}
+	CombatComponent->ToggleSecondaryWeaponAttachment();
 }
 /** Combat **/
 
