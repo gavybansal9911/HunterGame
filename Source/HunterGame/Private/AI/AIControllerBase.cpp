@@ -10,7 +10,6 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "AI/EnemyBase.h"
-#include "Interface/PoachedAnimal.h"
 #include "Weapon/Weapon.h"
 
 AAIControllerBase::AAIControllerBase()
@@ -174,7 +173,8 @@ void AAIControllerBase::HandleSightSense(AActor* SensedActor)
 	}
 	else
 	{
-		if (Cast<IPoachedAnimal>(SensedActor))
+		//if (Cast<IPoachedAnimal>(SensedActor))
+		if (SensedActor->ActorHasTag("Poached"))
 		{
 			Blackboard->SetValueAsObject(BB_TargetActor_KeyName, SensedActor);
 			SetStateAsHunting(SensedActor);

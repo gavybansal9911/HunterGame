@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AI_Types.h"
 #include "Animation/AnimInstance.h"
 #include "Weapon/WeaponTypes.h"
 #include "AIEnemyAnimInstance.generated.h"

@@ -3,15 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/Animal/BaseAnimal.h"
-#include "Interface/PoachedAnimal.h"
+#include "Character/Animal/PoachedAnimal.h"
 #include "Elephant.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class HUNTERGAME_API AElephant : public ABaseAnimal, public IPoachedAnimal
+class HUNTERGAME_API AElephant : public APoachedAnimal
 {
 	GENERATED_BODY()
 

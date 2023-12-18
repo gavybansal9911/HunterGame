@@ -8,6 +8,7 @@ AElephant::AElephant()
 	PrimaryActorTick.bCanEverTick = false;
 
 	bLiveInGroups = true;
+	Tags.AddUnique("Elephant");
 	
 	ElephantTusksMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Elephant Tusks Mesh"));
 	ElephantTusksMesh->SetupAttachment(GetMesh());
