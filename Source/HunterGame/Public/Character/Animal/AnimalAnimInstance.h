@@ -27,6 +27,12 @@ protected:
 
 	/** Movement **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	FVector Velocity;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	FVector Velocity_XY;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Speed;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
@@ -35,8 +41,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsAccelerating;
 
+	// Animal Rotation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float RotationInterpSpeed = 2.f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float YawOffset;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Movement")
+	float Turn;
 	/** Movement **/
 
 	/** IK **/
