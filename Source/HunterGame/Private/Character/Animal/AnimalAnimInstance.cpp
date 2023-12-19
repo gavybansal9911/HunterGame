@@ -21,6 +21,18 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (OwnerAnimalCharacter && OwnerAnimalCharacter->GetCharacterMovement())
 	{
+		/** General **/
+		// TODO: Find another approach to access to player character location
+		if (const ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+		{
+			DistanceToPlayer = OwnerAnimalCharacter->GetActorLocation().Size() -
+				PlayerCharacter->GetActorLocation().Size();
+			DistanceToPlayer = FMath::Abs(DistanceToPlayer);
+
+			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, FString::Printf(TEXT("%f"), DistanceToPlayer));
+		}
+		/** General **/
+		
 		/** Movement **/
 		Velocity = OwnerAnimalCharacter->GetVelocity();
 		Velocity_XY = Velocity;
@@ -37,39 +49,37 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		NewRotation.Yaw = FMath::FInterpTo(NewRotation.Yaw, NewRotation.Yaw + YawOffset, DeltaSeconds, RotationInterpSpeed);
 		OwnerAnimalCharacter->SetActorRotation(NewRotation);
 
-		// Turn
-		FVector AnimalForwardVector = OwnerAnimalCharacter->GetActorForwardVector();
-		FVector VelocityDirectionVector = Velocity_XY.GetSafeNormal();
-		if (!AnimalForwardVector.IsNearlyZero() && !VelocityDirectionVector.IsNearlyZero())
+		if (DistanceToPlayer < 20000.f)
 		{
-			float CosineTheta = FVector::DotProduct(AnimalForwardVector.GetSafeNormal(), VelocityDirectionVector.GetSafeNormal());
-			float ThetaRadians = FMath::Acos(FMath::Clamp(CosineTheta, -1.0f, 1.0f));
+			// Turning
+			const FVector AnimalForwardVector = OwnerAnimalCharacter->GetActorForwardVector();
+			const FVector VelocityDirectionVector = Velocity_XY.GetSafeNormal();
+			if (!AnimalForwardVector.IsNearlyZero() && !VelocityDirectionVector.IsNearlyZero())
+			{
+				const float CosineTheta = FVector::DotProduct(AnimalForwardVector.GetSafeNormal(), VelocityDirectionVector.GetSafeNormal());
+				const float ThetaRadians = FMath::Acos(FMath::Clamp(CosineTheta, -1.0f, 1.0f));
 
-			// Use cross product to determine rotation direction
-			FVector CrossProduct = FVector::CrossProduct(AnimalForwardVector, VelocityDirectionVector);
-			float RotationDirection = FMath::Sign(CrossProduct.Z);
+				// Use cross product to determine rotation direction
+				const FVector CrossProduct = FVector::CrossProduct(AnimalForwardVector, VelocityDirectionVector);
+				const float RotationDirection = FMath::Sign(CrossProduct.Z);
+				const float RotationDirection_Inverse = -RotationDirection;
 			
-			// ThetaRadians now contains the angle between VectorA and VectorB in radians
-			float ThetaDegrees = FMath::RadiansToDegrees(ThetaRadians) * -RotationDirection;
-			// ThetaDegrees now contains the angle in degrees
-			//float MappedAngle = FMath::UnwindDegrees(ThetaDegrees);
-			Turn = ThetaDegrees;
-		}
-		else
-		{
-			Turn = 0.f;
-		}
+				// ThetaRadians now contains the angle between VectorA and VectorB in radians
+				const float ThetaDegrees = FMath::RadiansToDegrees(ThetaRadians) * RotationDirection_Inverse;
+				// ThetaDegrees now contains the angle in degrees
+				//float MappedAngle = FMath::UnwindDegrees(ThetaDegrees);
+				Turn = ThetaDegrees;
+			}
+			else
+			{
+				Turn = 0.f;
+			}
+		} else {Turn = 0.f;}
 		/** Movement **/
 
 		/** IK **/
-		// TODO: Find another approach to access to player character location
-		if (ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
-		{
-			if (OwnerAnimalCharacter->GetActorLocation().Size() -
-				PlayerCharacter->GetActorLocation().Size() < MinDoIKRange)
-					{if (bIsInAir == false)
-						{bShouldDoIK = true;}} else {bShouldDoIK = false;}
-		} else {bShouldDoIK = false;}
+		if (DistanceToPlayer < MinDoIKRange && bIsInAir == false)
+			{bShouldDoIK = true;} else {bShouldDoIK = false;}
 		/** IK **/
 	}
 }

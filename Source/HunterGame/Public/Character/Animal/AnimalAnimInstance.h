@@ -25,6 +25,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Owner")
 	TObjectPtr<ABaseAnimal> OwnerAnimalCharacter;
 
+	/** General **/
+	UPROPERTY(VisibleAnywhere)
+	float DistanceToPlayer;
+	/** General **/
+	
 	/** Movement **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	FVector Velocity;
