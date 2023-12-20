@@ -41,6 +41,7 @@ void UShopMenu::Init_SellTab()
 
 		if (ItemSellSlot)
 		{
+			ItemSellSlot->PlayerCharacter = PlayerCharacter;
 			ItemSellSlot->Init_ItemData(ItemData);
 			SellTabScrollBox->AddChild(ItemSellSlot);
 		}

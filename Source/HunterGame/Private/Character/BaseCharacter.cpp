@@ -584,6 +584,13 @@ AActor* ABaseCharacter::GetInteractionTargetActor() const
 	return nullptr;
 }
 
+bool ABaseCharacter::CanBuyItem(FItemData ItemData) const
+{
+	if (!InventoryComponent || !FinanceComponent) return false;
+	return FinanceComponent->CanBuyItem(ItemData.Cost) &&
+		InventoryComponent->SpaceAvailable(ItemData);
+}
+
 void ABaseCharacter::SetOverlappingActor(AActor* InOverlappingActor)
 {
 	if (!InteractionComponent) return;

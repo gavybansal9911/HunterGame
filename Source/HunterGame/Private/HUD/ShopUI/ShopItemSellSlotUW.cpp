@@ -2,6 +2,8 @@
 
 
 #include "HUD/ShopUI/ShopItemSellSlotUW.h"
+
+#include "Character/BaseCharacter.h"
 #include "Components/Button.h"
 
 void UShopItemSellSlotUW::NativePreConstruct()
@@ -13,6 +15,17 @@ void UShopItemSellSlotUW::NativeConstruct()
 {
 	Super::NativeConstruct();
 	BindCallBacks();
+}
+
+bool UShopItemSellSlotUW::CanBuyItem()
+{
+	if (!PlayerCharacter) return false;
+	return PlayerCharacter->CanBuyItem(ItemData);
+}
+
+void UShopItemSellSlotUW::BuyItem()
+{
+	PlayerCharacter->AddItemToInventory(ItemData);
 }
 
 void UShopItemSellSlotUW::BindCallBacks()
@@ -28,5 +41,8 @@ void UShopItemSellSlotUW::Init_ItemData(FItemData Data)
 
 void UShopItemSellSlotUW::OnSlotButtonClicked()
 {
-	// TODO: Implementation
+	if (CanBuyItem())
+	{
+		BuyItem();
+	}
 }

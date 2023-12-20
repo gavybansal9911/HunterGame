@@ -255,6 +255,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	AActor* GetInteractionTargetActor() const;
+
+	bool CanBuyItem(FItemData ItemData) const;
 	
 	void SetOverlappingActor(AActor* InOverlappingActor);
 

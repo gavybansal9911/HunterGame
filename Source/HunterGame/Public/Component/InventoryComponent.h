@@ -24,6 +24,7 @@ public:
 	FOnInventoryUpdated OnInventoryUpdated;
 	
 	/** Inventory Actions **/
+	bool SpaceAvailable(FItemData ItemData);
 	int32 AddItemToInventory(FItemData ItemToAddData);      // Return Value => (int32) Number of items left (unable to add)
 	bool FindExistingSlot(FItemData ItemToAddData, int32& Index);     // Return Value => (bool) Existing slot available ? <---> // Args => Index passed by reference set value as ExistingSlotIndex if existing slot found and -1 if not
 	bool FindEmptySlot(int32& Index);        // Return Value => (bool) Empty slot available ? <---> // Args => Index passed by reference set value as EmptySlotIndex if empty slot found and -1 if not

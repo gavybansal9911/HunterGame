@@ -29,7 +29,7 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 				PlayerCharacter->GetActorLocation().Size();
 			DistanceToPlayer = FMath::Abs(DistanceToPlayer);
 
-			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, FString::Printf(TEXT("%f"), DistanceToPlayer));
+			//GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, FString::Printf(TEXT("%f"), DistanceToPlayer));
 		}
 		/** General **/
 		

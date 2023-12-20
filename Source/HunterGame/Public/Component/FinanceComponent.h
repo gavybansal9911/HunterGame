@@ -6,13 +6,15 @@
 #include "Components/ActorComponent.h"
 #include "FinanceComponent.generated.h"
 
+class ABaseCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HUNTERGAME_API UFinanceComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
+	friend ABaseCharacter;
 	UFinanceComponent();
 
 	/** Money Management **/
@@ -21,6 +23,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	bool CanBuyItem(int Cost);
+
+	void SpendMoney(int Cost);
 
 private:
 	float MoneyAmount;

@@ -9,6 +9,8 @@
 
 class UButton;
 class USizeBox;
+class ABaseCharacter;
+
 /**
  * 
  */
@@ -20,7 +22,10 @@ class HUNTERGAME_API UShopItemSellSlotUW : public UUserWidgetBase
 public:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
-
+	
+	bool CanBuyItem();
+	void BuyItem();
+	
 	/** Widget CallBacks **/
 	void BindCallBacks();
 
@@ -30,6 +35,10 @@ public:
 	
 	void Init_ItemData(FItemData Data);
 
+	// Player Character Reference
+	UPROPERTY()
+	ABaseCharacter* PlayerCharacter;
+	
 	/** Widget Components **/
 	UPROPERTY(meta=(BindWidget))
 	USizeBox* SlotSizeBox;

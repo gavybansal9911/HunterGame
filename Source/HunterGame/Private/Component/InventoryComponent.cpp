@@ -19,6 +19,25 @@ void UInventoryComponent::InitInventory()
 	Content.SetNum(NumberOfSlots);
 }
 
+bool UInventoryComponent::SpaceAvailable(FItemData ItemData)
+{
+	int Local_INT;
+	
+	for (int i = 0; i < NumberOfSlots; i++)
+	{
+		if (FindExistingSlot(ItemData, i))
+		{
+			return true;
+		}
+		else if (FindEmptySlot(Local_INT))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 int32 UInventoryComponent::AddItemToInventory(FItemData ItemToAddData)
 {
 	int32 ExistingSlotIndex;

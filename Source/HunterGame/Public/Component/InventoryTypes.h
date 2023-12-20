@@ -5,6 +5,13 @@
 
 class ABaseInventoryItem;
 
+UENUM(BlueprintType)
+enum EItemClassification : uint8
+{
+	EIC_Weapon UMETA(DisplayName = Weapon),
+	EIC_Accessories UMETA(DisplayName = Accessories)
+};
+
 USTRUCT(BlueprintType)
 struct FItemData
 {
@@ -17,6 +24,9 @@ struct FItemData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName ItemName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EItemClassification ItemClassification;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int Cost;
