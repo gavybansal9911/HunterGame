@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "WeaponTypes.h"
+#include "Component/InventoryTypes.h"
 #include "GameFramework/Actor.h"
 #include "Interface/InteractInterface.h"
 #include "Weapon.generated.h"
@@ -110,6 +111,8 @@ private:
 	/** Attachment Properties **/
 
 	/** Weapon Properties && Status **/
+	FItemData WeaponData;
+	
 	UPROPERTY(EditAnywhere, Category = "Properties")
 	bool bAutomatic;
 	

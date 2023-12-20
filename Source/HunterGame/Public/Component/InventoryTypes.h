@@ -17,9 +17,15 @@ struct FItemData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName ItemName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int Cost;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UTexture2D* Icon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UTexture2D* Thumbnail;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString Description;

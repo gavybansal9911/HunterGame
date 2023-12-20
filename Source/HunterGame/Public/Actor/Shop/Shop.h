@@ -11,6 +11,7 @@
 class UShopMenu;
 class UWidgetComponent;
 class UBoxComponent;
+class UCameraComponent;
 
 UCLASS()
 class HUNTERGAME_API AShop : public AActor, public IInteractInterface
@@ -29,6 +30,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Interaction")
 	UBoxComponent* OverlapBox;
+
+	UPROPERTY(VisibleAnywhere, Category = "Camera View")
+	TObjectPtr<UCameraComponent> ViewCamera;
 
 	// On Overlap
 	UFUNCTION()
@@ -52,5 +56,5 @@ private:
 	UShopMenu* ShopMenuUW;
 
 	UPROPERTY(EditAnywhere, Category = "Content")
-	TArray<FSlotData> ShopContent;
+	TArray<FItemData> ShopContent;
 };

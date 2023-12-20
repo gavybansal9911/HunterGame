@@ -2,6 +2,7 @@
 
 
 #include "Actor/Shop/Shop.h"
+#include "Camera/CameraComponent.h"
 #include "Character/BaseCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
@@ -22,6 +23,9 @@ AShop::AShop()
 
 	OverlapBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Overlap Box"));
 	OverlapBox->SetupAttachment(ShopkeeperMesh);
+
+	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("View Camera"));
+	ViewCamera->SetupAttachment(GetRootComponent());
 
 	InteractWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Interact Widget"));
 	InteractWidget->SetupAttachment(ShopkeeperMesh);
@@ -81,12 +85,14 @@ void AShop::InteractWith(ABaseCharacter* PlayerCharacter)
 
 		if (ShopMenuUW)
 		{
+			ShopMenuUW->Init_Content(ShopContent);
 			ShopMenuUW->AddToViewport();
 			ShopMenuUW->PlayerCharacter = PlayerCharacter;
 			if (PlayerCharacter) {PlayerCharacter->HideCharacterOverlayUI();}
 			if (PlayerCharacter->GetCustomPlayerController() && PlayerCharacter->GetCustomPlayerController()->GetHUDReference())
 			{
 				PlayerCharacter->GetCustomPlayerController()->GetHUDReference()->SetInputModeAsUIOnly();
+				PlayerCharacter->GetCustomPlayerController()->SetViewTargetWithBlend(this, 0.25f);
 			}
 		}
 	}

@@ -15,6 +15,8 @@ AWeapon::AWeapon()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+
+	Tags.AddUnique(FName("Weapon"));
 	
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weaponmesh"));
 	SetRootComponent(WeaponMesh);

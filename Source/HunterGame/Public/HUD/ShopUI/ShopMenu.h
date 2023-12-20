@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Component/InventoryTypes.h"
 #include "HUD/UserWidgetBase.h"
 #include "ShopMenu.generated.h"
 
+class UShopItemSellSlotUW;
+class UWidgetSwitcher;
 class UScrollBox;
 class UHorizontalBox;
 class UVerticalBox;
@@ -24,6 +27,12 @@ public:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 
+	void Init_Content(TArray<FItemData> Content);
+	void Init_BuyTab();
+	void Init_SellTab();
+	void OnBuyTabClosed();
+	void OnSellTabClosed();
+	
 	// Player Character Reference
 	UPROPERTY()
 	ABaseCharacter* PlayerCharacter;
@@ -65,5 +74,15 @@ public:
 
 	UPROPERTY(meta=(BindWidget))
 	UScrollBox* PurchaseTabScrollBox;
+
+	UPROPERTY(meta=(BindWidget))
+	UWidgetSwitcher* MenuSwitcher;
 	/** Widget Components **/
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	TSubclassOf<UShopItemSellSlotUW> ShopItemSellSlotUW_Class;;
+	
+private:
+	TArray<FItemData> ShopContent;
 };
