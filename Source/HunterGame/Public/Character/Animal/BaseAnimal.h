@@ -46,7 +46,7 @@ protected:
 	
 	void RunAwayFromPoacher(AActor* Poacher);
 
-	virtual void InitializeGroup(int GroupSizeToInitialize);
+	//virtual void InitializeGroup(int GroupSizeToInitialize);
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCapsuleComponent> InteractionAreaCapsule;
@@ -63,14 +63,15 @@ protected:
 	/** Components **/
 
 	// States and properties
-	UPROPERTY(EditAnywhere, Category = "Properties")
-	bool bIsLeader = false;
-	UPROPERTY(EditAnywhere, Category = "Properties")
-	bool bLiveInGroups = false;
-	UPROPERTY(EditAnywhere, Category = "Properties")
-	int GroupSize = 1;  // 1 <-> this
+	//UPROPERTY(EditAnywhere, Category = "Properties")
+	//bool bIsLeader = false;
+	//UPROPERTY(EditAnywhere, Category = "Properties")
+	//bool bLiveInGroups = false;
+	//UPROPERTY(EditAnywhere, Category = "Properties")
+	//int GroupSize = 1;  // 1 <-> this
 	EAnimalName AnimalName = EAnimalName::EAN_Max;
 	EAnimalModeOfFeeding AnimalModeOfFeeding = EAnimalModeOfFeeding::EAMF_Max;
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	EAgeStatus AnimalAgeStatus = EAgeStatus::EAS_Max;
 	EAnimalState AnimalState = EAnimalState::EAS_Passive;
 	EAnimalActionState AnimalActionState  = EAnimalActionState::EAAS_Max;

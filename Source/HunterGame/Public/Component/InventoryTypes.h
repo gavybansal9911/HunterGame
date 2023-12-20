@@ -26,7 +26,8 @@ struct FItemData
 	FName ItemName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	EItemClassification ItemClassification;
+	TEnumAsByte<EItemClassification> ItemClassification;
+	//EItemClassification ItemClassification = EItemClassification();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int Cost;

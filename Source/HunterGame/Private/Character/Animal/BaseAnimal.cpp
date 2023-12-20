@@ -125,6 +125,7 @@ void ABaseAnimal::RunAwayFromPoacher(AActor* Poacher)
 	// TODO: Implementation
 }
 
+/*
 void ABaseAnimal::InitializeGroup(int GroupSizeToInitialize)
 {
 	if (AnimalClass == nullptr) return;
@@ -154,7 +155,7 @@ void ABaseAnimal::InitializeGroup(int GroupSizeToInitialize)
 			GetWorld()->SpawnActor<ABaseAnimal>(AnimalClass, RandomLocation, RandomRotation, ActorSpawnParameters);
 		}
 	}
-}
+}*/
 
 void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
 {
