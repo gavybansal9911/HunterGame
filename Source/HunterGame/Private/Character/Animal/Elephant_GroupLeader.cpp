@@ -62,6 +62,7 @@ void AElephant_GroupLeader::Spawn_Group()
 		{
 			Elephant_Follower->SetLeader(this);
 			GroupFollowers.Add(Elephant_Follower);
+			Elephant_Follower = nullptr;
 		}
 	}
 
@@ -70,8 +71,8 @@ void AElephant_GroupLeader::Spawn_Group()
 
 void AElephant_GroupLeader::OnGroupSpawned()
 {
-	for (auto Follower : GroupFollowers)
+	for (AElephant_Follower* FollowerElephant : GroupFollowers)
 	{
-		Follower->SpawnDefaultController();
+		FollowerElephant->SpawnDefaultController();
 	}
 }
