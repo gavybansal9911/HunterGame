@@ -16,14 +16,14 @@ EBTNodeResult::Type UBTTMoveToLocation::ExecuteTask(UBehaviorTreeComponent& Owne
 			OwnerAIController = AIController;
 
 			FVector Local_PointOfInterest = BlackboardComponent->GetValueAsVector(BB_PointOfInterest_KeyName);
-			AIController->MoveToLocation(Local_PointOfInterest, 10.f, true, true);
+			AIController->MoveToLocation(Local_PointOfInterest, 150.f, false, true);
 			AIController->ReceiveMoveCompleted.AddDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
 			
-			return EBTNodeResult::InProgress;
+			//return EBTNodeResult::InProgress; 
 		}
 	}
 	
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	return EBTNodeResult::Failed;
 }
 
 EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -35,11 +35,14 @@ EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerC
 		//return EBTNodeResult::Aborted;   // TODO: /____/
 	//}	
 
+	OwnerAIController->ReceiveMoveCompleted.RemoveDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
 	return EBTNodeResult::Succeeded;
 }
 
 void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)
 {
+	OwnerAIController->ReceiveMoveCompleted.RemoveDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
+	
 	if (OwnerAIController && OwnerAIController->BrainComponent)
 	{
 		UBehaviorTreeComponent* OwnerComp = Cast<UBehaviorTreeComponent>(OwnerAIController->BrainComponent);

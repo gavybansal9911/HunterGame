@@ -10,10 +10,12 @@ EBTNodeResult::Type UBTTGetRandomLocationInArea::ExecuteTask(UBehaviorTreeCompon
 {
 	if (UBlackboardComponent* BlackboardComponent = OwnerComp.GetBlackboardComponent())
 	{
-		FVector Origin = OwnerComp .GetAIOwner()->GetPawn()->GetActorLocation();
+		FVector Origin = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation();
 		FVector Local_PointOfInterest;
 		UNavigationSystemV1::K2_GetRandomLocationInNavigableRadius(GetWorld(), Origin,
 			Local_PointOfInterest, NavigableAreaRadius);
+
+		Local_PointOfInterest.Z = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation().Z;
 
 		BlackboardComponent->SetValueAsVector(BB_PointOfInterest_KeyName, Local_PointOfInterest);
 

@@ -24,6 +24,8 @@ EBTNodeResult::Type UBTTGetLocAroundLeader_Animal::ExecuteTask(UBehaviorTreeComp
 				UNavigationSystemV1::K2_GetRandomLocationInNavigableRadius(GetWorld(), Origin,
 					Local_PointOfInterest, NavigableAreaRadius);
 
+				Local_PointOfInterest.Z = AnimalFollower->GetLeaderActor()->GetActorLocation().Z;
+
 				BlackboardComponent->SetValueAsVector(BB_PointOfInterest_KeyName, Local_PointOfInterest);
 
 				return EBTNodeResult::Succeeded;
