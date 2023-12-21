@@ -16,14 +16,22 @@ EBTNodeResult::Type UBTTMoveToLocation::ExecuteTask(UBehaviorTreeComponent& Owne
 			OwnerAIController = AIController;
 
 			FVector Local_PointOfInterest = BlackboardComponent->GetValueAsVector(BB_PointOfInterest_KeyName);
-			AIController->MoveToLocation(Local_PointOfInterest, 150.f, false, true);
+			AIController->MoveToLocation(Local_PointOfInterest, 250.f, false, true);
 			AIController->ReceiveMoveCompleted.AddDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
 			
-			//return EBTNodeResult::InProgress; 
+			return EBTNodeResult::InProgress; 
+		}
+		else
+		{
+			//return EBTNodeResult::Failed;
+			return EBTNodeResult::Succeeded;
 		}
 	}
-	
-	return EBTNodeResult::Failed;
+	else
+	{
+		//return EBTNodeResult::Failed;
+		return EBTNodeResult::Succeeded;
+	}
 }
 
 EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -35,13 +43,13 @@ EBTNodeResult::Type UBTTMoveToLocation::AbortTask(UBehaviorTreeComponent& OwnerC
 		//return EBTNodeResult::Aborted;   // TODO: /____/
 	//}	
 
-	OwnerAIController->ReceiveMoveCompleted.RemoveDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
+	//OwnerAIController->ReceiveMoveCompleted.RemoveDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
 	return EBTNodeResult::Succeeded;
 }
 
 void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)
 {
-	OwnerAIController->ReceiveMoveCompleted.RemoveDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
+	//OwnerAIController->ReceiveMoveCompleted.RemoveDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
 	
 	if (OwnerAIController && OwnerAIController->BrainComponent)
 	{
@@ -49,18 +57,14 @@ void UBTTMoveToLocation::OnMoveToLocationCompleted(FAIRequestID RequestID, EPath
 		if (OwnerComp == nullptr)
 		{
 			FinishLatentTask(*OwnerComp, EBTNodeResult::Failed);
-			return;
 		}
-	
-		if (Result == EPathFollowingResult::Success)
+		else if (Result == EPathFollowingResult::Success)
 		{
 			FinishLatentTask(*OwnerComp, EBTNodeResult::Succeeded);
-			return;
 		}
 		else
 		{
 			FinishLatentTask(*OwnerComp, EBTNodeResult::Failed);
-			return;
 		}
 	}
 }
