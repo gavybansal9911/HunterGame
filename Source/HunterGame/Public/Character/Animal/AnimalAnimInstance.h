@@ -46,6 +46,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool bIsAccelerating;
 
+	// Leaning
+	FRotator CharacterRotationLastFrame;
+	FRotator CharacterRotationThisFrame;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	float Lean;
+
 	// Animal Rotation
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float RotationInterpSpeed = 1.25f;   // 2.f

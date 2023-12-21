@@ -6,6 +6,7 @@
 #include "Character/Animal/BaseAnimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UAnimalAnimInstance::NativeInitializeAnimation()
 {
@@ -43,6 +44,14 @@ void UAnimalAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsInAir = OwnerAnimalCharacter->GetCharacterMovement()->IsFalling();
 		
 		bIsAccelerating = OwnerAnimalCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
+
+		// Leaning
+		CharacterRotationLastFrame = CharacterRotationThisFrame;
+		CharacterRotationThisFrame = OwnerAnimalCharacter->GetActorRotation();
+		const FRotator Delta = UKismetMathLibrary::NormalizedDeltaRotator(CharacterRotationThisFrame, CharacterRotationLastFrame);
+		const float Target = Delta.Yaw / DeltaSeconds;
+		const float Interp = FMath::FInterpTo(Lean, Target, DeltaSeconds, 6.f);
+		Lean = FMath::Clamp(Interp, -90.f, 90.f);
 		
 		YawOffset = UKismetAnimationLibrary::CalculateDirection(OwnerAnimalCharacter->GetVelocity(), OwnerAnimalCharacter->GetActorRotation());
 		FRotator NewRotation = OwnerAnimalCharacter->GetActorRotation();
