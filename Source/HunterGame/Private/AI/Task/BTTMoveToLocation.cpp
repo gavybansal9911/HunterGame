@@ -16,7 +16,7 @@ EBTNodeResult::Type UBTTMoveToLocation::ExecuteTask(UBehaviorTreeComponent& Owne
 			OwnerAIController = AIController;
 
 			FVector Local_PointOfInterest = BlackboardComponent->GetValueAsVector(BB_PointOfInterest_KeyName);
-			AIController->MoveToLocation(Local_PointOfInterest, 250.f, false, true);
+			AIController->MoveToLocation(Local_PointOfInterest, 250.f, false, false);
 			AIController->ReceiveMoveCompleted.AddDynamic(this, &UBTTMoveToLocation::OnMoveToLocationCompleted);
 			
 			return EBTNodeResult::InProgress; 
