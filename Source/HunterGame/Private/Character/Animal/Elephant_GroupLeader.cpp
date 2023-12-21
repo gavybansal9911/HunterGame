@@ -60,6 +60,7 @@ void AElephant_GroupLeader::Spawn_Group()
 		AElephant_Follower* Elephant_Follower = GetWorld()->SpawnActor<AElephant_Follower>(ElephantFollowerCharacter_Class, SpawnTransform, ActorSpawnParameters);
 		if (Elephant_Follower)
 		{
+			Elephant_Follower->SetLeader(this);
 			GroupFollowers.Add(Elephant_Follower);
 		}
 	}

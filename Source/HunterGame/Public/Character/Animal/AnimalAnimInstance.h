@@ -48,7 +48,7 @@ protected:
 
 	// Animal Rotation
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float RotationInterpSpeed = 2.f;
+	float RotationInterpSpeed = 1.25f;   // 2.f
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float YawOffset;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Movement")
