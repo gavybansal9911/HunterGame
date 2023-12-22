@@ -17,7 +17,11 @@ EBTNodeResult::Type UBTTGetLocAroundLeader_Animal::ExecuteTask(UBehaviorTreeComp
 			{
 				FVector Origin;
 				if (AnimalFollower->GetLeaderActor())
-					{Origin = AnimalFollower->GetLeaderActor()->GetActorLocation();}
+				{
+					const FVector LeaderActorBackwardVector = - AnimalFollower->GetLeaderActor()->GetActorForwardVector();
+					const FVector OriginOffset = LeaderActorBackwardVector * NavigableAreaRadius;
+					Origin = AnimalFollower->GetLeaderActor()->GetActorLocation() + OriginOffset;
+				}
 				else
 					{Origin = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation();}
 				FVector Local_PointOfInterest;
