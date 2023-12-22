@@ -16,6 +16,9 @@
 AEnemyBase::AEnemyBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	Tags.AddUnique(FName("Character"));
+	Tags.AddUnique(FName("Human"));
 	Tags.AddUnique(FName("EnemyBase"));
 	Tags.AddUnique(FName("Enemy"));
 	Tags.AddUnique(FName("AIEnemy"));

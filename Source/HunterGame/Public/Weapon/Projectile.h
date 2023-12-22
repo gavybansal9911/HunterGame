@@ -28,10 +28,7 @@ protected:
 	// Hit Event
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	UFUNCTION(NetMulticast, Reliable)
-	virtual void MulticastOnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
+	
 	/** Damage **/
 	UPROPERTY(EditAnywhere, Category = "Damage")
 	float Damage = 20.f;
@@ -58,7 +55,7 @@ private:
 	UParticleSystem* ImpactObstacleParticles;
  
 	UPROPERTY(EditAnywhere, Category = "FX")
-	UParticleSystem* ImpactCharacterParticles;
+	UParticleSystem* ImpactHumanCharacterParticles;
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	USoundCue* ImpactSound;

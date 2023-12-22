@@ -69,17 +69,27 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 {
 	if (GetOwner() == OtherActor) { Destroy(); return; }
 	
-	MulticastOnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
+	//MulticastOnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
+	if (OtherActor->ActorHasTag(FName("Character")) ||
+		OtherActor->ActorHasTag(FName("Human")) ||
+		OtherActor->ActorHasTag(FName("PlayerCharacter")) ||
+		OtherActor->ActorHasTag(FName("Animal")))
+	{
+		ImpactParticle = ImpactHumanCharacterParticles;
+	}
+	else if (OtherActor->ActorHasTag(FName("Wall")))
+	{
+		ImpactParticle = ImpactObstacleParticles;
+	}
+	else
+	{
+		ImpactParticle = ImpactObstacleParticles;
+	}
+		
+	Destroy();    // Destroyed function is already bound to this function call.
 
 	if (IHitInterface* HitActor = Cast<IHitInterface>(OtherActor))
 	{
 		HitActor->GetHit();
 	}
-}
-
-void AProjectile::MulticastOnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	ImpactParticle = ImpactObstacleParticles;
-	Destroy();    // Destroyed function is already bound to this function call.
 }

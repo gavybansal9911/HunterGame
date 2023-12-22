@@ -12,6 +12,8 @@
 ABaseAnimal::ABaseAnimal()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	Tags.AddUnique(FName("Character"));
 	Tags.AddUnique(FName("Animal"));
 	Tags.AddUnique(FName("AIAnimal"));
 
