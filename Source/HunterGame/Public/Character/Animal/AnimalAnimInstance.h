@@ -22,7 +22,7 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "Owner")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Owner")
 	TObjectPtr<ABaseAnimal> OwnerAnimalCharacter;
 
 	/** General **/
