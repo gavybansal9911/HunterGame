@@ -29,7 +29,8 @@ public:
 
 	// Interface
 	virtual void InteractWith(ABaseCharacter* PlayerCharacter) override;
-	virtual void GetHit() override;
+	virtual void GetHit(FName HitBoneName, FVector HitBoneLocation) override;
+	virtual USkinnedMeshComponent* GetCharacterMesh() override;
 
 protected:
 	virtual void BeginPlay() override;

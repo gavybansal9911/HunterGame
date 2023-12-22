@@ -82,9 +82,15 @@ float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
 
-void AEnemyBase::GetHit()
+void AEnemyBase::GetHit(FName HitBoneName, FVector HitBoneLocation)
 {
-	IHitInterface::GetHit();
+	//IHitInterface::GetHit();
+	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Cyan, HitBoneName.ToString());
+}
+
+USkinnedMeshComponent* AEnemyBase::GetCharacterMesh()
+{
+	return GetMesh();
 }
 
 void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,

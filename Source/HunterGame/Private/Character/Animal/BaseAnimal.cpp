@@ -169,8 +169,14 @@ void ABaseAnimal::InteractWith(ABaseCharacter* PlayerCharacter)
 	PlayAnimationMontage(InteractWithPlayerAnimMontage, FName(), false);
 }
 
-void ABaseAnimal::GetHit()
+void ABaseAnimal::GetHit(FName HitBoneName, FVector HitBoneLocation)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 34.f, FColor::Yellow, FString("Animal hit"));
-	IHitInterface::GetHit();
+	//IHitInterface::GetHit();
+	//GEngine->AddOnScreenDebugMessage(-1, 34.f, FColor::Yellow, FString("Animal hit"));
+	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Cyan, HitBoneName.ToString());
+}
+
+USkinnedMeshComponent* ABaseAnimal::GetCharacterMesh()
+{
+	return GetMesh();
 }

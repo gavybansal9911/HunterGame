@@ -98,14 +98,14 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		if (SenseActorData.Sensed)
 		{
 			HandleSightSense(Actor);
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Sight Triggered"));
+			//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Sight Triggered"));
 		}
 
 		// Sensed Damage?
 		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Damage);
 		if (SenseActorData.Sensed)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Damage Triggered"));
+			//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Damage Triggered"));
 			HandleDamageSense(Actor);
 		}
 		
@@ -113,7 +113,7 @@ void AAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors
 		SenseActorData = CanSenseActor(Actor, EAIPerceptionSense::EAIS_Hearing);
 		if (SenseActorData.Sensed)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Hearing Triggered"));
+			//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("Hearing Triggered"));
 			HandleHearingSense(SenseActorData.Stimulus.StimulusLocation);
 		}
 	}

@@ -44,7 +44,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	/** Interface **/
-	virtual void GetHit() override;
+	virtual void GetHit(FName HitBoneName, FVector HitBoneLocation) override;
+	virtual USkinnedMeshComponent* GetCharacterMesh() override;
 	virtual void UpdateUIHealth() override;
 	/** Interface **/
 

@@ -20,6 +20,7 @@ class HUNTERGAME_API IHitInterface
 	GENERATED_BODY()
 
 public:
-	virtual void GetHit();
+	virtual void GetHit(FName HitBoneName, FVector HitBoneLocation);
 	virtual void PlayHitReactMontage(ACharacter* HitCharacter, UAnimMontage* Montage, FName SectionName = FName("Default"));
+	virtual USkinnedMeshComponent* GetCharacterMesh();
 };

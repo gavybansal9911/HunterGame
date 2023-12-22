@@ -5,7 +5,7 @@
 #include "GameFramework/Character.h"
 
 
-void IHitInterface::GetHit()
+void IHitInterface::GetHit(FName HitBoneName, FVector HitBoneLocation)
 {
 }
 
@@ -16,4 +16,9 @@ void IHitInterface::PlayHitReactMontage(ACharacter* HitCharacter, UAnimMontage* 
 		AnimInstance->Montage_Play(Montage);
 		AnimInstance->Montage_JumpToSection(SectionName);
 	}
+}
+
+USkinnedMeshComponent* IHitInterface::GetCharacterMesh()
+{
+	return nullptr;
 }

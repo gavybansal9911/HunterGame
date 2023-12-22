@@ -144,9 +144,15 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 }
 
 /** Interface **/
-void ABaseCharacter::GetHit()
+void ABaseCharacter::GetHit(FName HitBoneName, FVector HitBoneLocation)
 {
-	if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Hit"));}
+	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Cyan, HitBoneName.ToString());
+	//if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Hit"));}
+}
+
+USkinnedMeshComponent* ABaseCharacter::GetCharacterMesh()
+{
+	return GetMesh();
 }
 
 void ABaseCharacter::UpdateUIHealth()

@@ -31,7 +31,8 @@ public:
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	/** Interface **/
-	virtual void GetHit() override;
+	virtual void GetHit(FName HitBoneName, FVector HitBoneLocation) override;
+	virtual USkinnedMeshComponent* GetCharacterMesh() override;
 	
 	UFUNCTION(BlueprintCallable)
 	virtual EAIState GetEnemyState() const override;

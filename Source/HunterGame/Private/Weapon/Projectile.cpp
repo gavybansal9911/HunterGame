@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "Sound/SoundCue.h"
+#include "Components/SkinnedMeshComponent.h"
 
 AProjectile::AProjectile()
 {
@@ -90,6 +91,11 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	if (IHitInterface* HitActor = Cast<IHitInterface>(OtherActor))
 	{
-		HitActor->GetHit();
+		if (HitActor->GetCharacterMesh())
+		{
+			FVector HitBoneLocation;
+			const FName HitBoneName = HitActor->GetCharacterMesh()->FindClosestBone(Hit.ImpactPoint, &HitBoneLocation, 0, false);
+			HitActor->GetHit(HitBoneName, HitBoneLocation);
+		}
 	}
 }
