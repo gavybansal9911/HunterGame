@@ -20,6 +20,16 @@ enum class EActionState : uint8
 };
 
 UENUM(BlueprintType)
+enum class ECharacterMovementState : uint8
+{
+	ECMS_Walking = 0 UMETA(DisplayName = "Walking"),
+	ECMS_Running = 1 UMETA(DisplayName = "Walking"),
+	ECMS_Sprinting = 2 UMETA(DisplayName = "Sprinting"),
+	
+	ECMS_Max = 9 UMETA(DisplayName = "Max")
+};
+
+UENUM(BlueprintType)
 enum class ETurningInPlace : uint8
 {
 	ETIP_Left UMETA(DisplayName = "Turning Left"),

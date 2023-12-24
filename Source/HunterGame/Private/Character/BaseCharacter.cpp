@@ -51,9 +51,12 @@ ABaseCharacter::ABaseCharacter()
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 285.f, 0.f);
 	
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	CharacterMovementState = ECharacterMovementState::ECMS_Running;
 
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction Component"));
@@ -138,8 +141,9 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(ToggleSecondaryWeaponAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleSecondaryWeaponButtonPressed);
 		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ABaseCharacter::ReloadButtonPressed);
 		EnhancedInputComponent->BindAction(ToggleInventoryAction, ETriggerEvent::Started, this, &ABaseCharacter::ToggleInventoryButtonPressed);
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &ABaseCharacter::RunButtonPressed);
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ABaseCharacter::RunButtonReleased);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &ABaseCharacter::SprintButtonPressed);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ABaseCharacter::SprintButtonReleased);
+		EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Started, this, &ABaseCharacter::WalkButtonPressed);
 	}
 }
 
@@ -311,20 +315,40 @@ void ABaseCharacter::ToggleInventoryButtonPressed()
 	HunterPlayerController->ToggleInventory();
 }
 
-void ABaseCharacter::RunButtonPressed()
+void ABaseCharacter::SprintButtonPressed()
 {
 	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
 	if (CombatComponent->bIsAiming) return;
 
-	GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? RunSpeed : FastRunSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = IsCombatEnabled() && GetEquippedWeapon() != nullptr ? InCombatSprintSpeed : SprintSpeed;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 180.f, 0.f);
+	CharacterMovementState = ECharacterMovementState::ECMS_Sprinting;
 }
 
-void ABaseCharacter::RunButtonReleased()
+void ABaseCharacter::SprintButtonReleased()
 {
 	if (CombatComponent == nullptr || GetCharacterMovement() == nullptr) return;
 	if (CombatComponent->bIsAiming) return;
 
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 285.f, 0.f);
+	CharacterMovementState = ECharacterMovementState::ECMS_Running;
+}
+
+void ABaseCharacter::WalkButtonPressed()
+{
+	if (CharacterMovementState != ECharacterMovementState::ECMS_Walking)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+		GetCharacterMovement()->RotationRate = FRotator(0.f, 300.f, 0.f);
+		CharacterMovementState = ECharacterMovementState::ECMS_Walking;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+		GetCharacterMovement()->RotationRate = FRotator(0.f, 285.f, 0.f);
+		CharacterMovementState = ECharacterMovementState::ECMS_Running;
+	}
 }
 /** Input CallBacks **/
 

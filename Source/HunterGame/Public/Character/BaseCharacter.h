@@ -91,7 +91,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-
+	
 	/** Input CallBacks **/
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -107,10 +107,11 @@ protected:
 	void ToggleSecondaryWeaponButtonPressed();
 	void ReloadButtonPressed();
 	void ToggleInventoryButtonPressed();
-	void RunButtonPressed();
-	void RunButtonReleased();
+	void SprintButtonPressed();
+	void SprintButtonReleased();
+	void WalkButtonPressed();
 	/** Input CallBacks **/
-
+	
 	/** Event Trigger CallBacks **/
 	UFUNCTION()
 	void OnInventoryUpdated();
@@ -122,7 +123,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float RunSpeed = 600.f;
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float FastRunSpeed = 800.f;
+	float SprintSpeed = 800.f;
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float InCombatSprintSpeed = 600.f;
 	/** Movement **/
 	
 	/** Combat **/
@@ -190,6 +193,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> RunAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> WalkAction;
 	/** Input **/
 
 	/** Character States **/
@@ -197,6 +203,7 @@ protected:
 	EActionState ActionState = EActionState::EAS_Idle;
 	ETurningInPlace TurningInPlace = ETurningInPlace::ETIP_Max;
 	ECameraMode CurrentCameraMode = ECameraMode::ECM_ThirdPerson;
+	ECharacterMovementState CharacterMovementState = ECharacterMovementState::ECMS_Max;
 	/** Character States **
 
 	/** Camera **/
