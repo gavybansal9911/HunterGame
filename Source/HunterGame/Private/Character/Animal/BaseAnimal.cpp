@@ -180,3 +180,13 @@ USkinnedMeshComponent* ABaseAnimal::GetCharacterMesh()
 {
 	return GetMesh();
 }
+
+bool ABaseAnimal::IsLookingForFood() const
+{
+	if (AnimalState == EAnimalState::EAS_LookingForFood)
+	{
+		return true;
+	}
+
+	return false;
+}

@@ -38,11 +38,18 @@ public:
 	CanSenseActorData_Animal CheckCanSenseActor(AActor* Actor, EAIPerceptionSense Sense);
 
 protected:
+	virtual void Init_Controller();
+	virtual void OnOwnerAnimalCharacterSet();
+	
 	void HandleSightSense(AActor* Actor);
 	void HandleHearingSense(FVector SoundOrigin_Loc);
 	void HandleDamageSense(AActor* Actor);
 	
 private:
+	// Owner
+	UPROPERTY()
+	ABaseAnimal* OwnerAnimalCharacter;
+	
 	// Behaviour
 	UPROPERTY()
 	TObjectPtr<UBehaviorTree> BehaviorTree;

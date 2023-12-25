@@ -2,12 +2,14 @@
 
 
 #include "Character/Animal/AnimalAIControllerBase.h"
+#include "Character/Animal/AnimalAIControllerBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Damage.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "AI/AI_Types.h"
+#include "Character/Animal/BaseAnimal.h"
 
 AAnimalAIControllerBase::AAnimalAIControllerBase()
 {
@@ -43,6 +45,9 @@ AAnimalAIControllerBase::AAnimalAIControllerBase()
 void AAnimalAIControllerBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	Init_Controller();
+	
 	PerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &AAnimalAIControllerBase::OnPerceptionUpdated);
 }
 
@@ -116,8 +121,29 @@ CanSenseActorData_Animal AAnimalAIControllerBase::CheckCanSenseActor(AActor* Act
 	return CanSenseActorData_Animal;
 }
 
+void AAnimalAIControllerBase::Init_Controller()
+{
+	OwnerAnimalCharacter = Cast<ABaseAnimal>(GetPawn());
+	if (OwnerAnimalCharacter)
+	{
+		OnOwnerAnimalCharacterSet();
+	}
+}
+
+void AAnimalAIControllerBase::OnOwnerAnimalCharacterSet()
+{
+}
+
 void AAnimalAIControllerBase::HandleSightSense(AActor* Actor)
 {
+	/*
+	if (OwnerAnimalCharacter)
+	{
+		if (OwnerAnimalCharacter->IsLookingForFood())
+		{
+			
+		}
+	}*/
 }
 
 void AAnimalAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)

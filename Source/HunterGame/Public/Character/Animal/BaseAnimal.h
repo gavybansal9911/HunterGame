@@ -113,6 +113,8 @@ public:
 	float GetAnimalHungerLimit() const {return AnimalHungerLimit;}
 	float GetAnimalAggressionLimit() const {return AnimalAggressionLimit;}
 	float GetAnimalFearLimit() const {return AnimalFearLimit;}
+
+	bool IsLookingForFood() const;
 	
 	void SetAnimalMood(const EAnimalMood Type) {AnimalMood = Type;};
 };
