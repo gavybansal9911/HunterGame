@@ -83,7 +83,6 @@ protected:
 	// Animal class
 	UPROPERTY(EditAnywhere, Category = "Group System")
 	TSubclassOf<ABaseAnimal> AnimalClass;
-
 private:
 	// AI Controller reference
 	UPROPERTY()

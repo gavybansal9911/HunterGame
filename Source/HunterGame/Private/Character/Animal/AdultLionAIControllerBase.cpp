@@ -17,7 +17,8 @@ void AAdultLionAIControllerBase::Init_Controller()
 {
 	Super::Init_Controller();
 	
-	OwnerLionCharacter = Cast<ALion>(GetPawn());
+	//OwnerLionCharacter = Cast<ALion>(GetPawn());
+	OwnerLionCharacter = Cast<ALion>(OwnerAnimalCharacter);
 	if (OwnerLionCharacter)
 	{
 		OnOwnerAnimalCharacterSet();
@@ -33,14 +34,13 @@ void AAdultLionAIControllerBase::HandleSightSense(AActor* Actor)
 {
 	Super::HandleSightSense(Actor);
 
-	if (OwnerLionCharacter)
+	if (!OwnerLionCharacter) return;
+	
+	if (OwnerLionCharacter->IsLookingForFood())
 	{
-		if (OwnerLionCharacter->IsLookingForFood())
-		{
-			Actor->ActorHasTag(FName("LionFood"));
-			OwnerLionCharacter->SetAnimalStateAsHunting();
-			// Set state as hunting and set target actor
-		}
+		Actor->ActorHasTag(FName("LionFood"));
+		OwnerLionCharacter->SetAnimalStateAsHunting();
+		GEngine->AddOnScreenDebugMessage(-1, 123.f, FColor::Cyan, FString("Hunting animals"));
 	}
 }
 

@@ -238,7 +238,7 @@ void ABaseCharacter::AimButtonPressed()
 
 void ABaseCharacter::AimButtonReleased()
 {
-	if (!CombatComponent) return;
+	if (!CombatComponent || CombatComponent->GetWeaponInHand() == nullptr) return;
 	CombatComponent->SetAiming(false);
 }
 
