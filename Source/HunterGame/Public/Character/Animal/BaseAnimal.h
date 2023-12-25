@@ -81,6 +81,10 @@ protected:
 	float WalkSpeed = 300.f;
 	float RunSpeed = 650.f;
 	float FastRunSpeed = 1000.f;
+	// Behavior Properties: (Mapped between 0 and 1)
+	float AnimalHungerLimit = 0.5f;
+	float AnimalAggressionLimit = 0.5f;
+	float AnimalFearLimit = 0.5f;
 
 	// Animal class
 	UPROPERTY(EditAnywhere, Category = "Group System")
@@ -105,4 +109,10 @@ private:
 public:
 	UFUNCTION(BlueprintCallable)
 	inline EAgeStatus GetAnimalAgeStatus() const {return AnimalAgeStatus;}
+
+	float GetAnimalHungerLimit() const {return AnimalHungerLimit;}
+	float GetAnimalAggressionLimit() const {return AnimalAggressionLimit;}
+	float GetAnimalFearLimit() const {return AnimalFearLimit;}
+	
+	void SetAnimalMood(const EAnimalMood Type) {AnimalMood = Type;};
 };
