@@ -7,6 +7,7 @@
 #include "Perception/AISenseConfig_Damage.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "AI/AI_Types.h"
 
 AAnimalAIControllerBase::AAnimalAIControllerBase()
 {
@@ -37,6 +38,94 @@ AAnimalAIControllerBase::AAnimalAIControllerBase()
 	SenseConfig_Damage->SetMaxAge(3.f);
 
 	PerceptionComponent->SetDominantSense(SenseConfig_Damage->GetSenseImplementation());  // Dominant Sense
+}
+
+void AAnimalAIControllerBase::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	PerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &AAnimalAIControllerBase::OnPerceptionUpdated);
+}
+
+void AAnimalAIControllerBase::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
+{
+	CanSenseActorData_Animal SenseActorData_Animal;
+
+	for (AActor* Actor : UpdatedActors)
+	{
+		SenseActorData_Animal = CheckCanSenseActor(Actor, EAIPerceptionSense::EAIS_Sight);
+		if (SenseActorData_Animal.Sensed)
+		{
+			HandleSightSense(Actor);
+		}
+
+		SenseActorData_Animal = CheckCanSenseActor(Actor, EAIPerceptionSense::EAIS_Damage);
+		if (SenseActorData_Animal.Sensed)
+		{
+			HandleDamageSense(Actor);
+		}
+
+		SenseActorData_Animal = CheckCanSenseActor(Actor, EAIPerceptionSense::EAIS_Hearing);
+		if (SenseActorData_Animal.Sensed)
+		{
+			HandleHearingSense(SenseActorData_Animal.Stimulus.StimulusLocation);
+		}
+	}
+}
+
+CanSenseActorData_Animal AAnimalAIControllerBase::CheckCanSenseActor(AActor* Actor, EAIPerceptionSense Sense)
+{
+	FActorPerceptionBlueprintInfo ActorPerceptionBlueprintInfo;
+	PerceptionComponent->GetActorsPerception(Actor,ActorPerceptionBlueprintInfo);
+
+	TSubclassOf<UAISense> SightSenseClass = UAISense_Sight::StaticClass();
+	TSubclassOf<UAISense> HearingSenseClass = UAISense_Hearing::StaticClass();
+	TSubclassOf<UAISense> DamageSenseClass = UAISense_Damage::StaticClass();
+
+	for (FAIStimulus AIStimulas : ActorPerceptionBlueprintInfo.LastSensedStimuli)
+	{
+		TSubclassOf<UAISense> SenseClass = UAIPerceptionSystem::GetSenseClassForStimulus(this, AIStimulas);
+
+		CanSenseActorData_Animal Local_CanSenseActorData_Animal;
+		Local_CanSenseActorData_Animal.Stimulus = AIStimulas;
+		if (Sense == EAIPerceptionSense::EAIS_Sight)
+		{
+			if (SenseClass == SightSenseClass)
+			{
+				Local_CanSenseActorData_Animal.Sensed = AIStimulas.WasSuccessfullySensed();
+				return Local_CanSenseActorData_Animal;
+			}
+		}
+		else if (Sense == EAIPerceptionSense::EAIS_Hearing)
+		{
+			if (SenseClass == HearingSenseClass)
+			{
+				Local_CanSenseActorData_Animal.Sensed = AIStimulas.WasSuccessfullySensed();
+				return Local_CanSenseActorData_Animal;
+			}
+		}
+		else if (Sense == EAIPerceptionSense::EAIS_Damage)
+		{
+			if (SenseClass == DamageSenseClass)
+			{
+				Local_CanSenseActorData_Animal.Sensed = AIStimulas.WasSuccessfullySensed();
+				return Local_CanSenseActorData_Animal;
+			}
+		}
+	}
+	CanSenseActorData_Animal CanSenseActorData_Animal;
+	return CanSenseActorData_Animal;
+}
+
+void AAnimalAIControllerBase::HandleSightSense(AActor* Actor)
+{
+}
+
+void AAnimalAIControllerBase::HandleHearingSense(FVector SoundOrigin_Loc)
+{
+}
+
+void AAnimalAIControllerBase::HandleDamageSense(AActor* Actor)
+{
 }
 
 FVector AAnimalAIControllerBase::GetPointOfInterest() const
