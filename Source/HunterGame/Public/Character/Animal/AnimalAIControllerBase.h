@@ -41,9 +41,9 @@ protected:
 	virtual void Init_Controller();
 	virtual void OnOwnerAnimalCharacterSet();
 	
-	void HandleSightSense(AActor* Actor);
-	void HandleHearingSense(FVector SoundOrigin_Loc);
-	void HandleDamageSense(AActor* Actor);
+	virtual void HandleSightSense(AActor* Actor);
+	virtual void HandleHearingSense(FVector SoundOrigin_Loc);
+	virtual void HandleDamageSense(AActor* Actor);
 	
 private:
 	// Owner

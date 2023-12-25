@@ -190,3 +190,9 @@ bool ABaseAnimal::IsLookingForFood() const
 
 	return false;
 }
+
+void ABaseAnimal::SetAnimalStateAsHunting()
+{
+	if (AnimalState >= EAnimalState::EAS_Hunting) return;
+	AnimalState = EAnimalState::EAS_Hunting;
+}

@@ -64,12 +64,6 @@ protected:
 	/** Components **/
 
 	// States and properties
-	//UPROPERTY(EditAnywhere, Category = "Properties")
-	//bool bIsLeader = false;
-	//UPROPERTY(EditAnywhere, Category = "Properties")
-	//bool bLiveInGroups = false;
-	//UPROPERTY(EditAnywhere, Category = "Properties")
-	//int GroupSize = 1;  // 1 <-> this
 	EAnimalName AnimalName = EAnimalName::EAN_Max;
 	EAnimalModeOfFeeding AnimalModeOfFeeding = EAnimalModeOfFeeding::EAMF_Max;
 	UPROPERTY(EditAnywhere, Category = "Properties")
@@ -115,6 +109,9 @@ public:
 	float GetAnimalFearLimit() const {return AnimalFearLimit;}
 
 	bool IsLookingForFood() const;
+
+	// Animal State
+	void SetAnimalStateAsHunting();
 	
 	void SetAnimalMood(const EAnimalMood Type) {AnimalMood = Type;};
 };
