@@ -6,6 +6,8 @@
 AHippopotamus::AHippopotamus()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	Tags.Add(FName("Hippopotamus"));
 }
 
 void AHippopotamus::BeginPlay()

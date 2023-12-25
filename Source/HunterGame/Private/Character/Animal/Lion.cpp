@@ -6,6 +6,8 @@
 ALion::ALion()
 {
     PrimaryActorTick.bCanEverTick = false;
+
+    Tags.Add(FName("Lion"));
 }
 
 void ALion::BeginPlay()

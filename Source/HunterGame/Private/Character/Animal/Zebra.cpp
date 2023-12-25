@@ -6,6 +6,8 @@
 AZebra::AZebra()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	Tags.Add(FName("Zebra"));
 }
 
 void AZebra::BeginPlay()

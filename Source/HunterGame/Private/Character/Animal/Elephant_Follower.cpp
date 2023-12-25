@@ -2,7 +2,6 @@
 
 
 #include "Character/Animal/Elephant_Follower.h"
-
 #include "Character/Animal/Elephant_GroupLeader.h"
 
 AElephant_Follower::AElephant_Follower()
