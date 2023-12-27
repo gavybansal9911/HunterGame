@@ -28,9 +28,6 @@ protected:
 	/** Enemy Group **/
 	virtual void Init_PoacherGroup();
 	virtual void OnPoacherGroupSpawned();
-
-	//UPROPERTY(EditAnywhere, Category = "PoacherGroup")
-	//int NumberOfPoachers = 7;
 	
 	UPROPERTY(EditAnywhere, Category = "Poacher Group")
 	TArray<TSubclassOf<AEnemyGroupMember_Base>> PoacherGroupMembersToSpawn;

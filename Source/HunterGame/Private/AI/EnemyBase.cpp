@@ -9,6 +9,7 @@
 #include "Component/StatsComponent.h"
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "Engine/DamageEvents.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISense_Damage.h"
 #include "Weapon/Weapon.h"
@@ -22,6 +23,13 @@ AEnemyBase::AEnemyBase()
 	Tags.AddUnique(FName("EnemyBase"));
 	Tags.AddUnique(FName("Enemy"));
 	Tags.AddUnique(FName("AIEnemy"));
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	const FVector RelativeMeshLocation = FVector(0.f, 0.f, -90.f);
+	GetMesh()->SetRelativeLocation(RelativeMeshLocation);
+	const FRotator RelativeMeshRotation = FRotator(0.f, -90.f, 0.f);
+	GetMesh()->SetRelativeRotation(RelativeMeshRotation);
 
 	CombatComponent = CreateDefaultSubobject<UAIEnemyCombatComponent>(TEXT("Enemy Combat Component"));
 	StatsComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
