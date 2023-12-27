@@ -106,12 +106,13 @@ void UAIEnemyCombatComponent::ToggleWeaponAnimNotifyCallBack()
 void UAIEnemyCombatComponent::EnableCombat()
 {
 	if (!Weapon) return;
-	
+
 	FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget,
 		EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, false);
 	Weapon->AttachToComponent(OwnerAIEnemy->GetMesh(), AttachmentTransformRules, Weapon->GetInHandAttachSocketName());
 	Weapon->SetWeaponAttachmentStatus(EAttachmentStatus::EAS_InHand);
 	UpdateAttackRadius();
+	GEngine->AddOnScreenDebugMessage(-1, 123.f, FColor::Orange, FString("Combat Enabled for AI enemy(Poachers/Hunters)"));
 }
 
 void UAIEnemyCombatComponent::DisableCombat()

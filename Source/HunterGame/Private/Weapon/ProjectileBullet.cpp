@@ -10,7 +10,7 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 {
 	if (GetOwner() == OtherActor) { Destroy(); return; }
 	
-	ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
+	const ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
 	if (OwnerCharacter)
 	{
 		AController* OwnerController = OwnerCharacter->GetController();

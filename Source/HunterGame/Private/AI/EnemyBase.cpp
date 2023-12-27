@@ -141,14 +141,16 @@ EAIState AEnemyBase::GetEnemyState() const
 /** Interface **/
 
 /** Combat **/
-void AEnemyBase::ToggleWeapon()
+bool AEnemyBase::ToggleWeapon()
 {
-	if (CombatComponent == nullptr) return;
+	if (CombatComponent == nullptr) return false;
 	CombatComponent->ToggleWeapon();
+	return true;
 }
 
 void AEnemyBase::ToggleWeaponAnimNotifyCallBack()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 123.f, FColor::Orange, FString("Toggle combat called for AI enemy(Poachers/Hunters)"));
 	if (CombatComponent == nullptr) return;
 	CombatComponent->ToggleWeaponAnimNotifyCallBack();
 }

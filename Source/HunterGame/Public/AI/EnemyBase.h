@@ -39,7 +39,7 @@ public:
 	/** Interface **/
 
 	/** Combat **/
-	void ToggleWeapon();
+	bool ToggleWeapon();   // Return value -> Toggle weapon success ?
 	UFUNCTION(BlueprintCallable)
 	void ToggleWeaponAnimNotifyCallBack();
 
@@ -71,7 +71,8 @@ protected:
 	TObjectPtr<AAIControllerBase> AIController;
 	
 	/** Enemy States **/
-	EAIState AIState = EAIState::EAIS_Hunting;
+	//EAIState AIState = EAIState::EAIS_Hunting;
+	EAIState AIState = EAIState::EAIS_Passive;
 	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	EAIEnemyActionState AIActionState = EAIEnemyActionState::EAIAS_None;
 	/** Enemy States **/

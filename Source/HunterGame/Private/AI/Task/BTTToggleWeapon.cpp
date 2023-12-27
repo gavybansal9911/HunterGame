@@ -9,8 +9,11 @@ EBTNodeResult::Type UBTTToggleWeapon::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	if (AEnemyBase* AIEnemyBaseCharacter = Cast<AEnemyBase>(OwnerComp.GetAIOwner()->GetPawn()))
 	{
-		AIEnemyBaseCharacter->ToggleWeapon();
-		return EBTNodeResult::Succeeded;
+		const bool bSuccess = AIEnemyBaseCharacter->ToggleWeapon();
+		if (bSuccess)
+			return EBTNodeResult::Succeeded;
+		else
+			return EBTNodeResult::Failed;
 	}
 	
 	return EBTNodeResult::Failed;
