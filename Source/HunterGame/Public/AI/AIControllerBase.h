@@ -23,6 +23,7 @@ class UAIPerceptionComponent;
 class UAISenseConfig_Sight;
 class UAISenseConfig_Hearing;
 class UAISenseConfig_Damage;
+
 /**
  * 
  */
@@ -57,8 +58,12 @@ public:
 	// BB
 	void UpdateAttackRadius(AWeapon* Weapon);
 
+	void OnIndirectSpawn();
+
 protected:
 	virtual void BeginPlay() override;
+
+	virtual  void Init_Controller();
 	
 	UPROPERTY()
 	TObjectPtr<UBehaviorTree> BehaviorTree;
@@ -93,6 +98,7 @@ private:
 public:
 	AActor* GetTargetActorBB() const;
 	FORCEINLINE EAIState GetEnemyAIState() const {return AIState;}
+	UFUNCTION(BlueprintCallable)  // TEMPORARY Macro
 	FORCEINLINE AEnemyBase* GetAIEnemyCharacter() const {return OwnerAIEnemy;}
 
 	void SetBBTargetActor(AActor* TargetActor);

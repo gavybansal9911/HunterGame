@@ -74,6 +74,8 @@ void AEnemyGroupLeader_Base::Init_PoacherGroup()
 
 		//SKIP_SPAWN:;
 	}
+
+	OnPoacherGroupSpawned();
 }
 
 void AEnemyGroupLeader_Base::OnPoacherGroupSpawned()
@@ -84,6 +86,6 @@ void AEnemyGroupLeader_Base::OnPoacherGroupSpawned()
 		
 		PoacherMember->SetLeader(this);
 		PoacherMember->SpawnDefaultController();
+		PoacherMember->OnIndirectSpawn();
 	}
 }
-

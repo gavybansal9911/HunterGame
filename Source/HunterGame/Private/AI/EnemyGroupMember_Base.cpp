@@ -3,6 +3,8 @@
 
 #include "AI/EnemyGroupMember_Base.h"
 
+#include "AI/AIControllerBase.h"
+
 AEnemyGroupMember_Base::AEnemyGroupMember_Base()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -27,4 +29,9 @@ void AEnemyGroupMember_Base::PossessedBy(AController* NewController)
 void AEnemyGroupMember_Base::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+}
+
+void AEnemyGroupMember_Base::OnIndirectSpawn()
+{
+	AIController->OnIndirectSpawn();
 }

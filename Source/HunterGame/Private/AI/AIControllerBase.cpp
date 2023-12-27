@@ -54,6 +54,11 @@ void AAIControllerBase::PostInitializeComponents()
 void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
+	Init_Controller();
+}
+
+void AAIControllerBase::Init_Controller()
+{
 	OwnerAIEnemy = Cast<AEnemyBase>(GetPawn());
 	if (Blackboard)
 	{
@@ -63,7 +68,6 @@ void AAIControllerBase::BeginPlay()
 			Blackboard->SetValueAsFloat(BB_AttackRadius_KeyName, OwnerAIEnemy->GetOwnedWeapon()->GetWeaponRange());
 		}
 	}
-	
 }
 
 AActor* AAIControllerBase::GetTargetActorBB() const
@@ -261,4 +265,9 @@ void AAIControllerBase::UpdateAttackRadius(AWeapon* Weapon)
 	{
 		Blackboard->SetValueAsFloat(BB_AttackRadius_KeyName, Weapon->GetWeaponRange());
 	}
+}
+
+void AAIControllerBase::OnIndirectSpawn()
+{
+	Init_Controller();
 }

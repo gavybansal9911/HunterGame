@@ -21,6 +21,8 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void PostInitializeComponents() override;
 
+	void OnIndirectSpawn();
+
 protected:
 	virtual void BeginPlay() override;
 
