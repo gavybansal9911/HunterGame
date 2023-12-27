@@ -43,6 +43,10 @@ void AProjectile::BeginPlay()
 	{
 		// Bind OnHit to OnComponentHit delegate.
 		CollisionBox->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+		if (bUpdateDamage)
+		{
+			GetWorldTimerManager().SetTimer(UpdateProjectileDamageTimerHandle, this, &AProjectile::UpdateProjectileDamage, UpdateProjectileDamageRate, true, 0.f);
+		}
 	}
 }
 
@@ -98,4 +102,10 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 			HitActor->GetHit(HitBoneName, HitBoneLocation);
 		}
 	}
+}
+
+void AProjectile::UpdateProjectileDamage()
+{
+	// TODO: Implementation
+	Damage = Damage - 1;
 }

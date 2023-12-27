@@ -24,7 +24,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	
 	// Hit Event
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
@@ -32,6 +32,16 @@ protected:
 	/** Damage **/
 	UPROPERTY(EditAnywhere, Category = "Damage")
 	float Damage = 20.f;
+
+	UPROPERTY(EditAnywhere, Category = "Damage")
+	bool bUpdateDamage = true;
+
+	void UpdateProjectileDamage();
+
+	UPROPERTY(EditAnywhere, Category = "Damage")
+	float UpdateProjectileDamageRate = 0.1f;
+	
+	FTimerHandle UpdateProjectileDamageTimerHandle;
 	/** Damage **/
 	
 private:
