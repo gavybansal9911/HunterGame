@@ -31,6 +31,7 @@ void AElephant_GroupLeader::Spawn_Group()
 
 	for (int i = 1; i <= GroupSize - 1; i++)
 	{
+		// Transform
 		FTransform SpawnTransform;
 
 		// Location

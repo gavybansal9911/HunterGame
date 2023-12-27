@@ -6,6 +6,8 @@
 #include "AI/EnemyBase.h"
 #include "EnemyGroupLeader_Base.generated.h"
 
+class AEnemyGroupMember_Base;
+
 /**
  * 
  */
@@ -22,4 +24,21 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	
+	/** Enemy Group **/
+	virtual void Init_PoacherGroup();
+	virtual void OnPoacherGroupSpawned();
+
+	//UPROPERTY(EditAnywhere, Category = "PoacherGroup")
+	//int NumberOfPoachers = 7;
+	
+	UPROPERTY(EditAnywhere, Category = "Poacher Group")
+	TArray<TSubclassOf<AEnemyGroupMember_Base>> PoacherGroupMembersToSpawn;
+
+	UPROPERTY()
+	TArray<AEnemyGroupMember_Base*> PoacherGroupMembers_Alive;
+
+	UPROPERTY(EditAnywhere, Category = "Poacher Group")
+	float GroupAreaCoverage = 350.f;
+	/** Enemy Group **/
 };
