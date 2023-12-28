@@ -50,6 +50,8 @@ public:
 	/** Combat **/
 
 	void OnAIStateSetAsRunningAway();
+
+	void OnPoacherGroupMemberStateChanged(AEnemyBase* Member);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -73,8 +75,8 @@ protected:
 	
 	/** Enemy States **/
 	//EAIState AIState = EAIState::EAIS_Hunting;
-	EAIState AIState = EAIState::EAIS_Passive;
-	EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
+	//EAIState AIState = EAIState::EAIS_Passive;
+	//EAIMovementMode AIMovementMode = EAIMovementMode::EMM_Idle;
 	EAIEnemyActionState AIActionState = EAIEnemyActionState::EAIAS_None;
 	/** Enemy States **/
 
@@ -106,6 +108,12 @@ public:
 	
 	FORCEINLINE EAIEnemyActionState GetEnemyActionState() const {return AIActionState;}
 	FORCEINLINE bool IsAiming() const {return CombatComponent && CombatComponent->bIsAiming;}
+
+	FORCEINLINE EAIState GetAIState() const;
+
+	FORCEINLINE bool IsLeader() const {return bIsLeader;}
+
+	FORCEINLINE AEnemy_Group_Manager* GetEnemyGroupManager() const {return EnemyGroupManager;};
 	
 	void SetEnemyActionState(EAIEnemyActionState InActionState);
 

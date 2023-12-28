@@ -23,6 +23,8 @@ public:
 
 	void OnIndirectSpawn();
 
+	virtual void OnLeaderStateChanged();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -31,5 +33,6 @@ private:
 	AEnemyGroupLeader_Base* Leader;
 
 public:
+	FORCEINLINE AEnemyGroupLeader_Base* GetLeader() const {return Leader;}
 	void SetLeader(AEnemyGroupLeader_Base* InNewLeader) {Leader = InNewLeader;}
 };

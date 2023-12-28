@@ -2,6 +2,8 @@
 
 
 #include "AI/AIControllerBase.h"
+
+#include "Actor/Enemy_Group_Manager.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
@@ -10,6 +12,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "AI/EnemyBase.h"
+#include "AI/EnemyGroupMember_Base.h"
 #include "Weapon/Weapon.h"
 
 AAIControllerBase::AAIControllerBase()
@@ -208,6 +211,7 @@ void AAIControllerBase::SetStateAsPassive()
 	AIState = EAIState::EAIS_Passive;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 1);
 	ClearFocus(EAIFocusPriority::Default);
+	On_AI_StateChanged();
 }
 
 void AAIControllerBase::SetStateAsInvestigating()
@@ -216,6 +220,7 @@ void AAIControllerBase::SetStateAsInvestigating()
 	AIState = EAIState::EAIS_Investigating;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 2);
 	ClearFocus(EAIFocusPriority::Default);
+	On_AI_StateChanged();
 }
 
 void AAIControllerBase::SetStateAsHunting(AActor* TargetActor)
@@ -224,6 +229,7 @@ void AAIControllerBase::SetStateAsHunting(AActor* TargetActor)
 	AIState = EAIState::EAIS_Hunting;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 3);
 	SetFocus(TargetActor);
+	On_AI_StateChanged();
 }
 
 void AAIControllerBase::SetStateAsChasing(AActor* TargetActor)
@@ -233,6 +239,7 @@ void AAIControllerBase::SetStateAsChasing(AActor* TargetActor)
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 4);
 	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, FString("State is chasing now"));
 	ClearFocus(EAIFocusPriority::Default);
+	On_AI_StateChanged();
 }
 
 void AAIControllerBase::SetStateAsAttacking(AActor* TargetActor)
@@ -241,6 +248,7 @@ void AAIControllerBase::SetStateAsAttacking(AActor* TargetActor)
 	AIState = EAIState::EAIS_Attacking;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 5);
 	SetFocus(TargetActor);
+	On_AI_StateChanged();
 }
 
 void AAIControllerBase::SetStateAsRetreating()
@@ -248,6 +256,7 @@ void AAIControllerBase::SetStateAsRetreating()
 	if (Blackboard == nullptr || AIState > EAIState::EAIS_Retreating) return;
 	AIState = EAIState::EAIS_Retreating;
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 6);
+	On_AI_StateChanged();
 }
 
 void AAIControllerBase::SetStateAsRunningAway()
@@ -257,6 +266,7 @@ void AAIControllerBase::SetStateAsRunningAway()
 	Blackboard->SetValueAsEnum(BB_AIState_KeyName, 7);
 	ClearFocus(EAIFocusPriority::Default);   // Clear focus
 	OwnerAIEnemy->OnAIStateSetAsRunningAway();
+	On_AI_StateChanged();
 }
 
 void AAIControllerBase::UpdateAttackRadius(AWeapon* Weapon)
@@ -264,6 +274,27 @@ void AAIControllerBase::UpdateAttackRadius(AWeapon* Weapon)
 	if (Weapon)
 	{
 		Blackboard->SetValueAsFloat(BB_AttackRadius_KeyName, Weapon->GetWeaponRange());
+	}
+}
+
+void AAIControllerBase::On_AI_StateChanged()
+{
+	if (OwnerAIEnemy == nullptr && OwnerAIEnemy->GetEnemyGroupManager() == nullptr) return;
+
+	if (OwnerAIEnemy->IsLeader())
+	{
+		for (const auto PoacherMember : OwnerAIEnemy->GetEnemyGroupManager()->NPC_Enemies_GroupMembers)
+		{
+			PoacherMember->OnLeaderStateChanged();
+		}
+	}
+	else
+	{
+		for (auto Poacher : OwnerAIEnemy->GetEnemyGroupManager()->NPC_Enemies)
+		{
+			// TODO: create a infinite loop because it changes the leader state which again tries to change the member enemy ai state and so on.
+			//Poacher->OnPoacherGroupMemberStateChanged(Poacher);
+		}
 	}
 }
 

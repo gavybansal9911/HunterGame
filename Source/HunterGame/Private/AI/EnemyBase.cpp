@@ -7,6 +7,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "TimerManager.h"
 #include "Actor/Enemy_Group_Manager.h"
+#include "AI/EnemyGroupLeader_Base.h"
+#include "AI/EnemyGroupMember_Base.h"
 #include "Component/StatsComponent.h"
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "Engine/DamageEvents.h"
@@ -141,7 +143,7 @@ void AEnemyBase::ReportDamageEvent(float DamageAmount, FDamageEvent const& Damag
 /** Interface **/
 EAIState AEnemyBase::GetEnemyState() const
 {
-	if (AIController == nullptr) return AIState;
+	if (AIController == nullptr) return EAIState::EAIS_None;
 	return AIController->GetEnemyAIState();
 }
 /** Interface **/
@@ -182,6 +184,43 @@ void AEnemyBase::OnAIStateSetAsRunningAway()
 {
 	if (CombatComponent == nullptr) return;
 	CombatComponent->OnAIStateSetAsRunningAway();
+}
+
+void AEnemyBase::OnPoacherGroupMemberStateChanged(AEnemyBase* Member)
+{
+	if (AEnemyGroupMember_Base* PoacherGroupMember = Cast<AEnemyGroupMember_Base>(Member))
+	{
+		if (PoacherGroupMember->GetLeader() == nullptr || PoacherGroupMember->GetLeader()->AIController == nullptr) return;
+		
+		switch (Member->GetAIState())
+		{
+			case EAIState::EAIS_None:
+				break;
+			case EAIState::EAIS_Passive:
+				PoacherGroupMember->GetLeader()->AIController->SetStateAsPassive();
+				break;
+			case EAIState::EAIS_Hunting:
+				PoacherGroupMember->GetLeader()->AIController->SetStateAsHunting(Member->Get_TargetActor_BB());
+				break;
+			case EAIState::EAIS_Investigating:
+				PoacherGroupMember->GetLeader()->AIController->SetStateAsInvestigating();
+				break;
+			case EAIState::EAIS_Chasing:
+				PoacherGroupMember->GetLeader()->AIController->SetStateAsChasing(Member->Get_TargetActor_BB());
+				break;
+			case EAIState::EAIS_Attacking:
+				PoacherGroupMember->GetLeader()->AIController->SetStateAsAttacking(Member->Get_TargetActor_BB());
+				break;
+			case EAIState::EAIS_Retreating:
+				PoacherGroupMember->GetLeader()->AIController->SetStateAsRetreating();
+				break;
+			case EAIState::EAIS_RunningAway:
+				PoacherGroupMember->GetLeader()->AIController->SetStateAsRunningAway();
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 void AEnemyBase::Init_GroupManager()
@@ -259,6 +298,12 @@ AActor* AEnemyBase::Get_TargetActor_BB() const
 	}
 	
 	return nullptr;
+}
+
+EAIState AEnemyBase::GetAIState() const
+{
+	if (AIController == nullptr) {return EAIState::EAIS_None;}
+	return AIController->GetEnemyAIState();	
 }
 
 void AEnemyBase::SetEnemyActionState(EAIEnemyActionState InActionState)

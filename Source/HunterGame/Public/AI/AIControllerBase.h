@@ -58,6 +58,8 @@ public:
 	// BB
 	void UpdateAttackRadius(AWeapon* Weapon);
 
+	virtual void On_AI_StateChanged();
+	
 	void OnIndirectSpawn();
 
 protected:
