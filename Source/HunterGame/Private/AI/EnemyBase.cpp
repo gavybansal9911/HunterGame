@@ -6,10 +6,12 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "TimerManager.h"
+#include "Actor/Enemy_Group_Manager.h"
 #include "Component/StatsComponent.h"
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "Engine/DamageEvents.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISense_Damage.h"
 #include "Weapon/Weapon.h"
@@ -40,6 +42,10 @@ void AEnemyBase::BeginPlay()
 	Super::BeginPlay();
 	
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::ReceiveDamage);
+	if (bIsLeader)
+	{
+		Init_GroupManager();
+	}
 }
 
 void AEnemyBase::PossessedBy(AController* NewController)
@@ -178,6 +184,28 @@ void AEnemyBase::OnAIStateSetAsRunningAway()
 	CombatComponent->OnAIStateSetAsRunningAway();
 }
 
+void AEnemyBase::Init_GroupManager()
+{
+	if (EnemyGroupManager) return;
+	
+	TArray<AActor*> GroupManagerActors;
+	UGameplayStatics::GetAllActorsOfClass(this, AEnemy_Group_Manager::StaticClass(), GroupManagerActors);
+	for (const auto GroupManager : GroupManagerActors)
+	{
+		if (GroupManager)
+		{
+			if (AEnemy_Group_Manager* Enemy_Group_Manager = Cast<AEnemy_Group_Manager>(GroupManager))
+			{
+				if (Enemy_Group_Manager->GroupId == GroupId)
+				{
+					EnemyGroupManager = Enemy_Group_Manager;
+					EnemyGroupManager->NPC_Enemies.Add(this);
+				}
+			}
+		}
+	}
+}
+
 /** Getter / Setter **/
 AWeapon* AEnemyBase::GetOwnedWeapon() const
 {
@@ -236,5 +264,10 @@ AActor* AEnemyBase::Get_TargetActor_BB() const
 void AEnemyBase::SetEnemyActionState(EAIEnemyActionState InActionState)
 {
 	AIActionState = InActionState;
+}
+
+void AEnemyBase::SetGroupId(int32 InId)
+{
+	GroupId = InId;
 }
 /** Getter / Setter **/

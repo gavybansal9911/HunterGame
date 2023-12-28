@@ -2,12 +2,17 @@
 
 
 #include "AI/EnemyGroupMember_Base.h"
-
 #include "AI/AIControllerBase.h"
 
 AEnemyGroupMember_Base::AEnemyGroupMember_Base()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	Tags.Add(FName("PoacherMember"));
+	Tags.Add(FName("PoacherGroupMember"));
+	Tags.Add(FName("PoacherTeamMember"));
+
+	bIsLeader = false;
 }
 
 void AEnemyGroupMember_Base::BeginPlay()

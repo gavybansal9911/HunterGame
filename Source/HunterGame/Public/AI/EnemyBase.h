@@ -11,6 +11,7 @@
 #include "Interface/HumanInterface.h"
 #include "EnemyBase.generated.h"
 
+class AEnemy_Group_Manager;
 class UStatsComponent;
 class UAIEnemyCombatComponent;
 class AWeapon;
@@ -77,8 +78,22 @@ protected:
 	EAIEnemyActionState AIActionState = EAIEnemyActionState::EAIAS_None;
 	/** Enemy States **/
 
+	/** Enemy properties **/
+	bool bIsLeader = false;
+	/** Enemy properties **/
+
 	UFUNCTION(BlueprintCallable)
 	void OnAttackCompletedAnimNotifyCallBack();
+
+	// Group Management
+	UPROPERTY(EditAnywhere, Category = "Poacher Group")
+	int32 GroupId = -1;                      // -1 if not in a group
+
+	UPROPERTY(EditAnywhere, Category = "Poacher Group")
+	AEnemy_Group_Manager* EnemyGroupManager;
+
+	virtual void Init_GroupManager();
+	// Group Management
 	
 public:
 	AWeapon* GetOwnedWeapon() const;
@@ -93,4 +108,7 @@ public:
 	FORCEINLINE bool IsAiming() const {return CombatComponent && CombatComponent->bIsAiming;}
 	
 	void SetEnemyActionState(EAIEnemyActionState InActionState);
+
+	void SetGroupId(int32 InId);
+	void SetGroupManager(AEnemy_Group_Manager* InManager) {EnemyGroupManager = InManager;}
 };

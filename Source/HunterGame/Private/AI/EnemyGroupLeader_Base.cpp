@@ -2,12 +2,19 @@
 
 
 #include "AI/EnemyGroupLeader_Base.h"
+#include "Actor/Enemy_Group_Manager.h"
 #include "AI/EnemyGroupMember_Base.h"
 
 AEnemyGroupLeader_Base::AEnemyGroupLeader_Base()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	Tags.Add(FName("PoacherLeader"));
+	Tags.Add(FName("PoacherGroupLeader"));
+	Tags.Add(FName("PoacherTeamLeader"));
+	
+	bIsLeader = true;
+	
 	// Initialize poacher group array
 	PoacherGroupMembersToSpawn.SetNum(0);
 }
@@ -85,7 +92,12 @@ void AEnemyGroupLeader_Base::OnPoacherGroupSpawned()
 		if (PoacherMember == nullptr) return;
 		
 		PoacherMember->SetLeader(this);
+		PoacherMember->SetGroupId(GroupId);
+		PoacherMember->SetGroupManager(EnemyGroupManager);
 		PoacherMember->SpawnDefaultController();
 		PoacherMember->OnIndirectSpawn();
+		EnemyGroupManager->Enemy_GroupLeader = this;
+		EnemyGroupManager->NPC_Enemies.Add(PoacherMember);
+		EnemyGroupManager->NPC_Enemies_GroupMembers.Add(PoacherMember);
 	}
 }
