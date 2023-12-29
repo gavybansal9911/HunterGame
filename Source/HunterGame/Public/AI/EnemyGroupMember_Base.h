@@ -28,6 +28,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void OnDeath() override;
+
 private:
 	UPROPERTY()
 	AEnemyGroupLeader_Base* Leader;

@@ -60,6 +60,8 @@ protected:
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
 
 	void ReportDamageEvent(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
+
+	virtual void OnDeath();
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UAIEnemyCombatComponent> CombatComponent;
@@ -94,8 +96,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Poacher Group")
 	AEnemy_Group_Manager* EnemyGroupManager;
 
-	virtual void Init_GroupManager();
 	// Group Management
+	virtual void Init_GroupManager();
 	
 public:
 	AWeapon* GetOwnedWeapon() const;

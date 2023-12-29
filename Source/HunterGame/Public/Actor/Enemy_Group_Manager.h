@@ -27,6 +27,9 @@ public:
 	TArray<AEnemyBase*> NPC_Enemies;
 	UPROPERTY()
 	TArray<AEnemyGroupMember_Base*> NPC_Enemies_GroupMembers;
+
+	int32 Initial_GroupSize = 0;
+	int32 CurrentGroupSize = 0;
 	
 protected:
 	virtual void BeginPlay() override;

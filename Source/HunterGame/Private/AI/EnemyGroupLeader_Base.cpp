@@ -77,6 +77,8 @@ void AEnemyGroupLeader_Base::Init_PoacherGroup()
 		if (PoacherMember)
 		{
 			PoacherGroupMembers_Alive.Add(PoacherMember);
+			EnemyGroupManager->Initial_GroupSize++;
+			EnemyGroupManager->CurrentGroupSize++;
 		}
 
 		//SKIP_SPAWN:;
@@ -100,4 +102,22 @@ void AEnemyGroupLeader_Base::OnPoacherGroupSpawned()
 		EnemyGroupManager->NPC_Enemies.Add(PoacherMember);
 		EnemyGroupManager->NPC_Enemies_GroupMembers.Add(PoacherMember);
 	}
+}
+
+void AEnemyGroupLeader_Base::OnDeath()
+{
+	EnemyGroupManager->Enemy_GroupLeader = nullptr;
+	EnemyGroupManager->NPC_Enemies.Remove(this);
+	EnemyGroupManager->CurrentGroupSize--;
+	Super::OnDeath();
+}
+
+void AEnemyGroupLeader_Base::OnGroupMemberDeath(AEnemyGroupMember_Base* MemberRef)
+{
+	if (MemberRef)
+	{
+		EnemyGroupManager->NPC_Enemies.Remove(MemberRef);
+		EnemyGroupManager->NPC_Enemies_GroupMembers.Remove(MemberRef);
+	}
+	EnemyGroupManager->CurrentGroupSize--;
 }

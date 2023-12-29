@@ -21,6 +21,15 @@ void AEnemyGroupMember_Base::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AEnemyGroupMember_Base::OnDeath()
+{
+	if (Leader)
+	{
+		Leader->OnGroupMemberDeath(this);
+	}
+	Super::OnDeath();
+}
+
 void AEnemyGroupMember_Base::Tick(float DeltaSeconds)
 {
 	// bCanEverTick is set to false.

@@ -37,6 +37,12 @@ AEnemyBase::AEnemyBase()
 
 	CombatComponent = CreateDefaultSubobject<UAIEnemyCombatComponent>(TEXT("Enemy Combat Component"));
 	StatsComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
+
+	if (EnemyGroupManager)
+	{
+		EnemyGroupManager->Initial_GroupSize = 1;
+		EnemyGroupManager->CurrentGroupSize = 1;
+	}
 }
 
 void AEnemyBase::BeginPlay()
@@ -123,8 +129,9 @@ void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamage
 			{
 				CombatComponent->Weapon->Destroy();
 			}
+
 			// Death
-			Destroy();
+			OnDeath();
 		}
 	}
 }
@@ -138,6 +145,11 @@ void AEnemyBase::ReportDamageEvent(float DamageAmount, FDamageEvent const& Damag
 		FAIDamageEvent Event(this, DamageCauser, DamageAmount, GetActorLocation(), GetActorLocation());
 		PerceptionSystem->OnEvent(Event);
 	}
+}
+
+void AEnemyBase::OnDeath()
+{
+	Destroy();
 }
 
 /** Interface **/

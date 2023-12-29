@@ -21,6 +21,8 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void PostInitializeComponents() override;
+	
+	virtual void OnGroupMemberDeath(AEnemyGroupMember_Base* MemberRef);
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,4 +40,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Poacher Group")
 	float GroupAreaCoverage = 350.f;
 	/** Enemy Group **/
+
+	virtual void OnDeath() override;
 };
