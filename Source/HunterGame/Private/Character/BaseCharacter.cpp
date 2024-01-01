@@ -12,6 +12,7 @@
 #include "Component/FinanceComponent.h"
 #include "Component/InteractionComponent.h"
 #include "Component/InventoryComponent.h"
+#include "Component/PhysicalAnimation_C_Component.h"
 #include "Component/StatsComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -63,6 +64,7 @@ ABaseCharacter::ABaseCharacter()
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
 	FinanceComponent = CreateDefaultSubobject<UFinanceComponent>(TEXT("Finance Component"));
 	StatsComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
+	PhysicalAnimationComponent = CreateDefaultSubobject<UPhysicalAnimation_C_Component>(TEXT("Physical Animation Component"));
 }
 
 void ABaseCharacter::BeginPlay()
@@ -118,6 +120,10 @@ void ABaseCharacter::PostInitializeComponents()
 	{
 		StatsComponent->OwnerHuman = this;
 		StatsComponent->Init_Attributes();
+	}
+	if (PhysicalAnimationComponent)
+	{
+		PhysicalAnimationComponent->SetOwnerCharacter(this);
 	}
 }
 

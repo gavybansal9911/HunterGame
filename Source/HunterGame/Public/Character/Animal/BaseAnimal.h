@@ -9,6 +9,7 @@
 #include "Interface/InteractInterface.h"
 #include "BaseAnimal.generated.h"
 
+class UPhysicalAnimation_C_Component;
 class UAnimalInteractionComponent;
 class UAnimalSurvivalComponent;
 class AAnimalAIControllerBase;
@@ -61,6 +62,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UAnimalInteractionComponent> InteractionComponent;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UPhysicalAnimation_C_Component> PhysicalAnimationComponent;
 	/** Components **/
 
 	// States and properties
@@ -87,7 +91,7 @@ private:
 	// AI Controller reference
 	UPROPERTY()
 	AAnimalAIControllerBase* AnimalAIController;
-
+	
 	// AI Behaviour
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;

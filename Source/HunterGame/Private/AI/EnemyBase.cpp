@@ -9,6 +9,7 @@
 #include "Actor/Enemy_Group_Manager.h"
 #include "AI/EnemyGroupLeader_Base.h"
 #include "AI/EnemyGroupMember_Base.h"
+#include "Component/PhysicalAnimation_C_Component.h"
 #include "Component/StatsComponent.h"
 #include "Component/AIEnemy/AIEnemyCombatComponent.h"
 #include "Engine/DamageEvents.h"
@@ -37,6 +38,7 @@ AEnemyBase::AEnemyBase()
 
 	CombatComponent = CreateDefaultSubobject<UAIEnemyCombatComponent>(TEXT("Enemy Combat Component"));
 	StatsComponent = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats Component"));
+	PhysicalAnimationComponent = CreateDefaultSubobject<UPhysicalAnimation_C_Component>(TEXT("Physical Animation Component"));
 
 	if (EnemyGroupManager)
 	{
@@ -84,6 +86,11 @@ void AEnemyBase::PostInitializeComponents()
 	{
 		StatsComponent->OwnerHuman = this;
 		StatsComponent->Init_Attributes();
+	}
+
+	if (PhysicalAnimationComponent)
+	{
+		PhysicalAnimationComponent->SetOwnerCharacter(this);
 	}
 }
 

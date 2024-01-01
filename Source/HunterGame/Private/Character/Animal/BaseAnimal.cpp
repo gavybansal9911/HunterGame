@@ -6,6 +6,7 @@
 #include "Character/Animal/AnimalAIControllerBase.h"
 #include "Component/AnimalInteractionComponent.h"
 #include "Component/AnimalSurvivalComponent.h"
+#include "Component/PhysicalAnimation_C_Component.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -33,6 +34,7 @@ ABaseAnimal::ABaseAnimal()
 	
 	SurvivalComponent = CreateDefaultSubobject<UAnimalSurvivalComponent>(TEXT("Survival Component"));
 	InteractionComponent = CreateDefaultSubobject<UAnimalInteractionComponent>(TEXT("Interaction Component"));
+	PhysicalAnimationComponent = CreateDefaultSubobject<UPhysicalAnimation_C_Component>(TEXT("Physical Animation Component"));
 }
 
 void ABaseAnimal::PossessedBy(AController* NewController)
@@ -57,6 +59,8 @@ void ABaseAnimal::PostInitializeComponents()
 	}
 	if (InteractionComponent)
 		{InteractionComponent->OwnerAnimalCharacter = this;}
+	if (PhysicalAnimationComponent)
+		{PhysicalAnimationComponent->SetOwnerCharacter(this);}
 }
 
 void ABaseAnimal::BeginPlay()

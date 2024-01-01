@@ -11,6 +11,7 @@
 #include "Interface/HumanInterface.h"
 #include "EnemyBase.generated.h"
 
+class UPhysicalAnimation_C_Component;
 class AEnemy_Group_Manager;
 class UStatsComponent;
 class UAIEnemyCombatComponent;
@@ -68,6 +69,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UStatsComponent> StatsComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UPhysicalAnimation_C_Component> PhysicalAnimationComponent;
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;

@@ -18,6 +18,7 @@
 #define CAMERA_BOOM_TP_AIM_TARGET_ARM_LENGTH 125.f
 #define CAMERA_BOOM_SFP_TARGET_ARM_LENGTH 0.f
 
+class UPhysicalAnimation_C_Component;
 class UStatsComponent;
 class UFinanceComponent;
 class UInventoryComponent;
@@ -68,6 +69,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UStatsComponent> StatsComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UPhysicalAnimation_C_Component> PhysicalAnimationComponent;
 	/** Components **/
 
 	/** Animation **/
