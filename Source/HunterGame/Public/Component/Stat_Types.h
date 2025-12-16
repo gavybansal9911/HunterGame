@@ -7,6 +7,8 @@ struct FAttributeData
 {
 	GENERATED_BODY()
 	
+	UPROPERTY(EditAnywhere, Category = "Attribute")
 	float BaseValue;
+	UPROPERTY(EditAnywhere, Category = "Attribute")
 	float CurrentValue;
 };

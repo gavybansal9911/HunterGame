@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "AI_Types.generated.h"
+
 UENUM(BlueprintType)
 enum class EAIMovementMode : uint8
 {
@@ -49,4 +51,31 @@ enum class EAIEnemyActionState : uint8
 	EAIAS_Shooting UMETA(DisplayName = "Shooting"),
 	
 	EAIAS_Max UMETA(DisplayName = "Max")
+};
+
+UENUM(BlueprintType)
+enum class EBoneName : uint8
+{
+	EBN_LegL,
+	EBN_LegR,
+	EBN_ArmL,
+	EBN_ArmR,
+	EBN_Spine
+};
+
+USTRUCT(BlueprintType)
+struct FBoneCheck
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	FName BoneName;
+	UPROPERTY(EditAnywhere)
+	EBoneName E_BoneName;
+};
+
+UENUM(BlueprintType)
+enum class ESide : uint8
+{
+	LEFT, RIGHT
 };

@@ -18,6 +18,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISense_Damage.h"
 #include "Weapon/Weapon.h"
+#include "Components/CapsuleComponent.h"
 
 AEnemyBase::AEnemyBase()
 {
@@ -115,6 +116,70 @@ void AEnemyBase::GetHit(FName HitBoneName, FVector HitBoneLocation)
 {
 	//IHitInterface::GetHit();
 	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Cyan, HitBoneName.ToString());
+
+	GetMesh()->SetAllBodiesBelowSimulatePhysics(HitBoneName, true);
+	GetMesh()->SetAllBodiesBelowPhysicsBlendWeight(HitBoneName, 0.675f);
+
+	for (auto& ParentBoneCheck : BonesToCheck_PhysicalAnims)
+	{
+		bool bIsChild = IsBoneChildOf(GetMesh(), HitBoneName, ParentBoneCheck.BoneName);
+		if (bIsChild)
+		{
+			switch (ParentBoneCheck.E_BoneName)
+			{
+			case EBoneName::EBN_LegL:
+				BreakLeg(ESide::LEFT, ParentBoneCheck.BoneName);
+				break;
+			case EBoneName::EBN_LegR:
+				BreakLeg(ESide::RIGHT, ParentBoneCheck.BoneName);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void AEnemyBase::BreakLeg(ESide Side, FName BoneName)
+{
+	// perform any specific actions based on side - this would make sense for arms or hands, cause if the hit arm is right - the weapon should be dropped
+
+	EnableRagdoll();
+
+	FTimerHandle RegdollRecoverTimer;
+	GetWorldTimerManager().SetTimer(RegdollRecoverTimer, FTimerDelegate::CreateLambda([this, Side, BoneName] {
+		RecoverRagdoll();
+		
+		if (Side == ESide::LEFT)
+		{
+			GetMesh()->SetAllBodiesBelowSimulatePhysics(BoneName, true);
+			GetMesh()->SetAllBodiesBelowPhysicsBlendWeight(BoneName, 0.8f);
+		}
+		else {
+			GetMesh()->SetAllBodiesBelowSimulatePhysics(BoneName, true);
+			GetMesh()->SetAllBodiesBelowPhysicsBlendWeight(BoneName, 0.8f);
+		}
+	}), 5.f, false);
+}
+
+void AEnemyBase::EnableRagdoll()
+{
+	bRagdolling = true;
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetAllBodiesBelowSimulatePhysics(FName("Pelvis"), true, true);
+	GetCharacterMovement()->DisableMovement();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AEnemyBase::RecoverRagdoll()
+{
+	if (bRagdolling)
+	{
+		GetMesh()->SetAllBodiesBelowSimulatePhysics(FName("Pelvis"), false, true);
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	}
 }
 
 USkinnedMeshComponent* AEnemyBase::GetCharacterMesh()
@@ -122,9 +187,32 @@ USkinnedMeshComponent* AEnemyBase::GetCharacterMesh()
 	return GetMesh();
 }
 
+bool AEnemyBase::IsBoneChildOf(const USkeletalMeshComponent* SkelComp, FName ChildBone, FName ParentBone)
+{
+	if (!SkelComp) return false;
+
+	int32 ParentIndex = SkelComp->GetBoneIndex(ParentBone);
+	if (ParentIndex == INDEX_NONE)
+		return false;
+
+	FName CurrentBone = ChildBone;
+
+	while (CurrentBone != NAME_None)
+	{
+		if (CurrentBone == ParentBone)
+			return true;
+
+		CurrentBone = SkelComp->GetParentBone(CurrentBone);
+	}
+
+	return false;
+}
+
+
 void AEnemyBase::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
                                AController* InstigatorController, AActor* DamageCauser)
 {
+	if (!bCanDie) return;
 	if (StatsComponent)
 	{
 		StatsComponent->Health_Data.CurrentValue = FMath::Clamp(

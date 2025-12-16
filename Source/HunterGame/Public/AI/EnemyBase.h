@@ -35,7 +35,18 @@ public:
 	/** Interface **/
 	virtual void GetHit(FName HitBoneName, FVector HitBoneLocation) override;
 	virtual USkinnedMeshComponent* GetCharacterMesh() override;
+
+	bool IsBoneChildOf(const USkeletalMeshComponent* SkelComp, FName ChildBone, FName ParentBone);
+
+	UPROPERTY(EditAnywhere, Category = "PhysicalAnims")
+	TArray<FBoneCheck> BonesToCheck_PhysicalAnims;
+	UFUNCTION(BlueprintCallable, Category = "DEBUG")
+	virtual void BreakLeg(ESide Side, FName BoneName);
 	
+	void EnableRagdoll();
+	void RecoverRagdoll();
+	bool bRagdolling{ false };
+
 	UFUNCTION(BlueprintCallable)
 	virtual EAIState GetEnemyState() const override;
 	/** Interface **/
@@ -76,6 +87,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 	
+	UPROPERTY(EditAnywhere, Category = "AI")
+	bool bCanDie = false; // TEMP // DEBUG // TESTING
+
 	UPROPERTY()
 	TObjectPtr<AAIControllerBase> AIController;
 	
