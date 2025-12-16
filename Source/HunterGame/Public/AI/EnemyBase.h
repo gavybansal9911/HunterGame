@@ -28,6 +28,7 @@ class HUNTERGAME_API AEnemyBase : public ACharacter, public IEnemyInterface, pub
 
 public:
 	AEnemyBase();
+	virtual void Tick(float DeltaTime) override;
 	virtual void PossessedBy(AController* NewController) override;  // Called when the this character is possessed
 	virtual void PostInitializeComponents() override;
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
@@ -46,6 +47,9 @@ public:
 	void EnableRagdoll();
 	void RecoverRagdoll();
 	bool bRagdolling{ false };
+	void UpdateCapsuleInRagdoll();
+
+	FVector Initial_MeshOffset;
 
 	UFUNCTION(BlueprintCallable)
 	virtual EAIState GetEnemyState() const override;

@@ -52,10 +52,20 @@ void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Initial_MeshOffset = GetMesh()->GetRelativeLocation();
+
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::ReceiveDamage);
 	if (bIsLeader)
 	{
 		Init_GroupManager();
+	}
+}
+
+void AEnemyBase::Tick(float DeltaTime)
+{
+	if (bRagdolling)
+	{
+		UpdateCapsuleInRagdoll();
 	}
 }
 
@@ -179,6 +189,25 @@ void AEnemyBase::RecoverRagdoll()
 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	}
+}
+
+void AEnemyBase::UpdateCapsuleInRagdoll()
+{
+	FVector Start = GetMesh()->GetSocketLocation(FName("pelvis"));
+	FVector End = Start - FVector{ 0.f, 0.f, 100.f };
+
+	FHitResult Hit;
+	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECollisionChannel::ECC_Visibility);
+
+	FVector TargetGroundLocation;
+	if (Hit.bBlockingHit)
+	{
+		TargetGroundLocation = Hit.Location;
+		GetCapsuleComponent()->SetWorldLocation(TargetGroundLocation - Initial_MeshOffset);
+	}
+	else {
+		TargetGroundLocation = Start;
 	}
 }
 
