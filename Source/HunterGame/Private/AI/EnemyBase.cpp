@@ -19,6 +19,7 @@
 #include "Perception/AISense_Damage.h"
 #include "Weapon/Weapon.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEnemyBase::AEnemyBase()
 {
@@ -53,6 +54,8 @@ void AEnemyBase::BeginPlay()
 	Super::BeginPlay();
 	
 	Initial_MeshOffset = GetMesh()->GetRelativeLocation();
+
+	GetMesh()->SetTickGroup(ETickingGroup::TG_PostPhysics);
 
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::ReceiveDamage);
 	if (bIsLeader)
@@ -185,11 +188,29 @@ void AEnemyBase::RecoverRagdoll()
 {
 	if (bRagdolling)
 	{
+		// set capsule orientation
+		FVector NeckLoc = GetMesh()->GetSocketLocation(FName("neck_01"));
+		FVector PelvisLoc = GetMesh()->GetSocketLocation(FName("pelvis"));
+		FVector Delta = NeckLoc - PelvisLoc;
+		FVector PelvisRot_RightVector = UKismetMathLibrary::GetRightVector(GetMesh()->GetSocketRotation(FName("pelvis")));
+		bLayingOnBack = PelvisRot_RightVector.Z > 0;
+		GetCapsuleComponent()->SetWorldRotation(UKismetMathLibrary::MakeRotFromZX(FVector(0, 0, 1), bLayingOnBack ? -Delta : Delta));
+
+		// Save pose snapshot
+		GetMesh()->GetAnimInstance()->SavePoseSnapshot(FName("RagdollFinalPose"));
+
 		GetMesh()->SetAllBodiesBelowSimulatePhysics(FName("Pelvis"), false, true);
 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+		//GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+
+		bRagdolling = false;
 	}
+}
+
+void AEnemyBase::EndRecoverRagdoll()
+{
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 }
 
 void AEnemyBase::UpdateCapsuleInRagdoll()

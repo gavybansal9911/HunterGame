@@ -20,6 +20,11 @@ void UAIEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (OwnerAIEnemyCharacter && OwnerAIEnemyCharacter->GetCharacterMovement())
 	{
+		/** Physical Movement **/
+		bRagdolling = OwnerAIEnemyCharacter->bRagdolling;
+		bLayingOnBack = OwnerAIEnemyCharacter->bLayingOnBack;
+		/** Physical Movement **/
+
 		/** Basic Movement **/
 		FVector Local_Velocity = OwnerAIEnemyCharacter->GetVelocity();
 		Local_Velocity.Z = 0;

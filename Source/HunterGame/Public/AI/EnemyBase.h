@@ -46,7 +46,10 @@ public:
 	
 	void EnableRagdoll();
 	void RecoverRagdoll();
+	UFUNCTION(BlueprintCallable, Category = "PhysicalAnims")
+	void EndRecoverRagdoll();
 	bool bRagdolling{ false };
+	bool bLayingOnBack{ false };
 	void UpdateCapsuleInRagdoll();
 
 	FVector Initial_MeshOffset;

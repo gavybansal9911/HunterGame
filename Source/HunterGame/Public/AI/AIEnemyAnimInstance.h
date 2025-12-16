@@ -26,6 +26,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character")
 	AEnemyBase* OwnerAIEnemyCharacter;
 	
+	/** Physical Movement **/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Physical | Movement")
+	bool bRagdolling{ false };
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Physical | Movement")
+	bool bLayingOnBack{ false };
+	/** Physical Movement **/
+
 	/** Basic Movement **/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	float Speed;
